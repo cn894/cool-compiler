@@ -116,11 +116,10 @@ Any = .
 "/"			{}
 "="			{}
 "<"			{}
-">"			{}
 "<="		{}
+">"			{}
 ">="		{}
 "."			{}
-"~"			{}
 
 /* Identifiers */
 {ObjectIdentifier}	{}
@@ -134,6 +133,7 @@ Any = .
 
 /* Comments */
 {Comment}	{ /* Ignore. */ }
+"*)"		{}
 
 /* Whitespace */
 {Whitespace}	{ /* Ignore. */ }
