@@ -47,9 +47,96 @@ import java.io.IOException;
 	}
 %}
 
-ANY			=	.
+/* Macros */
+
+LineTerminator = (\r|\n|\r\n)
+InputCharacter = [^\r\n]
+Whitespace = (" "|\t|\f|\v|{LineTerminator})+
+LowercaseCharacter = [a-z]
+UppercaseCharacter = [A-Z]
+AlphabeticCharacter = ({LowercaseCharacter} | {UppercaseCharacter})
+Digit = [0-9]
+AlphanumericCharacter = ({AlphabeticCharacter} | {Digit})
+
+/* Comments */
+EndOfLineComment = "--" {InputCharacter}* {LineTerminator}?
+MultilineComment = "(*" ~"*)"
+Comment = ({EndOfLineComment} | {MultilineComment})
+
+/* Identifiers */
+IdentifierCharacter = ({AlphanumericCharacter} | "_")
+ObjectIdentifier = {LowercaseCharacter}{IdentifierCharacter}*
+TypeIdentifier = {UppercaseCharacter}{IdentifierCharacter}*
+
+/* Numeric Literals */
+Integer = {Digit}+
+
+/* Strings */
+String = "\"" ({InputCharacter} | "\\"{LineTerminator})* "\""
+
+Any = .
 
 %%
+/* Lexical Rules */
 
-{ANY}		{	/* return sym(ANY) */ }
+/* Keywords */
+"class"		{}
+"else"		{}
+"false"		{}
+"fi"		{}
+"if"		{}
+"in"		{}
+"inherits"	{}
+"isvoid"	{}
+"let"		{}
+"loop"		{}
+"pool"		{}
+"then"		{}
+"while"		{}
+"case"		{}
+"esac"		{}
+"new"		{}
+"of"		{}
+"not"		{}
+"true"		{}
+
+/* Operators */
+"<-"		{}
+"("			{}
+")"			{}
+"{"			{}
+"}"			{}
+"["			{}
+"]"			{}
+":"			{}
+";"			{}
+"+"			{}
+"-"			{}
+"*"			{}
+"/"			{}
+"="			{}
+"<"			{}
+">"			{}
+"<="		{}
+">="		{}
+"."			{}
+"~"			{}
+
+/* Identifiers */
+{ObjectIdentifier}	{}
+{TypeIdentifier}	{}
+
+/* Integers */
+{Integer}	{}
+
+/* Strings */
+{String}	{}
+
+/* Comments */
+{Comment}	{ /* Ignore. */ }
+
+/* Whitespace */
+{Whitespace}	{ /* Ignore. */ }
+
+{Any}		{	/* return sym(ANY) */ }
 
