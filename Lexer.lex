@@ -106,8 +106,6 @@ Any = .
 ")"			{}
 "{"			{}
 "}"			{}
-"["			{}
-"]"			{}
 ":"			{}
 ";"			{}
 "+"			{}
@@ -117,8 +115,6 @@ Any = .
 "="			{}
 "<"			{}
 "<="		{}
-">"			{}
-">="		{}
 "."			{}
 
 /* Identifiers */
@@ -137,6 +133,9 @@ Any = .
 
 /* Whitespace */
 {Whitespace}	{ /* Ignore. */ }
+
+/* Error fallback. */
+[^]			{}
 
 {Any}		{	/* return sym(ANY) */ }
 
