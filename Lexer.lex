@@ -154,9 +154,11 @@ Any = .
 \\r				{ string.append('\r'); }
 \\\"			{ string.append('\"'); }
 \\				{ string.append('\\'); }
-\\\n			{ /* Do nothing. Continue. */ }
+\\[\r\n]		{ /* Do nothing. Continue. */ }
+
 \n				{	yybegin(YYINITIAL);
 					return sym(TokenConstants.ERROR, "Unescaped newline in string"); }
+
 <<EOF>>			{	yybegin(YYINITIAL);
 					return sym(TokenConstants.ERROR, "EOF in string"); }
 
@@ -165,13 +167,15 @@ Any = .
 /* Comments state */
 <MLCOMMENT> {
 
-[^"*)"]		{ /* Do nothing. */ }
+[^"*)"]		{ /* Ignore. */ }
 "*)"		{ yybegin(YYINITIAL); /* Ignore. */ }
 <<EOF>>		{ yybegin(YYINITIAL); return sym(TokenConstants.ERROR, "EOF in comment."); }
 
 }
 <SLCOMMENT> {
+[^\r\n]				{ /* Ignore. */ }
 {LineTerminator}	{ yybegin(YYINITIAL); /* Ignore. */ }
+<<EOF>>				{ yybegin(YYINITIAL); /* Ignore. */ }
 }
 
 /* Whitespace */
