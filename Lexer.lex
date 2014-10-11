@@ -167,9 +167,10 @@ Any = .
 /* Comments state */
 <MLCOMMENT> {
 
-[^"*)"]		{ /* Ignore. */ }
-"*)"		{ yybegin(YYINITIAL); /* Ignore. */ }
-<<EOF>>		{ yybegin(YYINITIAL); return sym(TokenConstants.ERROR, "EOF in comment."); }
+{LineTerminator}	{ /* Ignore. */ }
+{Any}				{ /* Ignore. */ }
+"*)"				{ yybegin(YYINITIAL); /* Ignore. */ }
+<<EOF>>				{ yybegin(YYINITIAL); return sym(TokenConstants.ERROR, "EOF in comment."); }
 
 }
 <SLCOMMENT> {
