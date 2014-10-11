@@ -26,7 +26,7 @@ import java.io.IOException;
 %function nextToken
 %type Symbol
 
-%state STRING, MLCOMMENT, SLCOMMENT
+%state STRING, MLCOMMENT
 
 %init{
 	// TODO: code that goes to constructor
@@ -80,6 +80,9 @@ Any = .
 /* Lexical Rules */
 
 <YYINITIAL> {
+
+/* Single-line comment */
+"--" {Any}* {LineTerminator}? { /* Ignore */ }
 
 "*)"		{ return sym(TokenConstants.ERROR, "Unmatched comment terminator"); }
 
@@ -154,9 +157,9 @@ Any = .
 \\r				{ string.append('\r'); }
 \\\"			{ string.append('\"'); }
 \\				{ string.append('\\'); }
-\\[\r\n]		{ /* Do nothing. Continue. */ }
+\\{LineTerminator}		{ /* Do nothing. Continue. */ }
 
-\n				{	yybegin(YYINITIAL);
+{LineTerminator}		{	yybegin(YYINITIAL);
 					return sym(TokenConstants.ERROR, "Unescaped newline in string"); }
 
 <<EOF>>			{	yybegin(YYINITIAL);
@@ -172,11 +175,6 @@ Any = .
 "*)"				{ yybegin(YYINITIAL); /* Ignore. */ }
 <<EOF>>				{ yybegin(YYINITIAL); return sym(TokenConstants.ERROR, "EOF in comment."); }
 
-}
-<SLCOMMENT> {
-[^\r\n]				{ /* Ignore. */ }
-{LineTerminator}	{ yybegin(YYINITIAL); /* Ignore. */ }
-<<EOF>>				{ yybegin(YYINITIAL); /* Ignore. */ }
 }
 
 /* Whitespace */
