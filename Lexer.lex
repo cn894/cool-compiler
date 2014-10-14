@@ -59,7 +59,7 @@ import java.io.IOException;
 //===MACROS============================================================================================================
 
 LineTerminator        = (\r|\n|\r\n)
-Whitespace            = (" "|\t|\f|\v|{LineTerminator})+
+Whitespace            = (" "|\t|\f|{LineTerminator})+
 LowercaseCharacter    = [a-z]
 UppercaseCharacter    = [A-Z]
 AlphabeticCharacter   = ({LowercaseCharacter} | {UppercaseCharacter})
