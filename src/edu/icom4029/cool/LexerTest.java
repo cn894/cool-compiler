@@ -15,14 +15,14 @@ class LexerTest {
 	for (int i = 0; i < args.length; i++) {
 	    FileReader file = null;
 	    try {
-		file = new FileReader(args[i]);
-		
-		System.out.println("#name \"" + args[i] + "\"");
-		Lexer lexer = new Lexer(file);
-		Symbol s;
-		while ((s = lexer.nextToken()).sym != TokenConstants.EOF) {
-		    Utilities.dumpToken(System.out, lexer.getLineNumber(), s);
-		}
+			file = new FileReader(args[i]);
+			
+			System.out.println("#name \"" + args[i] + "\"");
+			Lexer lexer = new Lexer(file);
+			Symbol s;
+			while ((s = lexer.nextToken()).sym != TokenConstants.EOF) {
+			    Utilities.dumpToken(System.out, lexer.getLineNumber(), s);
+			}
 	    } catch (FileNotFoundException ex) {
 		Utilities.fatalError("Could not open input file " + args[i]);
 	    } catch (IOException ex) {

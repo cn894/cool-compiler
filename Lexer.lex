@@ -141,7 +141,6 @@ Any = .
 
 /* Comments */
 "(*"	{ yybegin(MLCOMMENT); }
-"--"	{ yybegin(SLCOMMENT); }
 
 }
 
