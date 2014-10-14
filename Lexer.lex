@@ -176,7 +176,7 @@ Any = .
 
 }
 
-/* Whitespace */
+/* Whitespace */ 
 {Whitespace}	{ /* Ignore. */ }
 
 /* Error fallback. */
