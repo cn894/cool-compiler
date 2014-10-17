@@ -33,6 +33,7 @@ import java.io.IOException;
 %init}
 
 %{
+	int commentLevel = 0;
 	StringBuffer string = new StringBuffer();
 	
 	private Symbol sym(int type)
@@ -89,31 +90,32 @@ Any = .
 	/* Single-line comment */
 	"--" {Any}* {LineTerminator}? { /* Ignore */ }
 	
+	/* Unmatched multiline comment terminator. */
 	"*)"		{ return sym(TokenConstants.ERROR, "Unmatched comment terminator"); }
 	
 	//---Keywords------------------------------------------------------------------------------------------------------
 	
 	// Currently case sensitive. In reference lexer, it isn't.
 	
-	"class"		{ return sym(TokenConstants.CLASS); }
-	"else"		{ return sym(TokenConstants.ELSE); }
-	"false"		{ return sym(TokenConstants.BOOL_CONST); }
-	"fi"		{ return sym(TokenConstants.FI); }
-	"if"		{ return sym(TokenConstants.IF); }
-	"in"		{ return sym(TokenConstants.IN); }
-	"inherits"	{ return sym(TokenConstants.INHERITS); }
-	"isvoid"	{ return sym(TokenConstants.ISVOID); }
-	"let"		{ return sym(TokenConstants.LET); }
-	"loop"		{ return sym(TokenConstants.LOOP); }
-	"pool"		{ return sym(TokenConstants.POOL); }
-	"then"		{ return sym(TokenConstants.THEN); }
-	"while"		{ return sym(TokenConstants.WHILE); }
-	"case"		{ return sym(TokenConstants.CASE); }
-	"esac"		{ return sym(TokenConstants.ESAC); }
-	"new"		{ return sym(TokenConstants.NEW); }
-	"of"		{ return sym(TokenConstants.OF); }
-	"not"		{ return sym(TokenConstants.NOT); }
-	"true"		{ return sym(TokenConstants.BOOL_CONST); }
+	[Cc][Ll][Aa][Ss][Ss]				{ return sym(TokenConstants.CLASS); }
+	[Ee][Ll][Ss][Ee]					{ return sym(TokenConstants.ELSE); }
+	[Ff][Ii]							{ return sym(TokenConstants.FI); }
+	[Ii][Ff]							{ return sym(TokenConstants.IF); }
+	[Ii][Nn]							{ return sym(TokenConstants.IN); }
+	[Ii][Nn][Hh][Ee][Rr][Ii][Tt][Ss]	{ return sym(TokenConstants.INHERITS); }
+	[Ii][Ss][Vv][Oo][Ii][Dd]			{ return sym(TokenConstants.ISVOID); }
+	[Ll][Ee][Tt]						{ return sym(TokenConstants.LET); }
+	[Ll][Oo][Oo][Pp]					{ return sym(TokenConstants.LOOP); }
+	[Pp][Oo][Oo][Ll]					{ return sym(TokenConstants.POOL); }
+	[Tt][Hh][Ee][Nn]					{ return sym(TokenConstants.THEN); }
+	[Ww][Hh][Ii][Ll][Ee]				{ return sym(TokenConstants.WHILE); }
+	[Cc][Aa][Ss][Ee]					{ return sym(TokenConstants.CASE); }
+	[Ee][Ss][Aa][Cc]					{ return sym(TokenConstants.ESAC); }
+	[Nn][Ee][Ww]						{ return sym(TokenConstants.NEW); }
+	[Oo][Ff]							{ return sym(TokenConstants.OF); }
+	[Nn][Oo][Tt]						{ return sym(TokenConstants.NOT); }
+	"t"[Rr][Uu][Ee]						{ return sym(TokenConstants.BOOL_CONST); }
+	"f"[Aa][Ll][Ss][Ee]					{ return sym(TokenConstants.BOOL_CONST); }
 	
 	//---Operators-----------------------------------------------------------------------------------------------------
 	
@@ -134,6 +136,8 @@ Any = .
 	"<="		{ return sym(TokenConstants.LE); }
 	","			{ return sym(TokenConstants.COMMA); }
 	"."			{ return sym(TokenConstants.DOT); }
+	"@"			{ return sym(TokenConstants.AT); }
+	"~"			{ return sym(TokenConstants.NEG); }
 	
 	/* Identifiers */
 	{ObjectIdentifier}	{	AbstractSymbol lexValue = AbstractTable.idtable.addString(yytext());
@@ -150,36 +154,39 @@ Any = .
 	\"					{	string.setLength(0); yybegin(STRING); }
 	
 	/* Comments */
-	"(*"				{	yybegin(MLCOMMENT); }
+	"(*"				{	commentLevel++;
+							yybegin(MLCOMMENT); }
 
 }
 
 /* Strings state */
 <STRING> {
 
-	\"					{	yybegin(YYINITIAL);
-							AbstractSymbol lexValue = AbstractTable.stringtable.addString(string.toString());
-							return sym(TokenConstants.STR_CONST, lexValue); }
-	[^\n\r\"\\]+		{	string.append(yytext()); }
-	\\t					{	string.append('\t'); }
-	\\n					{	string.append('\n'); }
-	\\r					{	string.append('\r'); }
-	\\\"				{	string.append('\"'); }
-	\\					{	string.append('\\'); }
-	\\{LineTerminator}	{	/* Do nothing. Continue. */ }
+	\"								{	yybegin(YYINITIAL);
+										AbstractSymbol lexValue = AbstractTable.stringtable.addString(string.toString());
+										return sym(TokenConstants.STR_CONST, lexValue); }
+	[^\n\r\"\\]+					{	string.append(yytext()); }
+	\\t								{	string.append('\t'); }
+	\\n								{	string.append('\n'); }
+	\\r								{	string.append('\r'); }
+	\\\"							{	string.append('\"'); }
+	\\\\							{	string.append('\\'); }
+	\\{LineTerminator}{Whitespace}*	{	string.append('\n'); }
 	
 	{LineTerminator}	{ yybegin(YYINITIAL); return sym(TokenConstants.ERROR, "Unescaped newline in string"); }
 	
 	<<EOF>>				{ yybegin(YYINITIAL); return sym(TokenConstants.ERROR, "EOF in string"); }
 }
 
-/* MultiLine Comments state */
+/* Multiline Comments state */
 <MLCOMMENT> {
 
-	{LineTerminator}	{ /* Ignore. */ }
-	{Any}				{ /* Ignore. */ }
-	"*)"				{ yybegin(YYINITIAL); /* Ignore. */ }
-	<<EOF>>				{ yybegin(YYINITIAL); return sym(TokenConstants.ERROR, "EOF in comment."); }
+	"(*"				{	commentLevel++; }
+	"*)"				{	commentLevel--;
+							if (commentLevel <= 0) yybegin(YYINITIAL); /* Ignore */ }
+	{LineTerminator}	{	/* Ignore. */ }
+	<<EOF>>				{	yybegin(YYINITIAL); return sym(TokenConstants.ERROR, "EOF in comment."); }
+	{Any}				{	/* Ignore. */ }
 }
 
 

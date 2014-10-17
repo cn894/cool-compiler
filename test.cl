@@ -520,7 +520,7 @@ class Main {
                         cells.evolve();
                         cells.print();
                         countdown <- countdown - 1;
-                    
+                    (* Check out these dubs (* Nested comments, yo! *) *)
                 pool
             );  (* end let countdown
             self;
