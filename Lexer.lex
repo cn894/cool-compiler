@@ -95,8 +95,6 @@ Any = .
 	
 	//---Keywords------------------------------------------------------------------------------------------------------
 	
-	// Currently case sensitive. In reference lexer, it isn't.
-	
 	[Cc][Ll][Aa][Ss][Ss]				{ return sym(TokenConstants.CLASS); }
 	[Ee][Ll][Ss][Ee]					{ return sym(TokenConstants.ELSE); }
 	[Ff][Ii]							{ return sym(TokenConstants.FI); }
