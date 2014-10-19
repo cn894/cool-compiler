@@ -1,0 +1,38 @@
+package edu.icom4029.cool;
+
+import java_cup.runtime.*;
+
+parser code
+{:
+:}
+
+action code
+{:
+:}
+
+//===TERMINALS========================================================================================
+
+/* Keywords */
+terminal		CLASS, ELSE, FI, IF, IN, INHERITS, ISVOID, LET, LOOP, POOL,
+				THEN, WHILE, CASE, ESAC, NEW, OF, NOT;
+
+/* Operators */
+terminal		ASSIGN, DARROW, LPAREN, RPAREN, LBRACE, RBRACE, COLON, SEMI,
+				PLUS, MINUS, MULT, DIV, EQ, LT, LE, COMMA, DOT, AT, NEG;
+
+/* Identifiers */
+terminal		OBJECTID, TYPEID;
+
+/* Constants */
+terminal		INT_CONST, BOOL_CONST, STR_CONST;
+
+/* Death */
+terminal 		ERROR;
+
+non terminal	grammar;
+
+grammar			::=	CLASS // TODO: Do all dis. CLASS is there just to avoid errors.
+				{:
+				:}
+				
+				;
