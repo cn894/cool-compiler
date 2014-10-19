@@ -24,13 +24,19 @@ terminal		ASSIGN, DARROW, LPAREN, RPAREN, LBRACE, RBRACE, COLON, SEMI,
 terminal		OBJECTID, TYPEID;
 
 /* Constants */
-terminal		INT_CONST, BOOL_CONST, STR_CONST;
+terminal AbstractSymbol		INT_CONST, BOOL_CONST, STR_CONST;
 
 /* Death */
 terminal 		ERROR;
 
+//===NON-TERMINALS====================================================================================
 non terminal	grammar;
 
+//===PRECEDENCES======================================================================================
+precedence left	PLUS, MINUS;
+precedence left MULT, DIV;
+
+//===GRAMMAR==========================================================================================
 grammar			::=	CLASS // TODO: Do all dis. CLASS is there just to avoid errors.
 				{:
 				:}
