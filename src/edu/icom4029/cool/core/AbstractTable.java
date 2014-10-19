@@ -1,4 +1,4 @@
-package edu.icom4029.cool;
+package edu.icom4029.cool.core;
 
 /*
 Copyright (c) 2000 The Regents of the University of California.
@@ -81,7 +81,7 @@ import java.util.Enumeration;
     @see StringSymbol
     @see IdSymbol
     @see IntSymbol */
-abstract class AbstractTable {
+public abstract class AbstractTable {
     /** Global string table of string constants */
     public static StringTable stringtable = new StringTable();
 

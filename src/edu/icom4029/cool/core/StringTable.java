@@ -1,4 +1,4 @@
-package edu.icom4029.cool;
+package edu.icom4029.cool.core;
 
 /*
 Copyright (c) 2000 The Regents of the University of California.
@@ -23,7 +23,7 @@ PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 import java.io.PrintStream;
 
-class StringTable extends AbstractTable {
+public class StringTable extends AbstractTable {
     /** Creates a new StringSymbol object.
      * 
      * @see StringSymbol

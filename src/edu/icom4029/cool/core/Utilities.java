@@ -1,4 +1,4 @@
-package edu.icom4029.cool;
+package edu.icom4029.cool.core;
 
 /*
 Copyright (c) 2000 The Regents of the University of California.
@@ -22,9 +22,11 @@ PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 */
 
 import java.io.PrintStream;
-import java_cup.runtime.Symbol;
 
-class Utilities {
+import java_cup.runtime.Symbol;
+import edu.icom4029.cool.parser.TokenConstants;
+
+public class Utilities {
     // change this to true to enable table checking
     private static final boolean checkTables = false;
 

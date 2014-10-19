@@ -1,4 +1,4 @@
-package edu.icom4029.cool;
+package edu.icom4029.cool.core;
 
 /*
 Copyright (c) 2000 The Regents of the University of California.
@@ -21,60 +21,58 @@ ON AN "AS IS" BASIS, AND THE UNIVERSITY OF CALIFORNIA HAS NO OBLIGATION TO
 PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 */
 
+// This is a project skeleton file for PA5, but a regular support code
+// for other assignments.
+
 import java.io.PrintStream;
 
-/** This clas encapsulates all aspects of code generation for boolean
- * constatns.  String constants and Int constants are handled by
- * StringTable and IntTable respectively, but since there are only two
- * boolean constants, we handle them here. */
-class BoolConst {
-    private boolean val;
-    
-    /** Creates a new boolean constant. 
-     * @param val the value
+/** String table entry for string constants. */
+class StringSymbol extends AbstractSymbol {
+    /* Creates a new symbol.
+     * 
+     * @see AbstractSymbol
      * */
-    BoolConst(boolean val) {
-	this.val = val;
+    public StringSymbol(String str, int len, int index) {
+	super(str, len, index);
     }
 
-    /** Creates a new boolean constant. 
-     * @param val the value
-     * */
-    BoolConst(Boolean val) {
-	this.val = val.booleanValue();
-    }
-
-    final static BoolConst truebool = new BoolConst(true);
-    final static BoolConst falsebool = new BoolConst(false);
-
-    /** Emits a reference to this boolean constant.
-     * @param s the output stream
-     * */
-    public void codeRef(PrintStream s) {
-	s.print(CgenSupport.BOOLCONST_PREFIX + (val ? "1" : "0"));
-    }
-
-    /** Generates code for the boolean constant definition.  This method
+    /** Generates code for the string constant definition.  This method
      * is incomplete; you get to finish it up in programming assignment
      * 5.
-     * @param boolclasstag the class tag for string object
+     * @param stringclasstag the class tag for string object
      * @param s the output stream
      *
      * */
-    public void codeDef(int boolclasstag, PrintStream s) {
+    public void codeDef(int stringclasstag, PrintStream s) {
+	IntSymbol lensym = (IntSymbol)AbstractTable.inttable.addInt(str.length());
+	
 	// Add -1 eye catcher
 	s.println(CgenSupport.WORD + "-1");
 	codeRef(s); s.print(CgenSupport.LABEL); // label
-	s.println(CgenSupport.WORD + boolclasstag); // tag
+	s.println(CgenSupport.WORD + stringclasstag); // tag
 	s.println(CgenSupport.WORD + (CgenSupport.DEFAULT_OBJFIELDS +
-				      CgenSupport.BOOL_SLOTS)); // size
+				      CgenSupport.STRING_SLOTS +
+				      (str.length() + 4) / 4)); // object size
 	s.print(CgenSupport.WORD);
 
-	/* Add code to reference the dispatch table for class Bool here */
+	/* Add code to reference the dispatch table for class String here */
 
 	s.println("");		// dispatch table
-	s.println(CgenSupport.WORD + (val ? "1" : "0")); // value (0 or 1)
+	s.print(CgenSupport.WORD); lensym.codeRef(s); s.println(""); // length
+	CgenSupport.emitStringConstant(str, s); // ascii string
+	s.print(CgenSupport.ALIGN); // align to word
+    }
+
+    /** Emits a reference to this string constant.
+     * @param s the output stream
+     * */
+    public void codeRef(PrintStream s) {
+	s.print(CgenSupport.STRCONST_PREFIX + index);
+    }
+
+    /** Returns a copy of this symbol */
+    public Object clone() {
+	return new StringSymbol(str, str.length(), index);
     }
 }
-    
-	
+

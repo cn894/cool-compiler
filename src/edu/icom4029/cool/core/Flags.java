@@ -1,4 +1,4 @@
-package edu.icom4029.cool;
+package edu.icom4029.cool.core;
 
 /*
 Copyright (c) 2000 The Regents of the University of California.
@@ -22,7 +22,7 @@ PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 */
 
 /** Command line flags */
-class Flags {
+public class Flags {
     /** No garbage collection */
     public static final int GC_NOGC = 0;
 

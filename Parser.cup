@@ -1,4 +1,4 @@
-package edu.icom4029.cool;
+package edu.icom4029.cool.parser;
 
 import java_cup.runtime.*;
 

@@ -1,8 +1,11 @@
 
-package edu.icom4029.cool;
+package edu.icom4029.cool.lexer;
 
 import java_cup.runtime.*;
 import java.io.IOException;
+
+import edu.icom4029.cool.parser.TokenConstants;
+import edu.icom4029.cool.core.*;
 
 // import .LexerSym;
 // import static .LexerSym.*;

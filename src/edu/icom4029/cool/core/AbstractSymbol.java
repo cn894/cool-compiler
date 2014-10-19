@@ -1,4 +1,4 @@
-package edu.icom4029.cool;
+package edu.icom4029.cool.core;
 
 /*
 Copyright (c) 2000 The Regents of the University of California.
@@ -43,7 +43,7 @@ import java.io.PrintStream;
  *
  * @see AbstractTable
  * */
-abstract class AbstractSymbol {
+public abstract class AbstractSymbol {
     /** The stored string */
     protected String str;
 

@@ -1,9 +1,14 @@
-package edu.icom4029.cool;
+package edu.icom4029.cool.tests;
 
-import java.io.FileReader;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
+
 import java_cup.runtime.Symbol;
+import edu.icom4029.cool.core.Flags;
+import edu.icom4029.cool.core.Utilities;
+import edu.icom4029.cool.lexer.Lexer;
+import edu.icom4029.cool.parser.TokenConstants;
 
 /* The lexer driver class */
 class LexerTest {
