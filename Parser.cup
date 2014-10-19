@@ -1,13 +1,31 @@
 package edu.icom4029.cool.parser;
 
 import java_cup.runtime.*;
+import edu.icom4029.cool.core.*;
+import edu.icom4029.cool.lexer.*;
 
 parser code
 {:
+	public void syntax_error(Symbol cur_token) {
+        int lineno = action_obj.getLineNumber();
+        System.out.print("line " + lineno + 
+		         ": parse error at or near ");
+        Utilities.printToken(cur_token);
+    }
+
+    public void unrecovered_syntax_error(Symbol cur_token) {
+    }
 :}
 
 action code
 {:
+	int getLineNumber() {
+		return ((Lexer) parser.getScanner()).getLineNumber();
+	}
+	
+	AbstractSymbol getFilename() {
+		return ((Lexer) parser.getScanner()).getFilename();
+	}
 :}
 
 //===TERMINALS========================================================================================
@@ -23,22 +41,51 @@ terminal		ASSIGN, DARROW, LPAREN, RPAREN, LBRACE, RBRACE, COLON, SEMI,
 /* Identifiers */
 terminal AbstractSymbol		OBJECTID, TYPEID;
 
-/* Constants */
-terminal AbstractSymbol		INT_CONST, BOOL_CONST, STR_CONST;
+/* Integer and String Constants */
+terminal AbstractSymbol		INT_CONST, STR_CONST;
+
+/* Boolean Constants */
+terminal Boolean			BOOL_CONST;
 
 /* Death */
 terminal 		ERROR;
 
 //===NON-TERMINALS====================================================================================
-non terminal	grammar; // TODO; Do dis.
+
+non terminal	program		program;
+non terminal	Classes		class_list;
+non terminal	class_		class;
+non terminal	Features	dummy_feature_list;
+
+/* This is here to stop CUP's complaining until we fix this skeleton. */
+non terminal	grammar;
 
 //===PRECEDENCES======================================================================================
+
 precedence left	PLUS, MINUS;
 precedence left MULT, DIV;
 
 //===GRAMMAR==========================================================================================
-grammar			::=	CLASS // TODO: Do all dis. CLASS is there just to avoid errors.
-				{:
-				:}
-				
-				;
+//program		::=	class_list:cl
+//				{: RESULT = new program(getLineNumber(), cl); :}
+//			;
+			
+//class_list	::=	class:c
+//				{: RESULT = (new Classes(getLineNumber())).appendElement(c); :}
+//			|	class_list:cl
+//				{: RESULT = cl.appendElement(c); :}
+//			;
+
+//class		::= CLASS TYPEID:n LBRACE dummy_feature_list:f RBRACE SEMI
+//				{: RESULT = new class_(getLineNumber(), n, AbstractTable.idtable.addString("Object"), f, getFilename()); :}
+//			|	CLASS TYPEID:n INHERITS TYPEID:p LBRACE dummy_feature_list:f RBRACE SEMI
+//				{: RESULT = new class_(getLineNumber(), n, p, f, getFilename()); :}
+//			;
+
+//dummy_feature_list	::=	/* empty for now */
+//						{: RESULT = new Features(getLineNumber()); :}
+//					/* add more stuff here. */
+//					;
+
+/* This needs fixing. */					
+grammar ::= {::};

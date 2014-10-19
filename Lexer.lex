@@ -37,6 +37,7 @@ import edu.icom4029.cool.core.*;
 
 %{
 	int commentLevel = 0;
+	AbstractSymbol filename;
 	StringBuffer string = new StringBuffer();
 	
 	private Symbol sym(int type)
@@ -57,6 +58,10 @@ import edu.icom4029.cool.core.*;
 	
 	public int getLineNumber() {
 		return yyline + 1;
+	}
+	
+	public AbstractSymbol getFilename() {
+		return filename;
 	}
 %}
 
