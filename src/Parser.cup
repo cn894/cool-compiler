@@ -35,12 +35,12 @@ action code {:
 //===TERMINALS========================================================================================
 
 /* Keywords */
-terminal		CLASS, ELSE, FI, IF, IN, INHERITS, ISVOID, LET, LOOP, POOL,
-				THEN, WHILE, CASE, ESAC, NEW, OF, NOT;
+terminal					CLASS, ELSE, FI, IF, IN, INHERITS, ISVOID, LET, LOOP, POOL,
+							THEN, WHILE, CASE, ESAC, NEW, OF, NOT;
 
 /* Operators */
-terminal		ASSIGN, DARROW, LPAREN, RPAREN, LBRACE, RBRACE, COLON, SEMI,
-				PLUS, MINUS, MULT, DIV, EQ, LT, LE, COMMA, DOT, AT, NEG;
+terminal					ASSIGN, DARROW, LPAREN, RPAREN, LBRACE, RBRACE, COLON, SEMI,
+							PLUS, MINUS, MULT, DIV, EQ, LT, LE, COMMA, DOT, AT, NEG;
 
 /* Identifiers */
 terminal AbstractSymbol		OBJECTID, TYPEID;
@@ -52,7 +52,7 @@ terminal AbstractSymbol		INT_CONST, STR_CONST;
 terminal Boolean			BOOL_CONST;
 
 /* Death */
-terminal 		ERROR;
+terminal 					ERROR;
 
 //===NON-TERMINALS====================================================================================
 
@@ -77,8 +77,7 @@ precedence left MULT, DIV;
 program		::=	class_list:cl {: RESULT = new program(getLineNumber(), cl); :};
 			
 class_list	::=	class:c       {: RESULT = (new Classes(getLineNumber())).appendElement(c); :}
-			//|	class_list:cl {: RESULT = cl.appendElement(c); :}
-			;
+			|	class:c class_list:cl {: RESULT = cl.appendElement(c); :};
 
 class		::= CLASS TYPEID:n LBRACE feature_list:f RBRACE SEMI                   {: RESULT = new class_(getLineNumber(), n, AbstractTable.idtable.addString("Object"), f, getFilename()); :}
 			|	CLASS TYPEID:n INHERITS TYPEID:p LBRACE feature_list:f RBRACE SEMI {: RESULT = new class_(getLineNumber(), n, p, f, getFilename()); :};
