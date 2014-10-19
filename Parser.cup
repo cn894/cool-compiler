@@ -30,7 +30,7 @@ terminal AbstractSymbol		INT_CONST, BOOL_CONST, STR_CONST;
 terminal 		ERROR;
 
 //===NON-TERMINALS====================================================================================
-non terminal	grammar;
+non terminal	grammar; // TODO; Do dis.
 
 //===PRECEDENCES======================================================================================
 precedence left	PLUS, MINUS;
