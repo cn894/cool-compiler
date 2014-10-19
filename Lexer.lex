@@ -38,8 +38,7 @@ import edu.icom4029.cool.core.*;
 		return new Symbol(type, yyline, yycolumn, value);
 	}
 
-	private void error()
-	throws IOException {
+	private void error() throws IOException {
 		throw new IOException("illegal text at line = "+yyline+", column = "+yycolumn+", text = '"+yytext()+"'");
 	}
 	
@@ -106,44 +105,42 @@ TypeIdentifier      = {UppercaseCharacter}{IdentifierCharacter}*
 	
 	//---Operators-----------------------------------------------------------------------------------------------------
 	
-	"<-"		{ return sym(TokenConstants.ASSIGN); }
-	"=>"		{ return sym(TokenConstants.DARROW); }
-	"("			{ return sym(TokenConstants.LPAREN); }
-	")"			{ return sym(TokenConstants.RPAREN); }
-	"{"			{ return sym(TokenConstants.LBRACE); }
-	"}"			{ return sym(TokenConstants.RBRACE); }
-	":"			{ return sym(TokenConstants.COLON); }
-	";"			{ return sym(TokenConstants.SEMI); }
-	"+"			{ return sym(TokenConstants.PLUS); }
-	"-"			{ return sym(TokenConstants.MINUS); }
-	"*"			{ return sym(TokenConstants.MULT); }
-	"/"			{ return sym(TokenConstants.DIV); }
-	"="			{ return sym(TokenConstants.EQ); }
-	"<"			{ return sym(TokenConstants.LT); }
-	"<="		{ return sym(TokenConstants.LE); }
-	","			{ return sym(TokenConstants.COMMA); }
-	"."			{ return sym(TokenConstants.DOT); }
-	"@"			{ return sym(TokenConstants.AT); }
-	"~"			{ return sym(TokenConstants.NEG); }
+	"<-" 	{ return sym(TokenConstants.ASSIGN); }
+	"=>" 	{ return sym(TokenConstants.DARROW); }
+	"("  	{ return sym(TokenConstants.LPAREN); }
+	")"	 	{ return sym(TokenConstants.RPAREN); }
+	"{"	 	{ return sym(TokenConstants.LBRACE); }
+	"}"	 	{ return sym(TokenConstants.RBRACE); }
+	":"		{ return sym(TokenConstants.COLON); }
+	";"		{ return sym(TokenConstants.SEMI); }
+	"+"		{ return sym(TokenConstants.PLUS); }
+	"-"		{ return sym(TokenConstants.MINUS); }
+	"*"		{ return sym(TokenConstants.MULT); }
+	"/"		{ return sym(TokenConstants.DIV); }
+	"="		{ return sym(TokenConstants.EQ); }
+	"<"		{ return sym(TokenConstants.LT); }
+	"<="	{ return sym(TokenConstants.LE); }
+	","		{ return sym(TokenConstants.COMMA); }
+	"."		{ return sym(TokenConstants.DOT); }
+	"@"		{ return sym(TokenConstants.AT); }
+	"~"		{ return sym(TokenConstants.NEG); }
 	
 	/* Identifiers */
-	{ObjectIdentifier}	{	AbstractSymbol lexValue = AbstractTable.idtable.addString(yytext());
-							return sym(TokenConstants.OBJECTID, lexValue);	}
+	{ObjectIdentifier}	{ AbstractSymbol lexValue = AbstractTable.idtable.addString(yytext());
+						  return sym(TokenConstants.OBJECTID, lexValue); }
 							
-	{TypeIdentifier}	{	AbstractSymbol lexValue = AbstractTable.idtable.addString(yytext());
-							return sym(TokenConstants.TYPEID, lexValue);	}
+	{TypeIdentifier}	{ AbstractSymbol lexValue = AbstractTable.idtable.addString(yytext());
+						  return sym(TokenConstants.TYPEID, lexValue); }
 	
 	/* Integers */
-	{Integer}			{	AbstractSymbol lexValue = AbstractTable.inttable.addString(yytext());
-							return sym(TokenConstants.INT_CONST, lexValue);	}
+	{Integer}			{ AbstractSymbol lexValue = AbstractTable.inttable.addString(yytext());
+						  return sym(TokenConstants.INT_CONST, lexValue); }
 	
 	/* Strings */
-	\"					{	string.setLength(0); yybegin(STRING); }
+	\"					{ string.setLength(0); yybegin(STRING); }
 	
 	/* Comments */
-	"(*"				{	commentLevel++;
-							yybegin(MLCOMMENT); }
-
+	"(*"				{ commentLevel++; yybegin(MLCOMMENT); }
 }
 
 /* Strings state */
@@ -160,20 +157,17 @@ TypeIdentifier      = {UppercaseCharacter}{IdentifierCharacter}*
 	\\\\							{	string.append('\\'); }
 	\\{LineTerminator}{Whitespace}*	{	string.append('\n'); }
 	
-	{LineTerminator}	{ yybegin(YYINITIAL); return sym(TokenConstants.ERROR, "Unescaped newline in string"); }
-	
-	<<EOF>>				{ yybegin(YYINITIAL); return sym(TokenConstants.ERROR, "EOF in string"); }
+	{LineTerminator}				{ yybegin(YYINITIAL); return sym(TokenConstants.ERROR, "Unescaped newline in string"); }
+	<<EOF>>							{ yybegin(YYINITIAL); return sym(TokenConstants.ERROR, "EOF in string"); }
 }
 
 /* Multiline Comments state */
 <MLCOMMENT> {
 
-	"(*"				{	commentLevel++; }
-	"*)"				{	commentLevel--;
-							if (commentLevel <= 0) yybegin(YYINITIAL); /* Ignore */ }
-	{LineTerminator}	{	/* Ignore. */ }
-	<<EOF>>				{	yybegin(YYINITIAL); return sym(TokenConstants.ERROR, "EOF in comment."); }
-	{Any}				{	/* Ignore. */ }
+	"(*"					{ commentLevel++; }
+	"*)"					{ commentLevel--; if (commentLevel <= 0) yybegin(YYINITIAL); /* Ignore */ }
+	<<EOF>>					{ yybegin(YYINITIAL); return sym(TokenConstants.ERROR, "EOF in comment."); }
+	{LineTerminator}|{Any}	{ /* Ignore. */ }
 }
 
 
@@ -186,4 +180,3 @@ TypeIdentifier      = {UppercaseCharacter}{IdentifierCharacter}*
 <<EOF>>		{ return sym(TokenConstants.EOF); }
 
 //{Any}		{	/* return sym(ANY) */ }
-
