@@ -7,27 +7,17 @@ import java.io.IOException;
 import edu.icom4029.cool.parser.TokenConstants;
 import edu.icom4029.cool.core.*;
 
-// import .LexerSym;
-// import static .LexerSym.*;
-
 %%
 
+%public
+%final
 %class Lexer
 
 %unicode
 %line
 %column
 
-%public
-%final
-// %abstract
-
-// %cupsym LexerSym
 %cup
-// %cupdebug
-
-// %function nextToken
-// %type Symbol
 
 %state STRING, MLCOMMENT
 
@@ -39,19 +29,16 @@ import edu.icom4029.cool.core.*;
 	int commentLevel = 0;
 	StringBuffer string = new StringBuffer();
 	
-	private Symbol sym(int type)
-	{
+	private Symbol sym(int type) {
 		return sym(type, yytext());
 	}
 
-	private Symbol sym(int type, Object value)
-	{
+	private Symbol sym(int type, Object value) {
 		return new Symbol(type, yyline, yycolumn, value);
 	}
 
 	private void error()
-	throws IOException
-	{
+	throws IOException {
 		throw new IOException("illegal text at line = "+yyline+", column = "+yycolumn+", text = '"+yytext()+"'");
 	}
 	
@@ -62,6 +49,7 @@ import edu.icom4029.cool.core.*;
 
 //===MACROS============================================================================================================
 
+Any                   = .
 LineTerminator        = (\r|\n|\r\n)
 Whitespace            = (" "|\t|\f|{LineTerminator})+
 LowercaseCharacter    = [a-z]
@@ -69,20 +57,13 @@ UppercaseCharacter    = [A-Z]
 AlphabeticCharacter   = ({LowercaseCharacter} | {UppercaseCharacter})
 Digit                 = [0-9]
 AlphanumericCharacter = ({AlphabeticCharacter} | {Digit})
+Integer = {Digit}+
 
 //---IDENTIFIERS-------------------------------------------------------------------------------------------------------
 
 IdentifierCharacter = ({AlphanumericCharacter} | "_")
 ObjectIdentifier    = {LowercaseCharacter}{IdentifierCharacter}*
 TypeIdentifier      = {UppercaseCharacter}{IdentifierCharacter}*
-
-//---NUMERIC-LITERALS--------------------------------------------------------------------------------------------------
-
-Integer = {Digit}+
-
-//---ETC---------------------------------------------------------------------------------------------------------------
-
-Any = .
 
 %%
 //===LEXICAL=RULES=====================================================================================================
@@ -199,5 +180,5 @@ Any = .
 
 <<EOF>>		{ return sym(TokenConstants.EOF); }
 
-{Any}		{	/* return sym(ANY) */ }
+//{Any}		{	/* return sym(ANY) */ }
 
