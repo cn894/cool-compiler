@@ -5,7 +5,7 @@
 //Parser.cup/cup-no-scanner=false
 //Parser.cup/cup-non-terms=false
 //Parser.cup/cup-output=src
-//Parser.cup/cup-parser-class=ParserCup
-//Parser.cup/cup-symbols-class=ParserSym
+//Parser.cup/cup-parser-class=Parser
+//Parser.cup/cup-symbols-class=TokenConstants
 //Parser.cup/cup-symbols-if=true
 eclipse.preferences.version=1

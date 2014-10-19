@@ -21,7 +21,7 @@ class LexerTest {
 				Lexer lexer = new Lexer(file);
 				Symbol s;
 				
-				while ((s = lexer.nextToken()).sym != TokenConstants.EOF) {
+				while ((s = lexer.next_token()).sym != TokenConstants.EOF) {
 				    Utilities.dumpToken(System.out, lexer.getLineNumber(), s);
 				}
 				
