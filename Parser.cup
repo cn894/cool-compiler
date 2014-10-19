@@ -21,7 +21,7 @@ terminal		ASSIGN, DARROW, LPAREN, RPAREN, LBRACE, RBRACE, COLON, SEMI,
 				PLUS, MINUS, MULT, DIV, EQ, LT, LE, COMMA, DOT, AT, NEG;
 
 /* Identifiers */
-terminal		OBJECTID, TYPEID;
+terminal AbstractSymbol		OBJECTID, TYPEID;
 
 /* Constants */
 terminal AbstractSymbol		INT_CONST, BOOL_CONST, STR_CONST;
