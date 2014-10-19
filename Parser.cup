@@ -4,21 +4,24 @@ import java_cup.runtime.*;
 import edu.icom4029.cool.core.*;
 import edu.icom4029.cool.lexer.*;
 
-parser code
-{:
+
+//===INLINE=JAVA=CODE=================================================================================
+
+parser code {:
+
 	public void syntax_error(Symbol cur_token) {
         int lineno = action_obj.getLineNumber();
-        System.out.print("line " + lineno + 
-		         ": parse error at or near ");
+        System.out.print("line " + lineno + ": parse error at or near ");
         Utilities.printToken(cur_token);
     }
 
     public void unrecovered_syntax_error(Symbol cur_token) {
+    	//TODO
     }
 :}
 
-action code
-{:
+action code {:
+
 	int getLineNumber() {
 		return ((Lexer) parser.getScanner()).getLineNumber();
 	}

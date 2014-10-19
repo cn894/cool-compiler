@@ -61,7 +61,7 @@ UppercaseCharacter    = [A-Z]
 AlphabeticCharacter   = ({LowercaseCharacter} | {UppercaseCharacter})
 Digit                 = [0-9]
 AlphanumericCharacter = ({AlphabeticCharacter} | {Digit})
-Integer = {Digit}+
+Integer               = {Digit}+
 
 //---IDENTIFIERS-------------------------------------------------------------------------------------------------------
 
