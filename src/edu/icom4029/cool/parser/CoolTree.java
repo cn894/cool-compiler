@@ -1,4 +1,4 @@
-package edu.icom4029.cool.core;
+package edu.icom4029.cool.parser;
 
 // -*- mode: java -*- 
 //
@@ -8,91 +8,17 @@ package edu.icom4029.cool.core;
 //
 //////////////////////////////////////////////////////////
 
-
-
-import java.util.Enumeration;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-       
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import java.io.PrintStream;
+import java.util.Enumeration;
 import java.util.Vector;
 
+import edu.icom4029.cool.core.AbstractSymbol;
+import edu.icom4029.cool.core.AbstractTable;
+import edu.icom4029.cool.core.BoolConst;
+import edu.icom4029.cool.core.CgenSupport;
+import edu.icom4029.cool.core.IntSymbol;
+import edu.icom4029.cool.core.StringSymbol;
+import edu.icom4029.cool.core.Utilities;
 
 /** Defines simple phylum Program */
 abstract class ProgramAbstract extends TreeNode {

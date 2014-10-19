@@ -30,7 +30,7 @@ import java.io.PrintStream;
  * 
  * @see AbstractSymbol
  * */
-class IntSymbol extends AbstractSymbol {
+public class IntSymbol extends AbstractSymbol {
     /* Creates a new symbol.
      * 
      * @see AbstractSymbol

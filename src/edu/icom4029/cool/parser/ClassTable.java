@@ -1,4 +1,4 @@
-package edu.icom4029.cool.core;
+package edu.icom4029.cool.parser;
 
 /*
 Copyright (c) 2000 The Regents of the University of California.
@@ -25,10 +25,13 @@ PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 import java.io.PrintStream;
 
+import edu.icom4029.cool.core.AbstractSymbol;
+import edu.icom4029.cool.core.AbstractTable;
+
 /** This class may be used to contain the semantic information such as
  * the inheritance graph.  You may use it or not as you like: it is only
  * here to provide a container for the supplied methods.  */
-class ClassTable {
+public class ClassTable {
     private int semantErrors;
     private PrintStream errorStream;
 

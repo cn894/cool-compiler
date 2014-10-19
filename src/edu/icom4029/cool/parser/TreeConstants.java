@@ -1,4 +1,7 @@
-package edu.icom4029.cool.core;
+package edu.icom4029.cool.parser;
+
+import edu.icom4029.cool.core.AbstractSymbol;
+import edu.icom4029.cool.core.AbstractTable;
 
 /*
 Copyright (c) 2000 The Regents of the University of California.
@@ -26,7 +29,7 @@ PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 /** For convenience, this clas defines a large number of symbols.  These
  * symbols include the primitive type and method names, as well as fixed
  * names used by the runtime system.  */
-class TreeConstants {
+public class TreeConstants {
     public static final AbstractSymbol arg 
 	= AbstractTable.idtable.addString("arg");
     

@@ -60,18 +60,13 @@ non terminal	Classes		class_list;
 non terminal	class_		class;
 non terminal	Features	dummy_feature_list;
 
-/* This is here to stop CUP's complaining until we fix this skeleton. */
-non terminal	grammar;
-
 //===PRECEDENCES======================================================================================
 
 precedence left	PLUS, MINUS;
 precedence left MULT, DIV;
 
 //===GRAMMAR==========================================================================================
-//program		::=	class_list:cl
-//				{: RESULT = new program(getLineNumber(), cl); :}
-//			;
+program		::=	class_list:cl {: RESULT = new program(getLineNumber(), cl); :};
 			
 //class_list	::=	class:c
 //				{: RESULT = (new Classes(getLineNumber())).appendElement(c); :}
@@ -90,5 +85,9 @@ precedence left MULT, DIV;
 //					/* add more stuff here. */
 //					;
 
-/* This needs fixing. */					
-grammar ::= {::};
+
+
+
+
+
+

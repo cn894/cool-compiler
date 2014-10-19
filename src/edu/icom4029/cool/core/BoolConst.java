@@ -27,25 +27,25 @@ import java.io.PrintStream;
  * constatns.  String constants and Int constants are handled by
  * StringTable and IntTable respectively, but since there are only two
  * boolean constants, we handle them here. */
-class BoolConst {
+public class BoolConst {
     private boolean val;
     
     /** Creates a new boolean constant. 
      * @param val the value
      * */
-    BoolConst(boolean val) {
+    public BoolConst(boolean val) {
     	this.val = val;
     }
 
     /** Creates a new boolean constant. 
      * @param val the value
      * */
-    BoolConst(Boolean val) {
+    public BoolConst(Boolean val) {
     	this.val = val.booleanValue();
     }
 
-    final static BoolConst truebool  = new BoolConst(true);
-    final static BoolConst falsebool = new BoolConst(false);
+    public final static BoolConst truebool  = new BoolConst(true);
+    public final static BoolConst falsebool = new BoolConst(false);
 
     /** Emits a reference to this boolean constant.
      * @param s the output stream

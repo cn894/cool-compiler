@@ -1,4 +1,4 @@
-package edu.icom4029.cool.core;
+package edu.icom4029.cool.parser;
 
 /*
 Copyright (c) 2000 The Regents of the University of California.
@@ -22,6 +22,9 @@ PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 */
 
 import java.io.PrintStream;
+
+import edu.icom4029.cool.core.AbstractSymbol;
+import edu.icom4029.cool.core.Utilities;
 
 /** The base class for all AST nodes. 
 
@@ -248,7 +251,7 @@ Here is a complete use of one member:
     </ul>
 
 */
-abstract class TreeNode {
+public abstract class TreeNode {
     /** line in the source file from which this node came. */
     protected int lineNumber;
     

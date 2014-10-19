@@ -27,7 +27,7 @@ PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 import java.io.PrintStream;
 
 /** String table entry for string constants. */
-class StringSymbol extends AbstractSymbol {
+public class StringSymbol extends AbstractSymbol {
     /* Creates a new symbol.
      * 
      * @see AbstractSymbol

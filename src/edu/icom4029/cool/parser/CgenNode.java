@@ -1,4 +1,4 @@
-package edu.icom4029.cool.core;
+package edu.icom4029.cool.parser;
 
 /*
 Copyright (c) 2000 The Regents of the University of California.
@@ -27,7 +27,10 @@ import java.io.PrintStream;
 import java.util.Vector;
 import java.util.Enumeration;
 
-class CgenNode extends class_ {
+import edu.icom4029.cool.core.AbstractTable;
+import edu.icom4029.cool.core.Utilities;
+
+public class CgenNode extends class_ {
     /** The parent of this node in the inheritance tree */
     private CgenNode parent;
 

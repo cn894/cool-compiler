@@ -1,4 +1,4 @@
-package edu.icom4029.cool.core;
+package edu.icom4029.cool.parser;
 
 /*
 Copyright (c) 2000 The Regents of the University of California.
@@ -23,6 +23,9 @@ PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 import java.util.Stack;
 import java.util.Hashtable;
+
+import edu.icom4029.cool.core.AbstractSymbol;
+import edu.icom4029.cool.core.Utilities;
 
 /** Implements the symbol table data abstraction.
  *
@@ -59,7 +62,7 @@ import java.util.Hashtable;
  * @see AbstractSymbol
  * @see SymtabExample
  * */
-class SymbolTable {
+public class SymbolTable {
     private Stack tbl;
     
     /** Creates an empty symbol table. */

@@ -1,4 +1,4 @@
-package edu.icom4029.cool.core;
+package edu.icom4029.cool.parser;
 
 /*
 Copyright (c) 2000 The Regents of the University of California.
@@ -26,6 +26,12 @@ PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 import java.io.PrintStream;
 import java.util.Vector;
 import java.util.Enumeration;
+
+import edu.icom4029.cool.core.AbstractSymbol;
+import edu.icom4029.cool.core.AbstractTable;
+import edu.icom4029.cool.core.BoolConst;
+import edu.icom4029.cool.core.CgenSupport;
+import edu.icom4029.cool.core.Flags;
 
 /** This class is used for representing the inheritance tree during code
     generation. You will need to fill in some of its methods and

@@ -1,4 +1,4 @@
-package edu.icom4029.cool.core;
+package edu.icom4029.cool.parser;
 
 /*
 Copyright (c) 2000 The Regents of the University of California.
@@ -24,6 +24,8 @@ PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 import java.io.PrintStream;
 import java.util.Vector;
 import java.util.Enumeration;
+
+import edu.icom4029.cool.core.Utilities;
 
 /** Base class for lists of AST elements.
 
@@ -78,7 +80,7 @@ import java.util.Enumeration;
 
 */
     
-abstract class ListNode extends TreeNode {
+public abstract class ListNode extends TreeNode {
     private Vector elements;
 
     protected ListNode(int lineNumber, Vector elements) {
