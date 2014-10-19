@@ -1,4 +1,4 @@
-package edu.icom4029.cool.core;
+package edu.icom4029.cool.lexer;
 
 /*
 Copyright (c) 2000 The Regents of the University of California.
@@ -23,8 +23,10 @@ PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 import java.io.PrintStream;
 
-/** This clas encapsulates all aspects of code generation for boolean
- * constatns.  String constants and Int constants are handled by
+import edu.icom4029.cool.core.CgenSupport;
+
+/** This class encapsulates all aspects of code generation for boolean
+ * constants.  String constants and Int constants are handled by
  * StringTable and IntTable respectively, but since there are only two
  * boolean constants, we handle them here. */
 public class BoolConst {

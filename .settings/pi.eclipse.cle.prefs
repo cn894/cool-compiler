@@ -8,4 +8,14 @@
 //Parser.cup/cup-parser-class=Parser
 //Parser.cup/cup-symbols-class=TokenConstants
 //Parser.cup/cup-symbols-if=true
+//src/Parser.cup/cup-compact-red=false
+//src/Parser.cup/cup-debug=false
+//src/Parser.cup/cup-expected-conflicts=0
+//src/Parser.cup/cup-no-positions=false
+//src/Parser.cup/cup-no-scanner=false
+//src/Parser.cup/cup-non-terms=false
+//src/Parser.cup/cup-output=src
+//src/Parser.cup/cup-parser-class=Parser
+//src/Parser.cup/cup-symbols-class=TokenConstants
+//src/Parser.cup/cup-symbols-if=true
 eclipse.preferences.version=1

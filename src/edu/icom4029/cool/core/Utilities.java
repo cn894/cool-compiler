@@ -24,6 +24,8 @@ PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 import java.io.PrintStream;
 
 import java_cup.runtime.Symbol;
+import edu.icom4029.cool.lexer.AbstractSymbol;
+import edu.icom4029.cool.lexer.AbstractTable;
 import edu.icom4029.cool.parser.TokenConstants;
 
 public class Utilities {

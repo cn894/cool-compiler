@@ -1,4 +1,4 @@
-package edu.icom4029.cool.core;
+package edu.icom4029.cool.lexer;
 
 /*
 Copyright (c) 2000 The Regents of the University of California.
@@ -23,6 +23,8 @@ PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 import java.util.Vector;
 import java.util.Enumeration;
+
+import edu.icom4029.cool.core.Utilities;
 
 /** Abstract string table implementation.
     

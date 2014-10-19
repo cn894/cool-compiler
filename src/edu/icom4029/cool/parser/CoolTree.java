@@ -12,13 +12,13 @@ import java.io.PrintStream;
 import java.util.Enumeration;
 import java.util.Vector;
 
-import edu.icom4029.cool.core.AbstractSymbol;
-import edu.icom4029.cool.core.AbstractTable;
-import edu.icom4029.cool.core.BoolConst;
 import edu.icom4029.cool.core.CgenSupport;
-import edu.icom4029.cool.core.IntSymbol;
-import edu.icom4029.cool.core.StringSymbol;
 import edu.icom4029.cool.core.Utilities;
+import edu.icom4029.cool.lexer.AbstractSymbol;
+import edu.icom4029.cool.lexer.AbstractTable;
+import edu.icom4029.cool.lexer.BoolConst;
+import edu.icom4029.cool.lexer.IntSymbol;
+import edu.icom4029.cool.lexer.StringSymbol;
 
 /** Defines simple phylum Program */
 abstract class ProgramAbstract extends TreeNode {

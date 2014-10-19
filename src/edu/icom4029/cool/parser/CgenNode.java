@@ -27,8 +27,8 @@ import java.io.PrintStream;
 import java.util.Vector;
 import java.util.Enumeration;
 
-import edu.icom4029.cool.core.AbstractTable;
 import edu.icom4029.cool.core.Utilities;
+import edu.icom4029.cool.lexer.AbstractTable;
 
 public class CgenNode extends class_ {
     /** The parent of this node in the inheritance tree */

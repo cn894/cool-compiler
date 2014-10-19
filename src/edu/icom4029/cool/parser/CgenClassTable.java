@@ -27,11 +27,11 @@ import java.io.PrintStream;
 import java.util.Vector;
 import java.util.Enumeration;
 
-import edu.icom4029.cool.core.AbstractSymbol;
-import edu.icom4029.cool.core.AbstractTable;
-import edu.icom4029.cool.core.BoolConst;
 import edu.icom4029.cool.core.CgenSupport;
 import edu.icom4029.cool.core.Flags;
+import edu.icom4029.cool.lexer.AbstractSymbol;
+import edu.icom4029.cool.lexer.AbstractTable;
+import edu.icom4029.cool.lexer.BoolConst;
 
 /** This class is used for representing the inheritance tree during code
     generation. You will need to fill in some of its methods and

@@ -1,7 +1,7 @@
 package edu.icom4029.cool.parser;
 
-import edu.icom4029.cool.core.AbstractSymbol;
-import edu.icom4029.cool.core.AbstractTable;
+import edu.icom4029.cool.lexer.AbstractSymbol;
+import edu.icom4029.cool.lexer.AbstractTable;
 
 /*
 Copyright (c) 2000 The Regents of the University of California.

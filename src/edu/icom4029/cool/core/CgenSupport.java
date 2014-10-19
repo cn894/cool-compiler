@@ -25,6 +25,11 @@ PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 import java.io.PrintStream;
 
+import edu.icom4029.cool.lexer.AbstractSymbol;
+import edu.icom4029.cool.lexer.BoolConst;
+import edu.icom4029.cool.lexer.IntSymbol;
+import edu.icom4029.cool.lexer.StringSymbol;
+
 /** This class aggregates all kinds of support routines and constants
     for the code generator; all routines are statics, so no instance of
     this class is even created. */

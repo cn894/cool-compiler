@@ -1,4 +1,5 @@
-package edu.icom4029.cool.core;
+package edu.icom4029.cool.lexer;
+
 
 /*
 Copyright (c) 2000 The Regents of the University of California.

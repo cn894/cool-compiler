@@ -23,8 +23,8 @@ PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 import java.io.PrintStream;
 
-import edu.icom4029.cool.core.AbstractSymbol;
 import edu.icom4029.cool.core.Utilities;
+import edu.icom4029.cool.lexer.AbstractSymbol;
 
 /** The base class for all AST nodes. 
 

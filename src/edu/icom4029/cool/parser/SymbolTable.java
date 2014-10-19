@@ -24,8 +24,8 @@ PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 import java.util.Stack;
 import java.util.Hashtable;
 
-import edu.icom4029.cool.core.AbstractSymbol;
 import edu.icom4029.cool.core.Utilities;
+import edu.icom4029.cool.lexer.AbstractSymbol;
 
 /** Implements the symbol table data abstraction.
  *
