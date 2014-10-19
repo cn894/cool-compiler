@@ -21,7 +21,6 @@ ON AN "AS IS" BASIS, AND THE UNIVERSITY OF CALIFORNIA HAS NO OBLIGATION TO
 PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 */
 
-import java.io.PrintStream;
 
 /** String table entry for identifiers. */
 class IdSymbol extends AbstractSymbol {
@@ -30,12 +29,12 @@ class IdSymbol extends AbstractSymbol {
      * @see AbstractSymbol
      * */
     public IdSymbol(String str, int len, int index) {
-	super(str, len, index);
+    	super(str, len, index);
     }
 
     /** Returns a copy of this symbol */
     public Object clone() {
-	return new IdSymbol(str, str.length(), index);
+    	return new IdSymbol(str, str.length(), index);
     }
 }
 

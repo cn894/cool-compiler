@@ -21,7 +21,6 @@ ON AN "AS IS" BASIS, AND THE UNIVERSITY OF CALIFORNIA HAS NO OBLIGATION TO
 PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 */
 
-import java.io.PrintStream;
 
 /** String table entry
  *
@@ -57,8 +56,8 @@ public abstract class AbstractSymbol {
      * @param index the table index
      * */
     public AbstractSymbol(String str, int len, int index) {
-	this.str = str.length() == len ? str : str.substring(0, len);
-	this.index = index;
+    	this.str = str.length() == len ? str : str.substring(0, len);
+    	this.index = index;
     }
 
     /** Tests if the string argument is equal to the string in this symbol.
@@ -67,8 +66,8 @@ public abstract class AbstractSymbol {
      * @return true if the strings are equal
      * */
     public boolean equalString(String str, int len) {
-	String other = str.length() == len ? str : str.substring(0, len);
-	return this.str.equals(other);
+    	String other = str.length() == len ? str : str.substring(0, len);
+    	return this.str.equals(other);
     }
 
     /** Tests if the index argument is equal to the index of this symbol.
@@ -80,7 +79,7 @@ public abstract class AbstractSymbol {
      * @return true if the indecies are equal
      * */
     public boolean equalsIndex(int index) {
-	return this.index == index;
+    	return this.index == index;
     }
 
     /** Tests if two symbols are equal.
@@ -93,18 +92,17 @@ public abstract class AbstractSymbol {
      * @return true if the symbols are equal
      * */
     public boolean equals(Object another) {
-	return (another instanceof AbstractSymbol) && 
-	    ((AbstractSymbol)another).index == this.index;
+    	return (another instanceof AbstractSymbol) && ((AbstractSymbol)another).index == this.index;
     }
 
     /** Returns the string representation of this symbol. */
     public String getString() {
-	return str;
+    	return str;
     }
 
     /** Returns a printable representation of this symbol. */
     public String toString() {
-	return str;
+    	return str;
     }
 
     /** Returns a copy of this symbol */

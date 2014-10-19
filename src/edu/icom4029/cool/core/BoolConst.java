@@ -34,24 +34,24 @@ class BoolConst {
      * @param val the value
      * */
     BoolConst(boolean val) {
-	this.val = val;
+    	this.val = val;
     }
 
     /** Creates a new boolean constant. 
      * @param val the value
      * */
     BoolConst(Boolean val) {
-	this.val = val.booleanValue();
+    	this.val = val.booleanValue();
     }
 
-    final static BoolConst truebool = new BoolConst(true);
+    final static BoolConst truebool  = new BoolConst(true);
     final static BoolConst falsebool = new BoolConst(false);
 
     /** Emits a reference to this boolean constant.
      * @param s the output stream
      * */
     public void codeRef(PrintStream s) {
-	s.print(CgenSupport.BOOLCONST_PREFIX + (val ? "1" : "0"));
+    	s.print(CgenSupport.BOOLCONST_PREFIX + (val ? "1" : "0"));
     }
 
     /** Generates code for the boolean constant definition.  This method
@@ -62,18 +62,18 @@ class BoolConst {
      *
      * */
     public void codeDef(int boolclasstag, PrintStream s) {
-	// Add -1 eye catcher
-	s.println(CgenSupport.WORD + "-1");
-	codeRef(s); s.print(CgenSupport.LABEL); // label
-	s.println(CgenSupport.WORD + boolclasstag); // tag
-	s.println(CgenSupport.WORD + (CgenSupport.DEFAULT_OBJFIELDS +
-				      CgenSupport.BOOL_SLOTS)); // size
-	s.print(CgenSupport.WORD);
-
-	/* Add code to reference the dispatch table for class Bool here */
-
-	s.println("");		// dispatch table
-	s.println(CgenSupport.WORD + (val ? "1" : "0")); // value (0 or 1)
+		// Add -1 eye catcher
+		s.println(CgenSupport.WORD + "-1");
+		codeRef(s); 
+		s.print(CgenSupport.LABEL); // label
+		s.println(CgenSupport.WORD + boolclasstag); // tag
+		s.println(CgenSupport.WORD + (CgenSupport.DEFAULT_OBJFIELDS + CgenSupport.BOOL_SLOTS)); // size
+		s.print(CgenSupport.WORD);
+	
+		/* Add code to reference the dispatch table for class Bool here */
+	
+		s.println("");		// dispatch table
+		s.println(CgenSupport.WORD + (val ? "1" : "0")); // value (0 or 1)
     }
 }
     
