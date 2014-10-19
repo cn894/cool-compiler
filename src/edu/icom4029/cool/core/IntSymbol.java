@@ -36,7 +36,7 @@ class IntSymbol extends AbstractSymbol {
      * @see AbstractSymbol
      * */
     public IntSymbol(String str, int len, int index) {
-	super(str, len, index);
+    	super(str, len, index);
     }
 
     /** Generates code for the integer constant definition.  This method
@@ -47,30 +47,30 @@ class IntSymbol extends AbstractSymbol {
      *
      * */
     public void codeDef(int intclasstag, PrintStream s) {
-	// Add -1 eye catcher
-	s.println(CgenSupport.WORD + "-1");
-	codeRef(s); s.print(CgenSupport.LABEL); // label
-	s.println(CgenSupport.WORD + intclasstag); // tag
-	s.println(CgenSupport.WORD + (CgenSupport.DEFAULT_OBJFIELDS + 
-				      CgenSupport.INT_SLOTS)); // size
-	s.print(CgenSupport.WORD);
-
-	/* Add code to reference the dispatch table for class Int here */
-
-	s.println("");		// dispatch table
-	s.println(CgenSupport.WORD + str); // integer value
+		// Add -1 eye catcher
+		s.println(CgenSupport.WORD + "-1");
+		codeRef(s); s.print(CgenSupport.LABEL); // label
+		s.println(CgenSupport.WORD + intclasstag); // tag
+		s.println(CgenSupport.WORD + (CgenSupport.DEFAULT_OBJFIELDS + 
+					      CgenSupport.INT_SLOTS)); // size
+		s.print(CgenSupport.WORD);
+	
+		/* Add code to reference the dispatch table for class Int here */
+	
+		s.println("");		// dispatch table
+		s.println(CgenSupport.WORD + str); // integer value
     }
 
     /** Emits a reference to this integer constant.
      * @param s the output stream
      * */
     public void codeRef(PrintStream s) {
-	s.print(CgenSupport.INTCONST_PREFIX + index);
+    	s.print(CgenSupport.INTCONST_PREFIX + index);
     }
 
     /** Returns a copy of this symbol */
     public Object clone() {
-	return new IntSymbol(str, str.length(), index);
+    	return new IntSymbol(str, str.length(), index);
     }
 }
 
