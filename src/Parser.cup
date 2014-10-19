@@ -1,4 +1,3 @@
-
 package edu.icom4029.cool.parser;
 
 import java_cup.runtime.*;
@@ -35,12 +34,12 @@ action code {:
 //===TERMINALS========================================================================================
 
 /* Keywords */
-terminal					CLASS, ELSE, FI, IF, IN, INHERITS, ISVOID, LET, LOOP, POOL,
-							THEN, WHILE, CASE, ESAC, NEW, OF, NOT;
+terminal		CLASS, ELSE, FI, IF, IN, INHERITS, ISVOID, LET, LOOP, POOL,
+				THEN, WHILE, CASE, ESAC, NEW, OF, NOT;
 
 /* Operators */
-terminal					ASSIGN, DARROW, LPAREN, RPAREN, LBRACE, RBRACE, COLON, SEMI,
-							PLUS, MINUS, MULT, DIV, EQ, LT, LE, COMMA, DOT, AT, NEG;
+terminal		ASSIGN, DARROW, LPAREN, RPAREN, LBRACE, RBRACE, COLON, SEMI,
+				PLUS, MINUS, MULT, DIV, EQ, LT, LE, COMMA, DOT, AT, NEG;
 
 /* Identifiers */
 terminal AbstractSymbol		OBJECTID, TYPEID;
@@ -52,43 +51,27 @@ terminal AbstractSymbol		INT_CONST, STR_CONST;
 terminal Boolean			BOOL_CONST;
 
 /* Death */
-terminal 					ERROR;
+terminal 		ERROR;
 
 //===NON-TERMINALS====================================================================================
 
-non terminal	program		program;
-non terminal	Classes		class_list;
-non terminal	class_		class;
-non terminal	Features	feature_list;
-
-non terminal    Feature     feature;
-
-
-non terminal    Expression  expr;
-
-non terminal    assign      assign;
-
-non terminal    Formals     formal_list;
-
-non terminal    Formals     formal_list_2;
-
-non terminal    formal      formal;
-
-non terminal    Cases       case_list;
-
-non terminal    Case        case;
-
-non terminal    let         let_expr;
-
-non terminal    Expression  let_args;
-
-non terminal    Expressions expr_list;
-
-non terminal    Expressions expr_list_2;
-
-non terminal    Expressions dispatch_args;
-
-non terminal    Expressions dispatch_args_2;
+nonterminal	program		program;
+nonterminal	Classes		class_list;
+nonterminal	class_		class;
+nonterminal	Features	feature_list;
+nonterminal	Feature		feature;
+nonterminal	Expressions	expr_list;
+nonterminal	Expressions	expr_list_2;
+nonterminal Expressions dispatch_args;
+nonterminal Expressions dispatch_args_2;
+nonterminal Expression	expr;
+nonterminal	Formals		formal_list;
+nonterminal Formals		formal_list_2;
+nonterminal	formal		formal;
+nonterminal	Cases		case_list;
+nonterminal	branch		case;
+nonterminal	let			let_expr;
+nonterminal	Expression	let_args;
 
 //===PRECEDENCES======================================================================================
 
@@ -103,227 +86,265 @@ precedence left		AT;
 precedence left		DOT;
 
 //===GRAMMAR==========================================================================================
-program		::=	class_list:cl {: RESULT = new program(getLineNumber(), cl); :};
-			
-class_list	::=	class:c       			{: RESULT = (new Classes(getLineNumber())).appendElement(c); :}
-			|	class:c class_list:cl 	{: RESULT = cl.appendElement(c); :};
+/* Program */
+program
+			::=	class_list:cl
+				{: RESULT = new program(getLineNumber(), cl); :}
+			;
 
-class		::= CLASS TYPEID:n LBRACE feature_list:f RBRACE SEMI                   {: RESULT = new class_(getLineNumber(), n, AbstractTable.idtable.addString("Object"), f, getFilename()); :}
-			|	CLASS TYPEID:n INHERITS TYPEID:p LBRACE feature_list:f RBRACE SEMI {: RESULT = new class_(getLineNumber(), n, p, f, getFilename()); :};
+/* Classes */			
+class_list
+			/* Single class */
+			::=	class:c
+				{: RESULT = (new Classes(getLineNumber())).appendElement(c); :}
 
-feature_list	::=	feature feature_list    {: RESULT = new Features(getLineNumber()); :}
-				|   /* Nothing */           {: RESULT = new Features(getLineNumber()); :};
+			/* Multiple classes */
+			|	class_list:cl class:c
+				{: RESULT = cl.appendElement(c); :}
 				
+			/* Error handling */
+			|	class_list:cl ERROR
+				{: RESULT = cl; :}
+			|	ERROR SEMI
+				{: RESULT = new Classes(getLineNumber()); :}
+			;
 
-feature ::= OBJECTID:o COLON TYPEID:t SEMI               {: RESULT = new attr(getLineNumber(), o, t, new no_expr(getLineNumber())); :}
-		|	OBJECTID:o COLON TYPEID:t ASSIGN expr:e SEMI {: RESULT = new attr(getLineNumber(), o, t, e); :};
+/* Single class */
+class
+			/* Class declaration without inheritance */
+			::= CLASS TYPEID:n LBRACE feature_list:f RBRACE SEMI
+				{: RESULT = new class_(getLineNumber(), n, AbstractTable.idtable.addString("Object"), f, getFilename()); :}
+			
+			/* Class declaration with inheritance */
+			|	CLASS TYPEID:n INHERITS TYPEID:p LBRACE feature_list:f RBRACE SEMI
+				{: RESULT = new class_(getLineNumber(), n, p, f, getFilename()); :}
+			;
 
-assign      ::= OBJECTID:o ASSIGN expr:e SEMI {: RESULT = new assign(getLineNumber(), o, e); :};
+/* Features */
+feature_list
+			/* Empty feature list */
+			::=	/* empty */
+				{: RESULT = new Features(getLineNumber()); :}
+			
+			/* Features */
+			|	feature_list:fl feature:f
+				{: RESULT = fl.appendElement(f); :}
+				
+			/* Error */
+			|	feature_list:fl ERROR
+				{: RESULT = fl; :}
+			;
 
+/* Single feature */				
+feature
+			/* Methods */
+			::= OBJECTID:methodName LPAREN formal_list:f RPAREN COLON TYPEID:returnType LBRACE expr:e RBRACE SEMI
+				{: RESULT = new method(getLineNumber(), methodName, f, returnType, e); :}
+			
+			/* Assignment */
+			|	OBJECTID:variableName COLON TYPEID:variableType ASSIGN expr:e SEMI
+				{: RESULT = new attr(getLineNumber(), variableName, variableType, e); :}
+			
+			/* Declaration */
+			|	OBJECTID:variableName COLON TYPEID:variableType SEMI
+				{: RESULT = new attr(getLineNumber(), variableName, variableType, new no_expr(getLineNumber())); :}
+			
+//			/* Error */
+//			|	OBJECTID:methodName LPAREN formal_list:f RPAREN COLON TYPEID:returnType LBRACE ERROR RBRACE SEMI
+//				{: RESULT =  :}
+			;
 
-
-
-//FABIOS CHANGES
-
+/* Formals */
 formal_list
-   		 /* Empty formal list */
-   		 ::= /* empty */
-   			 {: RESULT = new Formals(getLineNumber()); :}
-   		 |    formal_list_2:fl
-   			 {: RESULT = fl; :}
-   		 ;
+			/* Empty formal list */
+			::= /* empty */
+				{: RESULT = new Formals(getLineNumber()); :}
+			|	formal_list_2:fl
+				{: RESULT = fl; :}
+			;
 
 formal_list_2
-   		 /* Single formal */
-   		 ::= formal:f
-   			 {: RESULT = new Formals(getLineNumber()).appendElement(f); :}
+			/* Single formal */
+			::= formal:f
+				{: RESULT = new Formals(getLineNumber()).appendElement(f); :}
 
-   		 /* Multiple formals */
-   		 |    formal_list_2:fl COMMA formal:f
-   			 {: RESULT =  fl.appendElement(f); :}
-   		 ;
+			/* Multiple formals */
+			|	formal_list_2:fl COMMA formal:f
+				{: RESULT =  fl.appendElement(f); :}
+			;
 
 /* Single formal */
 formal
-   		 ::= OBJECTID:variableName COLON TYPEID:variableType
-   			 {: RESULT = new formal(getLineNumber(), variableName, variableType); :}
-   		 ;
-   		 
+			::= OBJECTID:variableName COLON TYPEID:variableType
+				{: RESULT = new formal(getLineNumber(), variableName, variableType); :}
+			;
+			
 /* Cases */
 case_list
-   		 /* Single branch */
-   		 ::= case:c
-   			 {: RESULT = new Cases(getLineNumber()).appendElement(c); :}
-   		 
-   		 /* Multiple branches */
-   		 |    case_list:cl case:c
-   			 {: RESULT = cl.appendElement(c); :}
-   		 ;
-
+			/* Single branch */
+			::= case:c
+				{: RESULT = new Cases(getLineNumber()).appendElement(c); :}
+			
+			/* Multiple branches */
+			|	case_list:cl case:c
+				{: RESULT = cl.appendElement(c); :}
+			;
+			
 /* Single case */
 case
-   		 ::= OBJECTID:variableName COLON TYPEID:variableType DARROW expr:e SEMI
-   			 {: RESULT = new branch(getLineNumber(), variableName, variableType, e); :}
-   		 ;
-   		 
+			::= OBJECTID:variableName COLON TYPEID:variableType DARROW expr:e SEMI
+				{: RESULT = new branch(getLineNumber(), variableName, variableType, e); :}
+			;
+
 /* Expressions */
 expr_list
-   		 ::= /* Nothing */
-   			 {: RESULT = new Expressions(getLineNumber()); :}
-   		 |    expr_list_2:el
-   			 {: RESULT = el; :}
-   		 ;
-   			 
+			::= /* Nothing */
+				{: RESULT = new Expressions(getLineNumber()); :}
+			|	expr_list_2:el
+				{: RESULT = el; :}
+			;
+				
 expr_list_2
-   		 /* Single expression in a list */
-   		 ::= expr:e
-   			 {: RESULT = new Expressions(getLineNumber()).appendElement(e); :}
-   		 
-   		 /* Multiple expressions in a list */
-   		 |    expr_list_2:el SEMI expr:e
-   			 {: RESULT = el.appendElement(e); :}
-   		 ;
-   			 
+			/* Single expression in a list */
+			::= expr:e
+				{: RESULT = new Expressions(getLineNumber()).appendElement(e); :}
+			
+			/* Multiple expressions in a list */
+			|	expr_list_2:el SEMI expr:e
+				{: RESULT = el.appendElement(e); :}
+			;
+				
 /* Dispatches */
 dispatch_args
-   		 /* Empty */
-   		 ::= LPAREN RPAREN
-   			 {: RESULT = new Expressions(getLineNumber()); :}
-   		 |    LPAREN dispatch_args_2:args RPAREN
-   			 {: RESULT = args; :}
-   		 ;
+			/* Empty */
+			::= LPAREN RPAREN
+				{: RESULT = new Expressions(getLineNumber()); :}
+			|	LPAREN dispatch_args_2:args RPAREN
+				{: RESULT = args; :}
+			;
 
 dispatch_args_2
-   		 /* Single expression */
-   		 ::=    expr:e
-   			 {: RESULT = new Expressions(getLineNumber()).appendElement(e); :}
-   			 
-   		 /* Multiple expressions */
-   		 |    dispatch_args_2:args COMMA expr:e
-   			 {: RESULT = args.appendElement(e); :}
-   		 ;
+			/* Single expression */
+			::=	expr:e
+				{: RESULT = new Expressions(getLineNumber()).appendElement(e); :}
+				
+			/* Multiple expressions */
+			|	dispatch_args_2:args COMMA expr:e
+				{: RESULT = args.appendElement(e); :}
+			;
 
 expr
-   		 /* Assignment */
-   		 ::= OBJECTID:variableName ASSIGN expr:e
-   			 {: RESULT = new assign(getLineNumber(), variableName, e); :}
-   		 |    OBJECTID:variableName COLON TYPEID:variableType ASSIGN expr:e
-   			 {: RESULT = new assign(getLineNumber(), variableName, e) :}
-   		 
-   		 /* Dispatch */
-   		 |    OBJECTID:name dispatch_args:args
-   			 {: RESULT = new dispatch(getLineNumber(), new object(getLineNumber(), AbstractTable.idtable.addString("self")), name, args); :}
-   		 
-   		 /* Static Dispatch */
-   		 |    expr:e AT TYPEID:type DOT OBJECTID:name dispatch_args:args
-   			 {: RESULT = new static_dispatch(getLineNumber(), e, type, name, args); :}
-   		 |    expr:e DOT OBJECTID:name dispatch_args:args
-   			 {: RESULT = new dispatch(getLineNumber(), e, name, args); :}
-   		 
-   		 /* If-then-else-fi */
-   		 |    IF expr:eIf THEN expr:eThen ELSE expr:eElse FI
-   			 {: RESULT = new cond(getLineNumber(), eIf, eThen, eElse); :}
-   		 
-   		 /* Loop */
-   		 |    WHILE expr:eWhile LOOP expr:eLoop POOL
-   			 {: RESULT = new loop(getLineNumber(), eWhile, eLoop); :}
+			/* Assignment */
+			::= OBJECTID:variableName ASSIGN expr:e
+				{: RESULT = new assign(getLineNumber(), variableName, e); :}
+			|	OBJECTID:variableName COLON TYPEID:variableType ASSIGN expr:e
+				{: RESULT = new assign(getLineNumber(), variableName, e); :} 
+			
+			/* Dispatch */
+			|	OBJECTID:name dispatch_args:args
+				{: RESULT = new dispatch(getLineNumber(), new object(getLineNumber(), AbstractTable.idtable.addString("self")), name, args); :}
+			
+			/* Static Dispatch */
+			|	expr:e AT TYPEID:type DOT OBJECTID:name dispatch_args:args
+				{: RESULT = new static_dispatch(getLineNumber(), e, type, name, args); :}
+			|	expr:e DOT OBJECTID:name dispatch_args:args
+				{: RESULT = new dispatch(getLineNumber(), e, name, args); :}
+			
+			/* If-then-else-fi */
+			|	IF expr:eIf THEN expr:eThen ELSE expr:eElse FI
+				{: RESULT = new cond(getLineNumber(), eIf, eThen, eElse); :}
+			
+			/* Loop */
+			|	WHILE expr:eWhile LOOP expr:eLoop POOL
+				{: RESULT = new loop(getLineNumber(), eWhile, eLoop); :}
 
-   		 /* Expression block */
-   		 |    LBRACE expr_list:list RBRACE
-   			 {: RESULT = new block(getLineNumber(), list); :}
+			/* Expression block */
+			|	LBRACE expr_list:list RBRACE
+				{: RESULT = new block(getLineNumber(), list); :}
 
-   		 /* New */
-   		 |    NEW TYPEID:typeName
-   			 {: RESULT = new new_(getLineNumber(), e); :}
-   		 
-   		 /* Isvoid */
-   		 |    ISVOID expr:e
-   			 {: RESULT = new isvoid(getLineNumber(), e); :}
-   			 
-   		 /* Case */
-   		 |    CASE expr:e OF case_list:list ESAC
-   			 {: RESULT = new typcase(getLineNumber(), e, list); :}
-   			 
-   		 /* Sum */
-   		 |    expr:e1 PLUS expr:e2
-   			 {: RESULT = new plus(getLineNumber(), e1, e2); :}
-   			 
-   		 /* Subtraction */
-   		 |    expr:e1 MINUS expr:e2
-   			 {: RESULT = new minus(getLineNumber(), e1, e2); :}
-   			 
-   		 /* Multiplication */
-   		 |    expr:e1 MULT expr:e2
-   			 {: RESULT = new mul(getLineNumber(), e1, e2); :}
-   			 
-   		 /* Division */
-   		 |    expr:e1 DIV expr:e2
-   			 {: RESULT = new divide(getLineNumber(), e1, e2); :}
-   			 
-   		 /* Negation(?): ~ */
-   		 |    NEG expr:e
-   			 {: RESULT = new neg(getLineNumber(), e); :}
-   			 
-   		 /* Less than */
-   		 |    expr:e1 LT expr:e2
-   			 {: RESULT = new lt(getLineNumber(), e1, e2); :}
-   			 
-   		 /* Less or equal to */
-   		 |    expr:e1 LE expr:e2
-   			 {: RESULT = new leq(getLineNumber(), e1, e2); :}
-   		 
-   		 /* Equals */
-   		 |    expr:e1 EQ expr:e2
-   			 {: RESULT = new eq(getLineNumber(), e1, e2); :}
-   			 
-   		 /* Not */
-   		 |    NOT expr:e
-   			 {: RESULT = new comp(getLineNumber(), e); :}
-   			 
-   		 /* Between parenthesis */
-   		 |    LPAREN expr:e RPAREN
-   			 {: RESULT = e; :}
-   			 
-   		 /* Object ID */
-   		 |    OBJECTID:name
-   			 {: RESULT = new object(getLineNumber(), name); :}
-   			 
-   		 /* Integer */
-   		 |    INT_CONST:integer
-   			 {: RESULT = new int_const(getLineNumber(), integer); :}
-   			 
-   		 /* String */
-   		 |    STR_CONST:string
-   			 {: RESULT = new string_const(getLineNumber(), string); :}
-   			 
-   		 /* Boolean */
-   		 |    BOOL_CONST:bool
-   			 {: RESULT = new bool_const(getLineNumber(), bool); :}
-   			 
-   		 /* Let */
-   		 |    LET let_expr:le
-   			 {: RESULT = le; :}
-   		 ;
+			/* New */
+			|	NEW TYPEID:typeName
+				{: RESULT = new new_(getLineNumber(), typeName); :}
+			
+			/* Isvoid */
+			|	ISVOID expr:e
+				{: RESULT = new isvoid(getLineNumber(), e); :}
+				
+			/* Case */
+			|	CASE expr:e OF case_list:list ESAC
+				{: RESULT = new typcase(getLineNumber(), e, list); :}
+				
+			/* Sum */
+			|	expr:e1 PLUS expr:e2
+				{: RESULT = new plus(getLineNumber(), e1, e2); :}
+				
+			/* Subtraction */
+			|	expr:e1 MINUS expr:e2
+				{: RESULT = new sub(getLineNumber(), e1, e2); :}
+				
+			/* Multiplication */
+			|	expr:e1 MULT expr:e2
+				{: RESULT = new mul(getLineNumber(), e1, e2); :}
+				
+			/* Division */
+			|	expr:e1 DIV expr:e2
+				{: RESULT = new divide(getLineNumber(), e1, e2); :}
+				
+			/* Negation(?): ~ */
+			|	NEG expr:e
+				{: RESULT = new neg(getLineNumber(), e); :}
+				
+			/* Less than */
+			|	expr:e1 LT expr:e2
+				{: RESULT = new lt(getLineNumber(), e1, e2); :}
+				
+			/* Less or equal to */
+			|	expr:e1 LE expr:e2
+				{: RESULT = new leq(getLineNumber(), e1, e2); :}
+			
+			/* Equals */
+			|	expr:e1 EQ expr:e2
+				{: RESULT = new eq(getLineNumber(), e1, e2); :}
+				
+			/* Not */
+			|	NOT expr:e
+				{: RESULT = new comp(getLineNumber(), e); :}
+				
+			/* Between parenthesis */
+			|	LPAREN expr:e RPAREN
+				{: RESULT = e; :}
+				
+			/* Object ID */
+			|	OBJECTID:name
+				{: RESULT = new object(getLineNumber(), name); :}
+				
+			/* Integer */
+			|	INT_CONST:integer
+				{: RESULT = new int_const(getLineNumber(), integer); :}
+				
+			/* String */
+			|	STR_CONST:string
+				{: RESULT = new string_const(getLineNumber(), string); :}
+				
+			/* Boolean */
+			|	BOOL_CONST:bool
+				{: RESULT = new bool_const(getLineNumber(), bool); :}
+				
+			/* Let */
+			|	LET let_expr:le
+				{: RESULT = le; :}
+			;
 
 let_expr
-   		 ::=    OBJECTID:name COLON TYPEID:type let_args:args IN expr:e
-   			 {: RESULT = new let(getLineNumber(), name, type, args, e); :}
-   		 |    OBJECTID:name COLON TYPEID:type let_args:args COMMA let_expr:le
-   			 {: RESULT = new let(getLineNumber(), name, type, args, le); :}
-   		 ;
-   		 
+			::=	OBJECTID:name COLON TYPEID:type let_args:args IN expr:e
+				{: RESULT = new let(getLineNumber(), name, type, args, e); :}
+			|	OBJECTID:name COLON TYPEID:type let_args:args COMMA let_expr:le
+				{: RESULT = new let(getLineNumber(), name, type, args, le); :}
+			;
+			
 let_args
-   		 ::=    /* empty */
-   			 {: RESULT = new no_expr(getLineNumber()); :}
-   		 |    ASSIGN expr:e
-   			 {: RESULT = e; :}
-   		 ;
-
-
-
-
-
-
-
-
-
+			::=	/* empty */
+				{: RESULT = new no_expr(getLineNumber()); :}
+			|	ASSIGN expr:e
+				{: RESULT = e; :}
+			;			
