@@ -59,7 +59,7 @@ terminal AbstractSymbol		INT_CONST, STR_CONST;
 terminal Boolean			BOOL_CONST;
 
 /* Error Token */
-// Never used since it is covered here by the default 'error' token constant.
+// Never used since it is replaced by the default 'error' token constant.
 // But it's necessary to leave it since the lexer uses it.
 terminal 		ERROR;
 
