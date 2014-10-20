@@ -1,12 +1,12 @@
-package edu.icom4029.cool.tests;
+package edu.icom4029.cool.parser;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
+import java_cup.runtime.Symbol;
 import edu.icom4029.cool.core.Flags;
 import edu.icom4029.cool.lexer.Lexer;
-import edu.icom4029.cool.parser.Parser;
 
 public class ParserTest {
 
@@ -19,7 +19,9 @@ public class ParserTest {
 			try {
 				file = new FileReader(args[i]);
 				Parser parser_obj = new Parser(new Lexer(file));
-				parser_obj.parse();
+				Symbol result = parser_obj.parse();
+				
+				((program) result.value).dump_with_types(System.out, 0);
 				
 			} catch (FileNotFoundException ex) {
 				System.out.println("Could not open input file " + args[i]);

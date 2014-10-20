@@ -27,7 +27,7 @@ import edu.icom4029.cool.core.*;
 
 %{
 	int commentLevel = 0;
-	AbstractSymbol filename;
+	AbstractSymbol filename = AbstractTable.stringtable.addString("");
 	StringBuffer string = new StringBuffer();
 	
 	private Symbol sym(int type) {
