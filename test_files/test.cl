@@ -507,25 +507,3 @@ class CellularAutomaton inherits IO {
     };
 };
 
-class Main {
-    cells : CellularAutomaton;
-   
-    main() : SELF_TYPE {
-        {
-            cells <- (new CellularAutomaton).init("         X         ");
-            cells.print();
-            (let countdown : Int <- 20 in
-                while countdown > 0 loop
-                    {
-                        cells.evolve();
-                        cells.print();
-                        countdown <- countdown - 1;
-                    (* Check out these dubs (* Nested comments, yo! *) *)
-                pool
-            );  (* end let countdown
-            self;
-        }
-    };
-};
-
-

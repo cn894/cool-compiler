@@ -100,8 +100,8 @@ TypeIdentifier      = {UppercaseCharacter}{IdentifierCharacter}*
 	[Nn][Ee][Ww]						{ return sym(TokenConstants.NEW); }
 	[Oo][Ff]							{ return sym(TokenConstants.OF); }
 	[Nn][Oo][Tt]						{ return sym(TokenConstants.NOT); }
-	"t"[Rr][Uu][Ee]						{ return sym(TokenConstants.BOOL_CONST); }
-	"f"[Aa][Ll][Ss][Ee]					{ return sym(TokenConstants.BOOL_CONST); }
+	"t"[Rr][Uu][Ee]						{ return sym(TokenConstants.BOOL_CONST, true); }
+	"f"[Aa][Ll][Ss][Ee]					{ return sym(TokenConstants.BOOL_CONST, false); }
 	
 	//---Operators-----------------------------------------------------------------------------------------------------
 	
