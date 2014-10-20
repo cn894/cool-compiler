@@ -58,7 +58,9 @@ terminal AbstractSymbol		INT_CONST, STR_CONST;
 /* Boolean Constants */
 terminal Boolean			BOOL_CONST;
 
-/* Death */
+/* Error Token */
+// Never used since it is covered by the default 'error' token constant.
+// But it's necessary to leave it since the lexer uses it.
 terminal 		ERROR;
 
 //===NON-TERMINALS====================================================================================
@@ -111,9 +113,9 @@ class_list
 				{: RESULT = cl.appendElement(c); :}
 				
 			/* Error handling */
-			|	class_list:cl ERROR
+			|	class_list:cl error
 				{: RESULT = cl; :}
-			|	ERROR SEMI
+			|	error SEMI
 				{: RESULT = new Classes(getLineNumber()); :}
 			;
 
@@ -139,7 +141,7 @@ feature_list
 				{: RESULT = fl.appendElement(f); :}
 				
 			/* Error */
-			|	feature_list:fl ERROR
+			|	feature_list:fl error
 				{: RESULT = fl; :}
 			;
 
@@ -158,7 +160,7 @@ feature
 				{: RESULT = new attr(getLineNumber(), variableName, variableType, new no_expr(getLineNumber())); :}
 			
 //			/* Error */
-//			|	OBJECTID:methodName LPAREN formal_list:f RPAREN COLON TYPEID:returnType LBRACE ERROR RBRACE SEMI
+//			|	OBJECTID:methodName LPAREN formal_list:f RPAREN COLON TYPEID:returnType LBRACE error RBRACE SEMI
 //				{: RESULT =  :}
 			;
 
