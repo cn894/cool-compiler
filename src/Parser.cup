@@ -8,11 +8,19 @@ import edu.icom4029.cool.lexer.*;
 //===INLINE=JAVA=CODE=================================================================================
 
 parser code {:
+	int errors = 0;
 
 	public void syntax_error(Symbol cur_token) {
-        int lineno = action_obj.getLineNumber();
-        System.out.print("line " + lineno + ": parse error at or near ");
+        int lineNumber = action_obj.getLineNumber();
+        String filename = action_obj.getFilename().getString();
+        System.err.print("\"" + filename + "\", line " + lineNumber + ": parse error at or near ");
         Utilities.printToken(cur_token);
+        errors++;
+        
+        if (errors >= 50) {
+        	System.err.println("More than 50 errors.");
+        	System.exit(1);
+        }
     }
 
     public void unrecovered_syntax_error(Symbol cur_token) {
@@ -206,11 +214,11 @@ expr_list
 				
 expr_list_2
 			/* Single expression in a list */
-			::= expr:e
+			::= expr:e SEMI
 				{: RESULT = new Expressions(getLineNumber()).appendElement(e); :}
 			
 			/* Multiple expressions in a list */
-			|	expr_list_2:el SEMI expr:e
+			|	expr_list_2:el expr:e SEMI
 				{: RESULT = el.appendElement(e); :}
 			;
 				
