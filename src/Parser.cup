@@ -51,7 +51,7 @@ terminal AbstractSymbol		INT_CONST, STR_CONST;
 terminal Boolean			BOOL_CONST;
 
 /* Death */
-terminal 		ERROR;
+terminal 					ERROR;
 
 //===NON-TERMINALS====================================================================================
 
