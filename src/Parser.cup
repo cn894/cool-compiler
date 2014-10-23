@@ -8,11 +8,19 @@ import edu.icom4029.cool.lexer.*;
 //===INLINE=JAVA=CODE=================================================================================
 
 parser code {:
+	int errors = 0;
 
 	public void syntax_error(Symbol cur_token) {
-        int lineno = action_obj.getLineNumber();
-        System.out.print("line " + lineno + ": parse error at or near ");
+        int lineNumber = action_obj.getLineNumber();
+        String filename = action_obj.getFilename().getString();
+        System.err.print("\"" + filename + "\", line " + lineNumber + ": parse error at or near ");
         Utilities.printToken(cur_token);
+        errors++;
+        
+        if (errors >= 50) {
+        	System.err.println("More than 50 errors.");
+        	System.exit(1);
+        }
     }
 
     public void unrecovered_syntax_error(Symbol cur_token) {
@@ -50,8 +58,11 @@ terminal AbstractSymbol		INT_CONST, STR_CONST;
 /* Boolean Constants */
 terminal Boolean			BOOL_CONST;
 
-/* Death */
-terminal 					ERROR;
+
+/* Error Token */
+// Never used since it is replaced by the default 'error' token constant.
+// But it's necessary to leave it since the lexer uses it.
+terminal 		ERROR;
 
 //===NON-TERMINALS====================================================================================
 
@@ -103,9 +114,9 @@ class_list
 				{: RESULT = cl.appendElement(c); :}
 				
 			/* Error handling */
-			|	class_list:cl ERROR
+			|	class_list:cl error
 				{: RESULT = cl; :}
-			|	ERROR SEMI
+			|	error SEMI
 				{: RESULT = new Classes(getLineNumber()); :}
 			;
 
@@ -131,7 +142,7 @@ feature_list
 				{: RESULT = fl.appendElement(f); :}
 				
 			/* Error */
-			|	feature_list:fl ERROR
+			|	feature_list:fl error
 				{: RESULT = fl; :}
 			;
 
@@ -150,7 +161,7 @@ feature
 				{: RESULT = new attr(getLineNumber(), variableName, variableType, new no_expr(getLineNumber())); :}
 			
 //			/* Error */
-//			|	OBJECTID:methodName LPAREN formal_list:f RPAREN COLON TYPEID:returnType LBRACE ERROR RBRACE SEMI
+//			|	OBJECTID:methodName LPAREN formal_list:f RPAREN COLON TYPEID:returnType LBRACE error RBRACE SEMI
 //				{: RESULT =  :}
 			;
 
@@ -206,11 +217,11 @@ expr_list
 				
 expr_list_2
 			/* Single expression in a list */
-			::= expr:e
+			::= expr:e SEMI
 				{: RESULT = new Expressions(getLineNumber()).appendElement(e); :}
 			
 			/* Multiple expressions in a list */
-			|	expr_list_2:el SEMI expr:e
+			|	expr_list_2:el expr:e SEMI
 				{: RESULT = el.appendElement(e); :}
 			;
 				
