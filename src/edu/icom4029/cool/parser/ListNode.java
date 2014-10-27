@@ -19,7 +19,7 @@ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
 AND FITNESS FOR A PARTICULAR PURPOSE.  THE SOFTWARE PROVIDED HEREUNDER IS
 ON AN "AS IS" BASIS, AND THE UNIVERSITY OF CALIFORNIA HAS NO OBLIGATION TO
 PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
-*/
+ */
 
 import java.io.PrintStream;
 import java.util.Vector;
@@ -50,7 +50,7 @@ import edu.icom4029.cool.core.Utilities;
     list.appendElement(Foo).appendElement(Bar).appendElement(Baz)</code>.
 
     <p>
-    
+
     You can use <code>java.util.Enumeration</code> to iterate through
     lists.  If you are not familiar with that interface, look it up in
     the Java API documentation.  Here's an example of iterating through
@@ -78,114 +78,114 @@ import edu.icom4029.cool.core.Utilities;
     very few cases where casting is actually necessary and
     appropriate</em>.
 
-*/
-    
+ */
+
 public abstract class ListNode extends TreeNode {
-    private Vector elements;
+	private Vector elements;
 
-    protected ListNode(int lineNumber, Vector elements) {
-	super(lineNumber);
-	this.elements = elements;
-    }
-
-    /** Builds a new list node
-     *
-     * @param lineNumber line in the source file from which this node came. 
-     * */
-    protected ListNode(int lineNumber) {
-	super(lineNumber);
-	elements = new Vector();
-    }
-
-    /** Creates a deep copy of this list.
-     *
-     * None of the elements are shared between the lists, e.g. all
-     * elements are duplicated (which is what "deep copy" means).
-     *
-     * @return a copy of this elements vector
-     * */
-    protected Vector copyElements() {
-	Vector cp = new Vector();
-	for (int i = 0; i < elements.size(); i++) {
-	    cp.addElement(((TreeNode)elements.elementAt(i)).copy());
+	protected ListNode(int lineNumber, Vector elements) {
+		super(lineNumber);
+		this.elements = elements;
 	}
-	return cp;
-    }
 
-    /** Returns the class of list elements.
-     *
-     * @return the element class
-     * */
-    public abstract Class getElementClass();
-
-    /** Retreives nth element of the list.
-     *
-     * @param n the index of the element
-     * @return the element
-     * */
-    public TreeNode getNth(int n) {
-	return (TreeNode)elements.elementAt(n);
-    }
-
-    /** Retreives the length of the list.
-     *
-     * @return the length of the list
-     * */
-    public int getLength() {
-	return elements.size();
-    }
-
-    /** Retreives the elements of the list as Enumeration.
-     *
-     * @return the elements
-     * */
-    public Enumeration getElements() {
-	return elements.elements();
-    }
-
-    /** Appends an element to the list.
-     * 
-     * <p>Note: each generated subclass of ListNode also has an
-     * appendElement() method, which calls addElement() and returns the
-     * list of the appropriate type, so that it can be used like this:
-     * <code>l.appendElement(i).appendElement(j).appendElement(k);</code>
-     *
-     * @param elem a node to append
-     * */
-    public void addElement(TreeNode node) {
-	elements.addElement(node);
-    }
-
-    /** Pretty-prints this list to this output stream.
-     *
-     * @param out the output stream
-     * @param n the number of spaces to indent the output
-     * */
-    public void dump(PrintStream out, int n) {
-	out.print(Utilities.pad(n));
-	out.print("list\n");
-	for (int i = 0; i < getLength(); i++) {
-	    getNth(i).dump(out, n + 2);
+	/** Builds a new list node
+	 *
+	 * @param lineNumber line in the source file from which this node came. 
+	 * */
+	protected ListNode(int lineNumber) {
+		super(lineNumber);
+		elements = new Vector();
 	}
-	out.print(Utilities.pad(n));
-	out.print("(end_of_list)\n");
-    }
 
-    /** Returns a string representation of this list.
-     *
-     * @return a string representation
-     * */
-    public String toString() {
-	return elements.toString();
-    }
+	/** Creates a deep copy of this list.
+	 *
+	 * None of the elements are shared between the lists, e.g. all
+	 * elements are duplicated (which is what "deep copy" means).
+	 *
+	 * @return a copy of this elements vector
+	 * */
+	protected Vector copyElements() {
+		Vector cp = new Vector();
+		for (int i = 0; i < elements.size(); i++) {
+			cp.addElement(((TreeNode)elements.elementAt(i)).copy());
+		}
+		return cp;
+	}
+
+	/** Returns the class of list elements.
+	 *
+	 * @return the element class
+	 * */
+	public abstract Class getElementClass();
+
+	/** Retreives nth element of the list.
+	 *
+	 * @param n the index of the element
+	 * @return the element
+	 * */
+	public TreeNode getNth(int n) {
+		return (TreeNode)elements.elementAt(n);
+	}
+
+	/** Retreives the length of the list.
+	 *
+	 * @return the length of the list
+	 * */
+	public int getLength() {
+		return elements.size();
+	}
+
+	/** Retreives the elements of the list as Enumeration.
+	 *
+	 * @return the elements
+	 * */
+	public Enumeration getElements() {
+		return elements.elements();
+	}
+
+	/** Appends an element to the list.
+	 * 
+	 * <p>Note: each generated subclass of ListNode also has an
+	 * appendElement() method, which calls addElement() and returns the
+	 * list of the appropriate type, so that it can be used like this:
+	 * <code>l.appendElement(i).appendElement(j).appendElement(k);</code>
+	 *
+	 * @param elem a node to append
+	 * */
+	public void addElement(TreeNode node) {
+		elements.addElement(node);
+	}
+
+	/** Pretty-prints this list to this output stream.
+	 *
+	 * @param out the output stream
+	 * @param n the number of spaces to indent the output
+	 * */
+	public void dump(PrintStream out, int n) {
+		out.print(Utilities.pad(n));
+		out.print("list\n");
+		for (int i = 0; i < getLength(); i++) {
+			getNth(i).dump(out, n + 2);
+		}
+		out.print(Utilities.pad(n));
+		out.print("(end_of_list)\n");
+	}
+
+	/** Returns a string representation of this list.
+	 *
+	 * @return a string representation
+	 * */
+	public String toString() {
+		return elements.toString();
+	}
 }
-	
 
 
-    
-    
 
-    
 
-    
-    
+
+
+
+
+
+

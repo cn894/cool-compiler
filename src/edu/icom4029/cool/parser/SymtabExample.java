@@ -21,55 +21,55 @@ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
 AND FITNESS FOR A PARTICULAR PURPOSE.  THE SOFTWARE PROVIDED HEREUNDER IS
 ON AN "AS IS" BASIS, AND THE UNIVERSITY OF CALIFORNIA HAS NO OBLIGATION TO
 PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
-*/
+ */
 
 /** An example of using a symbol table. */
 class SymtabExample {
-    public static void main(String args[]) {
-	// crate a new symbol table; entries will be name/age pairs
-	SymbolTable map = new SymbolTable();
+	public static void main(String args[]) {
+		// crate a new symbol table; entries will be name/age pairs
+		SymbolTable map = new SymbolTable();
 
-	// create some names
-	AbstractSymbol fred = AbstractTable.stringtable.addString("Fred");
-	AbstractSymbol mary = AbstractTable.stringtable.addString("Mary");
-	AbstractSymbol miguel = AbstractTable.stringtable.addString("Miguel");
-	
-	map.enterScope();
+		// create some names
+		AbstractSymbol fred = AbstractTable.stringtable.addString("Fred");
+		AbstractSymbol mary = AbstractTable.stringtable.addString("Mary");
+		AbstractSymbol miguel = AbstractTable.stringtable.addString("Miguel");
 
-	// add a couple of entries mapping name to age.
-	// note the second argument must be a pointer to an integer
-	map.addId(fred, new Integer(22));
-	map.addId(mary, new Integer(25));
+		map.enterScope();
 
-	// add a scope, add more names:
-	map.enterScope();
-	map.addId(miguel, new Integer(35));
-	map.addId(mary, new Integer(23));
+		// add a couple of entries mapping name to age.
+		// note the second argument must be a pointer to an integer
+		map.addId(fred, new Integer(22));
+		map.addId(mary, new Integer(25));
 
-	// check whether Fred is in the current scope; predicate is false
-	System.out.println((map.probe(fred) != null) ? "Yes" : "No");
-	
-	// check whether Mary is in any scope; predicate is true
-	System.out.println((map.lookup(mary) != null) ? "Yes" : "No");
-	
-	// print age of most-closely-nested Mary
-	System.out.println(map.lookup(mary));
+		// add a scope, add more names:
+		map.enterScope();
+		map.addId(miguel, new Integer(35));
+		map.addId(mary, new Integer(23));
 
-	// check whether Miguel is in the current scope; predicate is true
-	System.out.println((map.probe(miguel) != null) ? "Yes" : "No");
+		// check whether Fred is in the current scope; predicate is false
+		System.out.println((map.probe(fred) != null) ? "Yes" : "No");
 
-	// leave a scope
-	map.exitScope();
+		// check whether Mary is in any scope; predicate is true
+		System.out.println((map.lookup(mary) != null) ? "Yes" : "No");
 
-	// print age of most-closely-nested Mary
-	System.out.println(map.lookup(mary));
+		// print age of most-closely-nested Mary
+		System.out.println(map.lookup(mary));
 
-	// check whether Fred is in the current scope; predicate is now true
-	System.out.println((map.probe(fred) != null) ? "Yes" : "No");
+		// check whether Miguel is in the current scope; predicate is true
+		System.out.println((map.probe(miguel) != null) ? "Yes" : "No");
 
-	// check whether Miguel is in any scope; predicate is now false
-	System.out.println((map.lookup(miguel) != null) ? "Yes" : "No");
-    }	
+		// leave a scope
+		map.exitScope();
+
+		// print age of most-closely-nested Mary
+		System.out.println(map.lookup(mary));
+
+		// check whether Fred is in the current scope; predicate is now true
+		System.out.println((map.probe(fred) != null) ? "Yes" : "No");
+
+		// check whether Miguel is in any scope; predicate is now false
+		System.out.println((map.lookup(miguel) != null) ? "Yes" : "No");
+	}	
 }
 
- 
+
