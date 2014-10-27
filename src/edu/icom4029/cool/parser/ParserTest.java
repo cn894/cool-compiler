@@ -8,6 +8,7 @@ import java_cup.runtime.Symbol;
 import edu.icom4029.cool.core.Flags;
 import edu.icom4029.cool.lexer.Lexer;
 
+/* The parser driver class */
 public class ParserTest {
 
 	public static void main(String[] args) {
@@ -17,9 +18,9 @@ public class ParserTest {
 			FileReader file = null;
 			
 			try {
-				file              = new FileReader(args[i]);
-				Parser parser_obj = new Parser(new Lexer(file));
-				Symbol result     = parser_obj.parse();
+				file          = new FileReader(args[i]);
+				Parser parser = new Parser(new Lexer(file));
+				Symbol result = parser.parse();
 				
 				((program) result.value).dump_with_types(System.out, 0);
 				
