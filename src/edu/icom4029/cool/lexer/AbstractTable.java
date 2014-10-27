@@ -84,22 +84,16 @@ import edu.icom4029.cool.core.Utilities;
     @see IdSymbol
     @see IntSymbol */
 public abstract class AbstractTable {
-    /** Global string table of string constants */
-    public static StringTable stringtable = new StringTable();
+	
+    public static StringTable stringtable = new StringTable(); // Global string table of string constants
+    public static IdTable     idtable     = new IdTable();     // Global string table of identifiers
+    public static IntTable    inttable    = new IntTable();    // Global string table of integer constants
 
-    /** Global string table of identifiers */
-    public static IdTable idtable = new IdTable();
-
-    /** Global string table of integer constants */
-    public static IntTable inttable = new IntTable();
-
-    private static int MAXSIZE = 1000000;
-
-    /** Vector of table entries */
-    protected Vector tbl = new Vector();
-
-    /** Creates a new symbol of the appropriate type */
-    protected abstract AbstractSymbol getNewSymbol(String s, int len, int index);
+    private static int MAXSIZE = 1000000; // Max string size that can be stored in the string table
+    
+    protected Vector tbl = new Vector(); // Vector of table entries
+    
+    protected abstract AbstractSymbol getNewSymbol(String s, int len, int index); // Creates a new symbol of the appropriate type
 
     /** Adds prefix of the specified length to this string table
      *
@@ -108,14 +102,16 @@ public abstract class AbstractTable {
      * @return the symbol for the string s
      * */
     public AbstractSymbol addString(String s, int maxchars) {
-		int len = Math.min(s.length(), maxchars);
+		int len            = Math.min(s.length(), maxchars);
 		AbstractSymbol sym = null;
+		
 		for (int i = 0; i < tbl.size(); i++) {
 		    try {
 		    	sym = (AbstractSymbol)tbl.elementAt(i);
 		    } catch (ArrayIndexOutOfBoundsException ex) {
 		    	Utilities.fatalError("Unexpected exception: " + ex);
 		    }
+		    
 		    if (sym.equalString(s, len)) {
 		    	return sym;
 		    }
@@ -171,7 +167,6 @@ public abstract class AbstractTable {
 		return sym;
     }
 	    
-
     /** Looks up a symbol in this string table by its string representation
      * 
      * A fatal error is signalled if the string is not in the table

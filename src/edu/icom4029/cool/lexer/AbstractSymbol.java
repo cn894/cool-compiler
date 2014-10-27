@@ -44,11 +44,9 @@ PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  * @see AbstractTable
  * */
 public abstract class AbstractSymbol {
-    /** The stored string */
-    protected String str;
-
-    /** The index of this entry in the string table */
-    protected int index;
+	
+    protected String str;   // The stored string
+    protected int    index; // The index of this entry in the string table
 
     /** Constructs a new table entry.
      * 

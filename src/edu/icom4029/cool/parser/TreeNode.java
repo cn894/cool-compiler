@@ -19,7 +19,7 @@ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
 AND FITNESS FOR A PARTICULAR PURPOSE.  THE SOFTWARE PROVIDED HEREUNDER IS
 ON AN "AS IS" BASIS, AND THE UNIVERSITY OF CALIFORNIA HAS NO OBLIGATION TO
 PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
-*/
+ */
 
 import java.io.PrintStream;
 
@@ -101,7 +101,7 @@ import edu.icom4029.cool.lexer.AbstractSymbol;
     The types may either be phyla or any ordinary Java type.  In fact,
     the phyla declarations are themselves compiled into Java class
     declarations by an APS compiler.  A sample constructor definition is
-  
+
 <pre>
   constructor class_(name : AbstractSymbol; 
                      parent : AbstractSymbol;
@@ -250,91 +250,91 @@ Here is a complete use of one member:
 
     </ul>
 
-*/
+ */
 public abstract class TreeNode {
-    /** line in the source file from which this node came. */
-    protected int lineNumber;
-    
-    /** Builds a new tree node
-     *
-     * @param lineNumber the line in the source file from which this node came.
-     * */
-    protected TreeNode(int lineNumber) {
-	this.lineNumber = lineNumber;
-    }
+	/** line in the source file from which this node came. */
+	protected int lineNumber;
 
-    /** Creates a copy of this node.
-     *
-     * @return a copy of this node
-     * */
-    public abstract TreeNode copy();
+	/** Builds a new tree node
+	 *
+	 * @param lineNumber the line in the source file from which this node came.
+	 * */
+	protected TreeNode(int lineNumber) {
+		this.lineNumber = lineNumber;
+	}
 
-    /** Sets the values of this node object to the values of a given node.
-     *
-     * @param other the other node
-     * @return this node
-     * */
-    public TreeNode set(TreeNode other) {
-	this.lineNumber = other.lineNumber;
-	return this;
-    }
+	/** Creates a copy of this node.
+	 *
+	 * @return a copy of this node
+	 * */
+	public abstract TreeNode copy();
 
-    /** Retreives the line number from which this node came.
-     *
-     * @return the line number
-     * */
-    public int getLineNumber() {
-	return lineNumber;
-    }
+	/** Sets the values of this node object to the values of a given node.
+	 *
+	 * @param other the other node
+	 * @return this node
+	 * */
+	public TreeNode set(TreeNode other) {
+		this.lineNumber = other.lineNumber;
+		return this;
+	}
 
-    /** Pretty-prints this node to this output stream.
-     *
-     * @param out the output stream
-     * @param n the number of spaces to indent the output
-     * */
-    public abstract void dump(PrintStream out, int n);
+	/** Retreives the line number from which this node came.
+	 *
+	 * @return the line number
+	 * */
+	public int getLineNumber() {
+		return lineNumber;
+	}
 
-    /** Copies a boolean value.
-     * 
-     * This method is used internally by the generated AST classes
-     * */
-    protected Boolean copy_Boolean(Boolean b) {
-	return new Boolean(b.booleanValue());
-    }
+	/** Pretty-prints this node to this output stream.
+	 *
+	 * @param out the output stream
+	 * @param n the number of spaces to indent the output
+	 * */
+	public abstract void dump(PrintStream out, int n);
 
-    /** Copies an AbstractSymbol value.
-     * 
-     * This method is used internally by the generated AST classes
-     * */
-    protected AbstractSymbol copy_AbstractSymbol(AbstractSymbol sym) {
-	return sym;
-    }
+	/** Copies a boolean value.
+	 * 
+	 * This method is used internally by the generated AST classes
+	 * */
+	protected Boolean copy_Boolean(Boolean b) {
+		return new Boolean(b.booleanValue());
+	}
 
-    /** Dumps a printable representation of a boolean value.
-     * 
-     * This method is used internally by the generated AST classes
-     * */
-    protected void dump_Boolean(PrintStream out, int n, Boolean b) {
-	out.print(Utilities.pad(n));
-	out.println(b.booleanValue() ? "1" : "0");
-    }
+	/** Copies an AbstractSymbol value.
+	 * 
+	 * This method is used internally by the generated AST classes
+	 * */
+	protected AbstractSymbol copy_AbstractSymbol(AbstractSymbol sym) {
+		return sym;
+	}
 
-    /** Dumps a printable representation of an AbstactSymbol value.
-     * 
-     * This method is used internally by the generated AST classes
-     * */
-    protected void dump_AbstractSymbol(PrintStream out, int n, AbstractSymbol sym) {
-	out.print(Utilities.pad(n));
-	out.println(sym.getString());
-    }
+	/** Dumps a printable representation of a boolean value.
+	 * 
+	 * This method is used internally by the generated AST classes
+	 * */
+	protected void dump_Boolean(PrintStream out, int n, Boolean b) {
+		out.print(Utilities.pad(n));
+		out.println(b.booleanValue() ? "1" : "0");
+	}
 
-    /** Dumps a printable representation of current line number
-     * 
-     * This method is used internally by the generated AST classes
-     * */
-    protected void dump_line(PrintStream out, int n) {
-	out.println(Utilities.pad(n) + "#" + lineNumber);
-    }
-    
+	/** Dumps a printable representation of an AbstactSymbol value.
+	 * 
+	 * This method is used internally by the generated AST classes
+	 * */
+	protected void dump_AbstractSymbol(PrintStream out, int n, AbstractSymbol sym) {
+		out.print(Utilities.pad(n));
+		out.println(sym.getString());
+	}
+
+	/** Dumps a printable representation of current line number
+	 * 
+	 * This method is used internally by the generated AST classes
+	 * */
+	protected void dump_line(PrintStream out, int n) {
+		out.println(Utilities.pad(n) + "#" + lineNumber);
+	}
+
 }
-	
+
