@@ -210,9 +210,9 @@ public class ClassTable {
     }
 
     // NOT TO BE INCLUDED IN SKELETON
-    public static void main(String[] args) {
-    	new ClassTable(null).installBasicClasses();
-    }
+//    public static void main(String[] args) {
+//    	new ClassTable(null).installBasicClasses();
+//    }
 }
 
     
