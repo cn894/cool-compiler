@@ -148,11 +148,11 @@ public class ClassTable {
 
 		// NOT TO BE INCLUDED IN SKELETON
 		
-		Object_class.dump_with_types(System.err, 0);
-		IO_class.dump_with_types(System.err, 0);
-		Int_class.dump_with_types(System.err, 0);
-		Bool_class.dump_with_types(System.err, 0);
-		Str_class.dump_with_types(System.err, 0);
+//		Object_class.dump_with_types(System.err, 0);
+//		IO_class.dump_with_types(System.err, 0);
+//		Int_class.dump_with_types(System.err, 0);
+//		Bool_class.dump_with_types(System.err, 0);
+//		Str_class.dump_with_types(System.err, 0);
     }
 	
 
