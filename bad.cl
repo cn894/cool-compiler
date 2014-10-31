@@ -1,4 +1,7 @@
-class C {
+class B inherits C {
+};
+
+class C inherits B {
 	a : Int;
 	b : Bool;
 	init(x : Int, y : Bool) : C {
