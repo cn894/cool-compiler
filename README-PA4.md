@@ -72,7 +72,7 @@ Your directory should now contain the following files:
 
 	ClassTable.java implements a placeholder class for a few useful
 	methods.  Feel free to extend it to implement some real data
-	strucutre.
+	structure.
 
 	TreeConstants.java defined some useful symbol constants.  You
 	may add some of your own, if you wish.

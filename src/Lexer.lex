@@ -21,14 +21,17 @@ import edu.icom4029.cool.core.*;
 
 %state STRING, MLCOMMENT
 
+
+%ctorarg String filename
+
 %init{
-	// TODO: code that goes to constructor
+	this.filename = AbstractTable.stringtable.addString(filename);
 %init}
 
 %{
-	int commentLevel = 0;
-	AbstractSymbol filename = AbstractTable.stringtable.addString("");
-	StringBuffer string = new StringBuffer();
+	int commentLevel        = 0;
+	AbstractSymbol filename;
+	StringBuffer string     = new StringBuffer();
 	
 	private Symbol sym(int type) {
 		return sym(type, yytext());

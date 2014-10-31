@@ -19,35 +19,35 @@ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
 AND FITNESS FOR A PARTICULAR PURPOSE.  THE SOFTWARE PROVIDED HEREUNDER IS
 ON AN "AS IS" BASIS, AND THE UNIVERSITY OF CALIFORNIA HAS NO OBLIGATION TO
 PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
-*/
+ */
 
 import java.io.PrintStream;
 
 import edu.icom4029.cool.core.Utilities;
 
 public class IntTable extends AbstractTable {
-    /** Creates a new IntSymbol object.
-     * 
-     * @see IntSymbol
-     * */
-    protected AbstractSymbol getNewSymbol(String s, int len, int index) {
-	return new IntSymbol(s, len, index);
-    }
-
-    /** Generates code for all int constants in the int table.  
-     * @param intclasstag the class tag for Int
-     * @param s the output stream
-     * */
-    public void codeStringTable(int intclasstag, PrintStream s) {
-	IntSymbol sym = null;
-	for (int i = tbl.size() - 1; i >= 0; i--) {
-	    try {
-		sym = (IntSymbol)tbl.elementAt(i);
-	    } catch (ArrayIndexOutOfBoundsException ex) {
-		Utilities.fatalError("Unexpected exception: " + ex);
-	    }
-	    sym.codeDef(intclasstag, s);
+	/** Creates a new IntSymbol object.
+	 * 
+	 * @see IntSymbol
+	 * */
+	protected AbstractSymbol getNewSymbol(String s, int len, int index) {
+		return new IntSymbol(s, len, index);
 	}
-    }
+
+	/** Generates code for all int constants in the int table.  
+	 * @param intclasstag the class tag for Int
+	 * @param s the output stream
+	 * */
+	public void codeStringTable(int intclasstag, PrintStream s) {
+		IntSymbol sym = null;
+		for (int i = tbl.size() - 1; i >= 0; i--) {
+			try {
+				sym = (IntSymbol)tbl.elementAt(i);
+			} catch (ArrayIndexOutOfBoundsException ex) {
+				Utilities.fatalError("Unexpected exception: " + ex);
+			}
+			sym.codeDef(intclasstag, s);
+		}
+	}
 }
 

@@ -39,7 +39,7 @@ class Semant {
 
 			try {
 				file          = new FileReader(args[i]);
-				Lexer  lexer  = new Lexer(file);
+				Lexer  lexer  = new Lexer(file, args[i]);
 				Parser parser = new Parser(lexer);
 				Object result = parser.parse().value;
 

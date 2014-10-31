@@ -19,7 +19,7 @@ public class ParserTest {
 			
 			try {
 				file          = new FileReader(args[i]);
-				Parser parser = new Parser(new Lexer(file));
+				Parser parser = new Parser(new Lexer(file, args[i]));
 				Symbol result = parser.parse();
 				
 				((program) result.value).dump_with_types(System.out, 0);

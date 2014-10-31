@@ -22,7 +22,7 @@ class LexerTest {
 				file = new FileReader(args[i]);
 				
 				System.out.println("#file_name: \"" + args[i] + "\"");
-				Lexer lexer = new Lexer(file);
+				Lexer lexer = new Lexer(file, args[i]);
 				Symbol s;
 				
 				while ((s = lexer.next_token()).sym != TokenConstants.EOF) {

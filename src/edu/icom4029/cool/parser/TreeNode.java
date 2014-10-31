@@ -335,6 +335,5 @@ public abstract class TreeNode {
 	protected void dump_line(PrintStream out, int n) {
 		out.println(Utilities.pad(n) + "#" + lineNumber);
 	}
-
 }
 
