@@ -10,6 +10,7 @@ package edu.icom4029.cool.parser;
 
 import java.io.PrintStream;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Vector;
 
 import edu.icom4029.cool.core.CgenSupport;
@@ -230,6 +231,7 @@ class Cases extends ListNode {
     <p>
     See <a href="TreeNode.html">TreeNode</a> for full documentation. */
 class program extends ProgramAbstract {
+	
 	protected Classes classes;
 	
 	/** Creates "program" AST node. 
@@ -279,15 +281,52 @@ class program extends ProgramAbstract {
 		ClassTable classTable = new ClassTable(classes);
 
 		/* some semantic analysis code may go here */
-		
-		
-
 		if (classTable.errors()) {
 			System.err.println("Compilation halted due to static semantic errors.");
 			System.exit(1);
 		}
+		
+		Classes basicClasses = classTable.getBasicClassList();
+		
+		traverseAST(basicClasses);
+		traverseAST(classes);
+		
 	}
 	
+	private void traverseAST(Classes classes) {
+		// Loop through each class defined in the program
+		class_ currentClass = null;
+		Enumeration e = classes.getElements();
+		while(e.hasMoreElements()) {
+			currentClass = (class_) e.nextElement(); // get next class in class list that comprises program
+			
+			// For each class, create a new scope and traverse its feature list
+			
+			// I lied. no scoping or stuff like that exists yet. lol, just attributes in a class 
+			
+			 // get the features of the current class
+			Features features = currentClass.getFeatures();
+			Enumeration fe    = features.getElements(); 
+			
+			// Loop through all of the features in the class body
+			while(fe.hasMoreElements()) {
+				Feature currentFeature = (Feature) fe.nextElement(); // get next feature in the class body
+				
+				if (currentFeature instanceof attr) {
+					// Found attribute
+					
+				}
+				else {
+					// Found method
+					
+				}
+				
+			}
+			
+		}
+		
+	}
+
 	/** This method is the entry point to the code generator.  All of the work
 	 * of the code generator takes place within CgenClassTable constructor.
 	 * @param s the output stream 
