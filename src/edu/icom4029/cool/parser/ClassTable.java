@@ -39,9 +39,9 @@ public class ClassTable {
     private PrintStream errorStream;
     
     private HashMap<String, ArrayList<String>> adjacencyList;
-    public HashMap<String, class_> nameToClass;
-    
+    private HashMap<String, class_> nameToClass;
     private HashMap<String, Integer> depthList;
+    
     private Classes basicClassList;
 
     /** Creates data structures representing basic Cool classes (Object,
@@ -156,16 +156,16 @@ public class ClassTable {
            Bool_class, and Str_class here */
 		
 		nameToClass.put(TreeConstants.Object_.getString(), Object_class);
-		nameToClass.put(TreeConstants.IO.getString(), IO_class);
-		nameToClass.put(TreeConstants.Int.getString(), Int_class);
-		nameToClass.put(TreeConstants.Bool.getString(), Bool_class);
-		nameToClass.put(TreeConstants.Str.getString(), Str_class);
+		nameToClass.put(TreeConstants.IO.getString(),      IO_class);
+		nameToClass.put(TreeConstants.Int.getString(),     Int_class);
+		nameToClass.put(TreeConstants.Bool.getString(),    Bool_class);
+		nameToClass.put(TreeConstants.Str.getString(),     Str_class);
 		
 		adjacencyList.put(TreeConstants.Object_.getString(), new ArrayList<String>());
-		adjacencyList.put(TreeConstants.IO.getString(), new ArrayList<String>());
-		adjacencyList.put(TreeConstants.Int.getString(), new ArrayList<String>());
-		adjacencyList.put(TreeConstants.Bool.getString(), new ArrayList<String>());
-		adjacencyList.put(TreeConstants.Str.getString(), new ArrayList<String>());
+		adjacencyList.put(TreeConstants.IO.getString(),      new ArrayList<String>());
+		adjacencyList.put(TreeConstants.Int.getString(),     new ArrayList<String>());
+		adjacencyList.put(TreeConstants.Bool.getString(),    new ArrayList<String>());
+		adjacencyList.put(TreeConstants.Str.getString(),     new ArrayList<String>());
 		
 		basicClassList = new Classes(0);
 		basicClassList.appendElement(Object_class);
@@ -190,8 +190,8 @@ public class ClassTable {
 		/* fill this in */
 		// Build graph first out of class declarations
     	adjacencyList = new HashMap<String, ArrayList<String>>();
-    	nameToClass = new HashMap<String, class_>();
-    	depthList = new HashMap<String, Integer>();
+    	nameToClass   = new HashMap<String, class_>();
+    	depthList     = new HashMap<String, Integer>();
 		
 		installBasicClasses();
 		buildGraph(cls);
