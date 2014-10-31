@@ -35,12 +35,12 @@ import edu.icom4029.cool.lexer.AbstractTable;
  * the inheritance graph.  You may use it or not as you like: it is only
  * here to provide a container for the supplied methods.  */
 public class ClassTable {
-    private int semantErrors;
+    private int         semantErrors;
     private PrintStream errorStream;
     
     private HashMap<String, ArrayList<String>> adjacencyList;
-    private HashMap<String, class_> nameToClass;
-    private HashMap<String, Integer> depthList;
+    private HashMap<String, class_>            nameToClass;
+    private HashMap<String, Integer>           depthList;
     
     private Classes basicClassList;
 
@@ -173,27 +173,19 @@ public class ClassTable {
 		basicClassList.appendElement(Int_class);
 		basicClassList.appendElement(Bool_class);
 		basicClassList.appendElement(Str_class);
-
-		// NOT TO BE INCLUDED IN SKELETON
-		
-//		Object_class.dump_with_types(System.err, 0);
-//		IO_class.dump_with_types(System.err, 0);
-//		Int_class.dump_with_types(System.err, 0);
-//		Bool_class.dump_with_types(System.err, 0);
-//		Str_class.dump_with_types(System.err, 0);
     }
 
     public ClassTable(Classes cls) {
     	semantErrors = 0;
     	errorStream  = System.err;
 		
-		/* fill this in */
 		// Build graph first out of class declarations
     	adjacencyList = new HashMap<String, ArrayList<String>>();
     	nameToClass   = new HashMap<String, class_>();
     	depthList     = new HashMap<String, Integer>();
 		
 		installBasicClasses();
+		// Poop
 		buildGraph(cls);
 		assignDepths("Object", 0);
     }
@@ -462,11 +454,6 @@ public class ClassTable {
     public boolean errors() {
     	return this.semantErrors != 0;
     }
-
-    // NOT TO BE INCLUDED IN SKELETON
-//    public static void main(String[] args) {
-//    	new ClassTable(null).installBasicClasses();
-//    }
 }
 
     
