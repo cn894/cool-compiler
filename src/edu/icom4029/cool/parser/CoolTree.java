@@ -234,7 +234,7 @@ class Cases extends ListNode {
 class program extends ProgramAbstract {
 	HashMap<String, SymbolTable> objectEnvironments = new HashMap<String, SymbolTable>(); // A map that defines the object environment for each class. Each class can have many levels of scope due to methods, lets, etc
 	
-	HashMap<String, SymbolTable> methodSymTabMap = new HashMap<String, SymbolTable>();	
+	HashMap<String, SymbolTable> methodSymTabMap    = new HashMap<String, SymbolTable>();
     HashMap< String, HashMap< String, ArrayList<AbstractSymbol>>> methodEnvironment;
     ClassTable classTable;
 	
@@ -313,6 +313,11 @@ class program extends ProgramAbstract {
 			SymbolTable currentClassObjectEnvironment = objectEnvironments.get(currentClass.getName().toString()); // Get that environment
 			currentClassObjectEnvironment.enterScope();                                                            // Enter a scope. Necessary before doing anything with a SymbolTable.
 			
+			// NEW POOP ALERT
+			methodEnvironment.put(currentClass.getName().toString(), new HashMap<String,ArrayList<AbstractSymbol>>());
+	        HashMap<String, ArrayList<AbstractSymbol>> methodSymTab = methodEnvironment.get(currentClass.getName().toString());
+		    // NEW POOP ALERT
+			
 			 // get the features of the current class
 			Features features = currentClass.getFeatures();
 			Enumeration fe    = features.getElements();
@@ -332,7 +337,7 @@ class program extends ProgramAbstract {
 						classTable.semantError(currentClass.getFilename(), currentFeature).println("Attribute " + attributeName.toString() + " is defined more than once.");
 					}
 					
-					// add attribute to the current class's environment, will get overwritten if previously defined
+					// add attribute and its type to the current class's environment, will get overwritten if previously defined
 					// we still add it to keep going with the semantic analysis, rather than quit with the error.
 					currentClassObjectEnvironment.addId(attributeName, attributeType);
 					
@@ -344,7 +349,15 @@ class program extends ProgramAbstract {
 				}
 				else {
 					// Found method
+					AbstractSymbol methodName = ((method) currentFeature).getName(); // AbstractSymbol representing the identifier of the method
 					
+					// Add method to method Symbol Table,if already present, scope error
+				    if (methodSymTab.containsKey(methodName.toString())) {
+				    	classTable.semantError(currentClass.getFilename(), currentFeature).println("Method " + methodName.toString() + " is defined more than once.");
+				    }
+				    
+				    // Traverse the method definition
+				    traverseMethod(currentClass, ((method) currentFeature), currentClassObjectEnvironment);
 				}
 				
 				
@@ -353,31 +366,40 @@ class program extends ProgramAbstract {
 	}
 	
 	/** Traverse method. Check formal parameters, return type and expressions **/
-//	private void traverseMethod(class_ currentClass, method m, SymbolTable currentClassObjectEnvironment) {
-//		String className = currentClass.getName().toString();
-//		currentClassObjectEnvironment.enterScope(); // Start a new scope
-//		// Traverse formal arguments, adding them to scope
-//		Formals formals   = m.getFormals();
-//		String methodname = m.getName().toString();
-//
-//		if (methodEnvironment.get(className).get(methodname) == null) {
-//			methodEnvironment.get(className).put(methodname, new ArrayList<AbstractSymbol>());
-//		}
-//
-//		for (Enumeration e = formals.getElements(); e.hasMoreElements();) {
-//			formalc formal = ((formal)e.nextElement());
-//			if (currentClassObjectEnvironment.probe(formal.getName()) != null) {
-//				classTable.semantError(currentClass.getFilename(), formal).println("Formal parameter " + formal.getName().toString() + " is multiply defined");
-//			}
-//			// Recover from multiply defined formal parameter. Just overwrite it
-//			currentClassObjectEnvironment.addId(formal.getName(), formal.getType());
-//			methodEnvironment.get(className).get(methodname).add(formal.getType());
-//		}
-//		methodEnvironment.get(className).get(methodname).add(m.getReturnType());
-//		// Traverse expression
-//		traverseExpression(currentClass, m.getExpression(), currentClassObjectEnvironment, null);
-//		currentClassObjectEnvironment.exitScope(); // Exit method scope
-//    }
+	private void traverseMethod(class_ currentClass, method currentMethod, SymbolTable currentClassObjectEnvironment) {
+		// Traverse formal arguments, adding them to scope
+		String  className  = currentClass.getName().toString();  // Get the name of the class in which the current method is defined
+		String  methodname = currentMethod.getName().toString(); // Get the identifier of the current method
+		Formals formals    = currentMethod.getFormals();         // Get the parameter definitions of the current method
+		currentClassObjectEnvironment.enterScope();              // Starts a new scope. Recall that functions also define their own scope.
+		
+		
+		if (methodEnvironment.get(className).get(methodname) == null) {
+			methodEnvironment.get(className).put(methodname, new ArrayList<AbstractSymbol>());
+		}
+		
+		// Loop through the formal parameters of the method definition and assign types to each one
+		Enumeration e = formals.getElements();
+		while(e.hasMoreElements()) {
+			formal currentFormal = (formal) e.nextElement();
+			
+			// Throw an error if there is more than one formal parameter with the same name
+			if (currentClassObjectEnvironment.probe(currentFormal.getName()) != null) {
+				classTable.semantError(currentClass.getFilename(), currentFormal).println("Formal parameter " + currentFormal.getName().toString() + " is defined more than once");
+			}
+			
+			// Add the current formal parameter into the environment.
+			currentClassObjectEnvironment.addId(currentFormal.getName(), currentFormal.getType());
+			methodEnvironment.get(className).get(methodname).add(currentFormal.getType());
+		}
+		
+		// Add the return type of the current method in the environment
+		methodEnvironment.get(className).get(methodname).add(currentMethod.getReturnType());
+		
+		// Traverse the function body, which is an expression, to assign it a type
+		traverseExpr(currentClass, currentMethod.getExpr(), currentClassObjectEnvironment, null);
+		currentClassObjectEnvironment.exitScope(); // Exit the current method's scope
+    }
 	
 	private void traverseExpr(class_ currentClass, Expression expr, SymbolTable currentClassObjectEnvironment, SymbolTable currentClassMethodEnvironment) {
 		System.out.println("You are traversing the Expression: " + expr.toString());
@@ -391,29 +413,34 @@ class program extends ProgramAbstract {
         } else if (expr instanceof int_const) {
         	// Expression is an Integer constant
             expr.set_type(TreeConstants.Int);
-        } else if (expr instanceof new_) {
-        	// Expression is a new object instantiation
-            expr.set_type(((new_)expr).getTypeName());
         } else if (expr instanceof plus) {
         	// Expression is a sum of expressions: e1 + e2
             expr.set_type(TreeConstants.Int);
-            traverseExpr(currentClass, ((plus)expr).getLHS(), currentClassObjectEnvironment, currentClassMethodEnvironment);
-            traverseExpr(currentClass, ((plus)expr).getRHS(), currentClassObjectEnvironment, currentClassMethodEnvironment);
+            traverseExpr(currentClass, ((plus) expr).getLHS(), currentClassObjectEnvironment, currentClassMethodEnvironment);
+            traverseExpr(currentClass, ((plus) expr).getRHS(), currentClassObjectEnvironment, currentClassMethodEnvironment);
         } else if (expr instanceof sub) {
         	// Expression is a subtraction of expressions: e1 - e2
             expr.set_type(TreeConstants.Int);
-            traverseExpr(currentClass, ((sub)expr).getLHS(), currentClassObjectEnvironment, currentClassMethodEnvironment);
-            traverseExpr(currentClass, ((sub)expr).getRHS(), currentClassObjectEnvironment, currentClassMethodEnvironment);
+            traverseExpr(currentClass, ((sub) expr).getLHS(), currentClassObjectEnvironment, currentClassMethodEnvironment);
+            traverseExpr(currentClass, ((sub) expr).getRHS(), currentClassObjectEnvironment, currentClassMethodEnvironment);
         } else if (expr instanceof mul) {
         	// Expression is a multiplication of expressions: e1 * e2
             expr.set_type(TreeConstants.Int);
-            traverseExpr(currentClass, ((mul)expr).getLHS(), currentClassObjectEnvironment, currentClassMethodEnvironment);
-            traverseExpr(currentClass, ((mul)expr).getRHS(), currentClassObjectEnvironment, currentClassMethodEnvironment);
+            traverseExpr(currentClass, ((mul) expr).getLHS(), currentClassObjectEnvironment, currentClassMethodEnvironment);
+            traverseExpr(currentClass, ((mul) expr).getRHS(), currentClassObjectEnvironment, currentClassMethodEnvironment);
         } else if (expr instanceof divide) {
         	// Expression is a division of expressions: e1 * e2
             expr.set_type(TreeConstants.Int);
-            traverseExpr(currentClass, ((divide)expr).getLHS(), currentClassObjectEnvironment, currentClassMethodEnvironment);
-            traverseExpr(currentClass, ((divide)expr).getRHS(), currentClassObjectEnvironment, currentClassMethodEnvironment);
+            traverseExpr(currentClass, ((divide) expr).getLHS(), currentClassObjectEnvironment, currentClassMethodEnvironment);
+            traverseExpr(currentClass, ((divide) expr).getRHS(), currentClassObjectEnvironment, currentClassMethodEnvironment);
+        } else if (expr instanceof new_) {
+        	// Expression is a new object instantiation
+            expr.set_type(((new_)expr).getTypeName());
+        } else if (expr instanceof assign) {
+            Expression e = ((assign) expr).getExpr();
+            traverseExpr( currentClass, e, currentClassObjectEnvironment, currentClassMethodEnvironment);
+            // The type of the expression
+            expr.set_type(e.get_type());
         }
 	}
 
@@ -516,6 +543,11 @@ class method extends Feature {
 		return new method(lineNumber, copy_AbstractSymbol(name), (Formals)formals.copy(), copy_AbstractSymbol(return_type), (Expression)expr.copy());
 	}
 	
+	public AbstractSymbol getName()       { return name; }
+	public Formals        getFormals()    { return formals; }
+	public AbstractSymbol getReturnType() { return return_type; }
+	public Expression     getExpr()       {return expr; }
+	
 	public void dump(PrintStream out, int n) {
 		out.print(Utilities.pad(n) + "method\n");
 		dump_AbstractSymbol(out, n+2, name);
@@ -607,6 +639,10 @@ class formal extends FormalAbstract {
 		return new formal(lineNumber, copy_AbstractSymbol(name), copy_AbstractSymbol(type_decl));
 	}
 	
+	public AbstractSymbol getName() { return name; }
+	public AbstractSymbol getType() { return type_decl; }
+	
+	
 	public void dump(PrintStream out, int n) {
 		out.print(Utilities.pad(n) + "formal\n");
 		dump_AbstractSymbol(out, n+2, name);
@@ -681,16 +717,20 @@ class assign extends Expression {
 		name = a1;
 		expr = a2;
 	}
+	
 	public TreeNode copy() {
 		return new assign(lineNumber, copy_AbstractSymbol(name), (Expression)expr.copy());
 	}
+	
+	public AbstractSymbol getName() { return name; }
+	public Expression     getExpr() { return expr; }
+	
 	public void dump(PrintStream out, int n) {
 		out.print(Utilities.pad(n) + "assign\n");
 		dump_AbstractSymbol(out, n+2, name);
 		expr.dump(out, n+2);
 	}
-
-
+	
 	public void dump_with_types(PrintStream out, int n) {
 		dump_line(out, n);
 		out.println(Utilities.pad(n) + "_assign");
