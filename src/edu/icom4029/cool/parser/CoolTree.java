@@ -9,6 +9,7 @@ package edu.icom4029.cool.parser;
 //////////////////////////////////////////////////////////
 
 import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Vector;
@@ -231,6 +232,11 @@ class Cases extends ListNode {
     <p>
     See <a href="TreeNode.html">TreeNode</a> for full documentation. */
 class program extends ProgramAbstract {
+	HashMap<String, SymbolTable> objectEnvironments = new HashMap<String, SymbolTable>(); // A map that defines the object environment for each class. Each class can have many levels of scope due to methods, lets, etc
+	
+	HashMap<String, SymbolTable> methodSymTabMap = new HashMap<String, SymbolTable>();	
+    HashMap< String, HashMap< String, ArrayList<AbstractSymbol>>> methodEnvironment;
+    ClassTable classTable;
 	
 	protected Classes classes;
 	
@@ -278,7 +284,7 @@ class program extends ProgramAbstract {
 	 */
 	public void semant() {
 		/* ClassTable constructor may do some semantic analysis */
-		ClassTable classTable = new ClassTable(classes);
+		classTable = new ClassTable(classes);
 
 		/* some semantic analysis code may go here */
 		if (classTable.errors()) {
@@ -288,7 +294,9 @@ class program extends ProgramAbstract {
 		
 		Classes basicClasses = classTable.getBasicClassList();
 		
+		// Traversing the AST formed by the basic classes: Int, Bool, String, IO to add them all to the environment when checking all other user defined classes.
 		traverseAST(basicClasses);
+		// Traverse the program's entire AST to perform semantic analysis on it.
 		traverseAST(classes);
 		
 	}
@@ -297,16 +305,17 @@ class program extends ProgramAbstract {
 		// Loop through each class defined in the program
 		class_ currentClass = null;
 		Enumeration e = classes.getElements();
+		
 		while(e.hasMoreElements()) {
 			currentClass = (class_) e.nextElement(); // get next class in class list that comprises program
 			
-			// For each class, create a new scope and traverse its feature list
-			
-			// I lied. no scoping or stuff like that exists yet. lol, just attributes in a class 
+			objectEnvironments.put(currentClass.getName().toString(), new SymbolTable());                          // Define the object environment for the current class
+			SymbolTable currentClassObjectEnvironment = objectEnvironments.get(currentClass.getName().toString()); // Get that environment
+			currentClassObjectEnvironment.enterScope();                                                            // Enter a scope. Necessary before doing anything with a SymbolTable.
 			
 			 // get the features of the current class
 			Features features = currentClass.getFeatures();
-			Enumeration fe    = features.getElements(); 
+			Enumeration fe    = features.getElements();
 			
 			// Loop through all of the features in the class body
 			while(fe.hasMoreElements()) {
@@ -314,17 +323,101 @@ class program extends ProgramAbstract {
 				
 				if (currentFeature instanceof attr) {
 					// Found attribute
+					AbstractSymbol attributeName = ((attr) currentFeature).getName();       // AbstractSymbol representing the identifier of the attribute
+					AbstractSymbol attributeType = ((attr) currentFeature).getType();       // AbstractSymbol representing the type of the attribute
+					Expression     attributeExpr = ((attr) currentFeature).getExpression(); // The attribute expression
+					
+					// if the attribute had been declared previously, throw a semamtic error
+					if (currentClassObjectEnvironment.lookup(attributeName) != null) {
+						classTable.semantError(currentClass.getFilename(), currentFeature).println("Attribute " + attributeName.toString() + " is defined more than once.");
+					}
+					
+					// add attribute to the current class's environment, will get overwritten if previously defined
+					// we still add it to keep going with the semantic analysis, rather than quit with the error.
+					currentClassObjectEnvironment.addId(attributeName, attributeType);
+					
+					// Traverse the attribute expression.
+					// Recall that it can be either a declaration or assignment
+					// Also, the right-hand side is an expression within the attribute expression. See Parser.cup
+					traverseExpr(currentClass, attributeExpr, currentClassObjectEnvironment, null);
 					
 				}
 				else {
 					// Found method
 					
-					
 				}
 				
-			}
-			
+				
+			}	
 		}
+	}
+	
+	/** Traverse method. Check formal parameters, return type and expressions **/
+//	private void traverseMethod(class_ currentClass, method m, SymbolTable currentClassObjectEnvironment) {
+//		String className = currentClass.getName().toString();
+//		currentClassObjectEnvironment.enterScope(); // Start a new scope
+//		// Traverse formal arguments, adding them to scope
+//		Formals formals   = m.getFormals();
+//		String methodname = m.getName().toString();
+//
+//		if (methodEnvironment.get(className).get(methodname) == null) {
+//			methodEnvironment.get(className).put(methodname, new ArrayList<AbstractSymbol>());
+//		}
+//
+//		for (Enumeration e = formals.getElements(); e.hasMoreElements();) {
+//			formalc formal = ((formal)e.nextElement());
+//			if (currentClassObjectEnvironment.probe(formal.getName()) != null) {
+//				classTable.semantError(currentClass.getFilename(), formal).println("Formal parameter " + formal.getName().toString() + " is multiply defined");
+//			}
+//			// Recover from multiply defined formal parameter. Just overwrite it
+//			currentClassObjectEnvironment.addId(formal.getName(), formal.getType());
+//			methodEnvironment.get(className).get(methodname).add(formal.getType());
+//		}
+//		methodEnvironment.get(className).get(methodname).add(m.getReturnType());
+//		// Traverse expression
+//		traverseExpression(currentClass, m.getExpression(), currentClassObjectEnvironment, null);
+//		currentClassObjectEnvironment.exitScope(); // Exit method scope
+//    }
+	
+	private void traverseExpr(class_ currentClass, Expression expr, SymbolTable currentClassObjectEnvironment, SymbolTable currentClassMethodEnvironment) {
+		System.out.println("You are traversing the Expression: " + expr.toString());
+		
+		if (expr instanceof object) {
+			// Expression is an Object
+			AbstractSymbol objectName = ((object) expr).getName();
+			
+            if (objectName == TreeConstants.self ) {
+                expr.set_type(TreeConstants.SELF_TYPE);
+            } else if (currentClassObjectEnvironment.lookup(objectName) == null) {
+                //classTable.semantError(currentClass.getFilename(),expression).println("Undeclared identifier " + ((object)expression).getName());
+                expr.set_type(TreeConstants.Object_);
+            } else {
+                // Set the type of this object from the symbol table, if it exists
+                expr.set_type((AbstractSymbol) currentClassObjectEnvironment.lookup(objectName));
+            }
+        } else if (expr instanceof string_const) {
+        	// Expression is a String constant
+            expr.set_type(TreeConstants.Str);
+        } else if (expr instanceof bool_const) {
+        	// Expression is a Boolean constant
+            expr.set_type(TreeConstants.Bool);
+        } else if (expr instanceof int_const) {
+        	// Expression is an Integer constant
+            expr.set_type(TreeConstants.Int);
+        } else if (expr instanceof isvoid) {
+        	// Expression is an isvoid expression
+            expr.set_type(TreeConstants.Bool);
+            // Traverse the expression on the right-hand side of the isvoid expression
+            traverseExpr(currentClass, ((isvoid) expr).getExpression(), currentClassObjectEnvironment, currentClassMethodEnvironment);
+        } else if (expr instanceof new_) {
+        	// Expression is a new object instantiation
+            expr.set_type(((new_)expr).getTypeName());
+        } else if (expr instanceof comp) {
+        	// Expression is the boolean complement of an expression
+            expr.set_type(TreeConstants.Bool);
+            // Traverse the expression that is being complemented
+            traverseExpr(currentClass, ((comp) expr).getExpression(), currentClassObjectEnvironment, currentClassMethodEnvironment);
+        } 
 		
 	}
 
@@ -473,6 +566,10 @@ class attr extends Feature {
 	public TreeNode copy() {
 		return new attr(lineNumber, copy_AbstractSymbol(name), copy_AbstractSymbol(type_decl), (Expression)init.copy());
 	}
+	
+	public AbstractSymbol getName()       { return name; }
+    public Expression     getExpression() { return init; }
+    public AbstractSymbol getType()	      { return type_decl; }
 	
 	public void dump(PrintStream out, int n) {
 		out.print(Utilities.pad(n) + "attr\n");
@@ -1360,7 +1457,8 @@ class comp extends Expression {
 		out.print(Utilities.pad(n) + "comp\n");
 		e1.dump(out, n+2);
 	}
-
+	
+	public Expression getExpression() { return e1; }
 
 	public void dump_with_types(PrintStream out, int n) {
 		dump_line(out, n);
@@ -1375,8 +1473,6 @@ class comp extends Expression {
 	 * */
 	public void code(PrintStream s) {
 	}
-
-
 }
 
 
@@ -1518,15 +1614,18 @@ class new_ extends Expression {
 		super(lineNumber);
 		type_name = a1;
 	}
+	
 	public TreeNode copy() {
 		return new new_(lineNumber, copy_AbstractSymbol(type_name));
 	}
+	
+	public AbstractSymbol getTypeName() { return type_name; }
+	
 	public void dump(PrintStream out, int n) {
 		out.print(Utilities.pad(n) + "new_\n");
 		dump_AbstractSymbol(out, n+2, type_name);
 	}
-
-
+	
 	public void dump_with_types(PrintStream out, int n) {
 		dump_line(out, n);
 		out.println(Utilities.pad(n) + "_new");
@@ -1558,6 +1657,9 @@ class isvoid extends Expression {
 	public isvoid(int lineNumber, Expression a1) {
 		super(lineNumber);
 		e1 = a1;
+	}
+	public Expression getExpression() {
+		return e1;
 	}
 	public TreeNode copy() {
 		return new isvoid(lineNumber, (Expression)e1.copy());
@@ -1639,6 +1741,9 @@ class object extends Expression {
 	public TreeNode copy() {
 		return new object(lineNumber, copy_AbstractSymbol(name));
 	}
+	
+	public AbstractSymbol getName() { return name; }
+	
 	public void dump(PrintStream out, int n) {
 		out.print(Utilities.pad(n) + "object\n");
 		dump_AbstractSymbol(out, n+2, name);
