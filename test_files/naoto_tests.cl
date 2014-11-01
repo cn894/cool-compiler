@@ -6,4 +6,5 @@ class A {
 class B {
 	y : Int <- 9000;
 	a : Bool;
+	lel : Int <- 90 + 30;
 };

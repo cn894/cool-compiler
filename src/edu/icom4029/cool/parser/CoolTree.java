@@ -382,20 +382,7 @@ class program extends ProgramAbstract {
 	private void traverseExpr(class_ currentClass, Expression expr, SymbolTable currentClassObjectEnvironment, SymbolTable currentClassMethodEnvironment) {
 		System.out.println("You are traversing the Expression: " + expr.toString());
 		
-		if (expr instanceof object) {
-			// Expression is an Object
-			AbstractSymbol objectName = ((object) expr).getName();
-			
-            if (objectName == TreeConstants.self ) {
-                expr.set_type(TreeConstants.SELF_TYPE);
-            } else if (currentClassObjectEnvironment.lookup(objectName) == null) {
-                //classTable.semantError(currentClass.getFilename(),expression).println("Undeclared identifier " + ((object)expression).getName());
-                expr.set_type(TreeConstants.Object_);
-            } else {
-                // Set the type of this object from the symbol table, if it exists
-                expr.set_type((AbstractSymbol) currentClassObjectEnvironment.lookup(objectName));
-            }
-        } else if (expr instanceof string_const) {
+		if (expr instanceof string_const) {
         	// Expression is a String constant
             expr.set_type(TreeConstants.Str);
         } else if (expr instanceof bool_const) {
@@ -404,21 +391,30 @@ class program extends ProgramAbstract {
         } else if (expr instanceof int_const) {
         	// Expression is an Integer constant
             expr.set_type(TreeConstants.Int);
-        } else if (expr instanceof isvoid) {
-        	// Expression is an isvoid expression
-            expr.set_type(TreeConstants.Bool);
-            // Traverse the expression on the right-hand side of the isvoid expression
-            traverseExpr(currentClass, ((isvoid) expr).getExpression(), currentClassObjectEnvironment, currentClassMethodEnvironment);
         } else if (expr instanceof new_) {
         	// Expression is a new object instantiation
             expr.set_type(((new_)expr).getTypeName());
-        } else if (expr instanceof comp) {
-        	// Expression is the boolean complement of an expression
-            expr.set_type(TreeConstants.Bool);
-            // Traverse the expression that is being complemented
-            traverseExpr(currentClass, ((comp) expr).getExpression(), currentClassObjectEnvironment, currentClassMethodEnvironment);
-        } 
-		
+        } else if (expr instanceof plus) {
+        	// Expression is a sum of expressions: e1 + e2
+            expr.set_type(TreeConstants.Int);
+            traverseExpr(currentClass, ((plus)expr).getLHS(), currentClassObjectEnvironment, currentClassMethodEnvironment);
+            traverseExpr(currentClass, ((plus)expr).getRHS(), currentClassObjectEnvironment, currentClassMethodEnvironment);
+        } else if (expr instanceof sub) {
+        	// Expression is a subtraction of expressions: e1 - e2
+            expr.set_type(TreeConstants.Int);
+            traverseExpr(currentClass, ((sub)expr).getLHS(), currentClassObjectEnvironment, currentClassMethodEnvironment);
+            traverseExpr(currentClass, ((sub)expr).getRHS(), currentClassObjectEnvironment, currentClassMethodEnvironment);
+        } else if (expr instanceof mul) {
+        	// Expression is a multiplication of expressions: e1 * e2
+            expr.set_type(TreeConstants.Int);
+            traverseExpr(currentClass, ((mul)expr).getLHS(), currentClassObjectEnvironment, currentClassMethodEnvironment);
+            traverseExpr(currentClass, ((mul)expr).getRHS(), currentClassObjectEnvironment, currentClassMethodEnvironment);
+        } else if (expr instanceof divide) {
+        	// Expression is a division of expressions: e1 * e2
+            expr.set_type(TreeConstants.Int);
+            traverseExpr(currentClass, ((divide)expr).getLHS(), currentClassObjectEnvironment, currentClassMethodEnvironment);
+            traverseExpr(currentClass, ((divide)expr).getRHS(), currentClassObjectEnvironment, currentClassMethodEnvironment);
+        }
 	}
 
 	/** This method is the entry point to the code generator.  All of the work
@@ -1093,12 +1089,15 @@ class plus extends Expression {
 	public TreeNode copy() {
 		return new plus(lineNumber, (Expression)e1.copy(), (Expression)e2.copy());
 	}
+	
+	public Expression getLHS() { return e1; }
+	public Expression getRHS() { return e2; }
+	
 	public void dump(PrintStream out, int n) {
 		out.print(Utilities.pad(n) + "plus\n");
 		e1.dump(out, n+2);
 		e2.dump(out, n+2);
 	}
-
 
 	public void dump_with_types(PrintStream out, int n) {
 		dump_line(out, n);
@@ -1139,12 +1138,15 @@ class sub extends Expression {
 	public TreeNode copy() {
 		return new sub(lineNumber, (Expression)e1.copy(), (Expression)e2.copy());
 	}
+	
+	public Expression getLHS() { return e1; }
+	public Expression getRHS() { return e2; }
+	
 	public void dump(PrintStream out, int n) {
 		out.print(Utilities.pad(n) + "sub\n");
 		e1.dump(out, n+2);
 		e2.dump(out, n+2);
 	}
-
 
 	public void dump_with_types(PrintStream out, int n) {
 		dump_line(out, n);
@@ -1160,8 +1162,6 @@ class sub extends Expression {
 	 * */
 	public void code(PrintStream s) {
 	}
-
-
 }
 
 
@@ -1185,12 +1185,15 @@ class mul extends Expression {
 	public TreeNode copy() {
 		return new mul(lineNumber, (Expression)e1.copy(), (Expression)e2.copy());
 	}
+	
+	public Expression getLHS() { return e1; }
+	public Expression getRHS() { return e2; }
+	
 	public void dump(PrintStream out, int n) {
 		out.print(Utilities.pad(n) + "mul\n");
 		e1.dump(out, n+2);
 		e2.dump(out, n+2);
 	}
-
 
 	public void dump_with_types(PrintStream out, int n) {
 		dump_line(out, n);
@@ -1231,12 +1234,15 @@ class divide extends Expression {
 	public TreeNode copy() {
 		return new divide(lineNumber, (Expression)e1.copy(), (Expression)e2.copy());
 	}
+	
+	public Expression getLHS() { return e1; }
+	public Expression getRHS() { return e2; }
+	
 	public void dump(PrintStream out, int n) {
 		out.print(Utilities.pad(n) + "divide\n");
 		e1.dump(out, n+2);
 		e2.dump(out, n+2);
 	}
-
 
 	public void dump_with_types(PrintStream out, int n) {
 		dump_line(out, n);
