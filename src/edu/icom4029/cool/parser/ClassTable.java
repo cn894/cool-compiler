@@ -28,6 +28,10 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import edu.icom4029.cool.ast.Classes;
+import edu.icom4029.cool.ast.Features;
+import edu.icom4029.cool.ast.Formals;
+import edu.icom4029.cool.ast.base.TreeNode;
 import edu.icom4029.cool.lexer.AbstractSymbol;
 import edu.icom4029.cool.lexer.AbstractTable;
 

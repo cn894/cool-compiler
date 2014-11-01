@@ -24,7 +24,6 @@ ON AN "AS IS" BASIS, AND THE UNIVERSITY OF CALIFORNIA HAS NO OBLIGATION TO
 PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 */
 
-// This is a project skeleton file
 
 /** For convenience, this class defines a large number of symbols.  These
  * symbols include the primitive type and method names, as well as fixed

@@ -27,6 +27,7 @@ import java.io.PrintStream;
 import java.util.Vector;
 import java.util.Enumeration;
 
+import edu.icom4029.cool.ast.ClassAbstract;
 import edu.icom4029.cool.core.Utilities;
 import edu.icom4029.cool.lexer.AbstractTable;
 
@@ -36,7 +37,7 @@ public class CgenNode extends class_ {
 
 	/** The children of this node in the inheritance tree */
 	private Vector children;
-
+	
 	/** Indicates a basic class */
 	final static int Basic = 0;
 

@@ -14,6 +14,16 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Vector;
 
+import edu.icom4029.cool.ast.ClassAbstract;
+import edu.icom4029.cool.ast.Classes;
+import edu.icom4029.cool.ast.Expression;
+import edu.icom4029.cool.ast.Feature;
+import edu.icom4029.cool.ast.Features;
+import edu.icom4029.cool.ast.FormalAbstract;
+import edu.icom4029.cool.ast.Formals;
+import edu.icom4029.cool.ast.ProgramAbstract;
+import edu.icom4029.cool.ast.base.ListNode;
+import edu.icom4029.cool.ast.base.TreeNode;
 import edu.icom4029.cool.core.CgenSupport;
 import edu.icom4029.cool.core.Utilities;
 import edu.icom4029.cool.lexer.AbstractSymbol;
@@ -23,145 +33,145 @@ import edu.icom4029.cool.lexer.IntSymbol;
 import edu.icom4029.cool.lexer.StringSymbol;
 
 /** Defines simple phylum Program */
-abstract class ProgramAbstract extends TreeNode {
-	protected ProgramAbstract(int lineNumber) {
-		super(lineNumber);
-	}
-	public abstract void dump_with_types(PrintStream out, int n);
-	public abstract void semant();
-	public abstract void cgen(PrintStream s);
-}
+//abstract class ProgramAbstract extends TreeNode {
+//	protected ProgramAbstract(int lineNumber) {
+//		super(lineNumber);
+//	}
+//	public abstract void dump_with_types(PrintStream out, int n);
+//	public abstract void semant();
+//	public abstract void cgen(PrintStream s);
+//}
 
 
 /** Defines simple phylum Class_ */
-abstract class ClassAbstract extends TreeNode {
-	protected ClassAbstract(int lineNumber) {
-		super(lineNumber);
-	}
-	public abstract void           dump_with_types(PrintStream out, int n);
-	public abstract AbstractSymbol getName();
-	public abstract AbstractSymbol getParent();
-	public abstract AbstractSymbol getFilename();
-	public abstract Features       getFeatures();
-}
+//abstract class ClassAbstract extends TreeNode {
+//	protected ClassAbstract(int lineNumber) {
+//		super(lineNumber);
+//	}
+//	public abstract void           dump_with_types(PrintStream out, int n);
+//	public abstract AbstractSymbol getName();
+//	public abstract AbstractSymbol getParent();
+//	public abstract AbstractSymbol getFilename();
+//	public abstract Features       getFeatures();
+//}
 
 
 /** Defines list phylum Classes
     <p>
     See <a href="ListNode.html">ListNode</a> for full documentation. */
-class Classes extends ListNode {
-	public final static Class elementClass = ClassAbstract.class;
-	/** Returns class of this lists's elements */
-	public Class getElementClass() {
-		return elementClass;
-	}
-	protected Classes(int lineNumber, Vector elements) {
-		super(lineNumber, elements);
-	}
-	/** Creates an empty "Classes" list */
-	public Classes(int lineNumber) {
-		super(lineNumber);
-	}
-	/** Appends "Class_" element to this list */
-	public Classes appendElement(TreeNode elem) {
-		addElement(elem);
-		return this;
-	}
-	public TreeNode copy() {
-		return new Classes(lineNumber, copyElements());
-	}
-}
+//class Classes extends ListNode {
+//	public final static Class elementClass = ClassAbstract.class;
+//	/** Returns class of this lists's elements */
+//	public Class getElementClass() {
+//		return elementClass;
+//	}
+//	protected Classes(int lineNumber, Vector elements) {
+//		super(lineNumber, elements);
+//	}
+//	/** Creates an empty "Classes" list */
+//	public Classes(int lineNumber) {
+//		super(lineNumber);
+//	}
+//	/** Appends "Class_" element to this list */
+//	public Classes appendElement(TreeNode elem) {
+//		addElement(elem);
+//		return this;
+//	}
+//	public TreeNode copy() {
+//		return new Classes(lineNumber, copyElements());
+//	}
+//}
 
 
 /** Defines simple phylum Feature */
-abstract class Feature extends TreeNode {
-	protected Feature(int lineNumber) {
-		super(lineNumber);
-	}
-	public abstract void dump_with_types(PrintStream out, int n);
-}
+//abstract class Feature extends TreeNode {
+//	protected Feature(int lineNumber) {
+//		super(lineNumber);
+//	}
+//	public abstract void dump_with_types(PrintStream out, int n);
+//}
 
 
 /** Defines list phylum Features
     <p>
     See <a href="ListNode.html">ListNode</a> for full documentation. */
-class Features extends ListNode {
-	public final static Class elementClass = Feature.class;
-	/** Returns class of this lists's elements */
-	public Class getElementClass() {
-		return elementClass;
-	}
-	protected Features(int lineNumber, Vector elements) {
-		super(lineNumber, elements);
-	}
-	/** Creates an empty "Features" list */
-	public Features(int lineNumber) {
-		super(lineNumber);
-	}
-	/** Appends "Feature" element to this list */
-	public Features appendElement(TreeNode elem) {
-		addElement(elem);
-		return this;
-	}
-	public TreeNode copy() {
-		return new Features(lineNumber, copyElements());
-	}
-}
+//class Features extends ListNode {
+//	public final static Class elementClass = Feature.class;
+//	/** Returns class of this lists's elements */
+//	public Class getElementClass() {
+//		return elementClass;
+//	}
+//	protected Features(int lineNumber, Vector elements) {
+//		super(lineNumber, elements);
+//	}
+//	/** Creates an empty "Features" list */
+//	public Features(int lineNumber) {
+//		super(lineNumber);
+//	}
+//	/** Appends "Feature" element to this list */
+//	public Features appendElement(TreeNode elem) {
+//		addElement(elem);
+//		return this;
+//	}
+//	public TreeNode copy() {
+//		return new Features(lineNumber, copyElements());
+//	}
+//}
 
 
 /** Defines simple phylum Formal */
-abstract class FormalAbstract extends TreeNode {
-	protected FormalAbstract(int lineNumber) {
-		super(lineNumber);
-	}
-	public abstract void dump_with_types(PrintStream out, int n);
-}
+//abstract class FormalAbstract extends TreeNode {
+//	protected FormalAbstract(int lineNumber) {
+//		super(lineNumber);
+//	}
+//	public abstract void dump_with_types(PrintStream out, int n);
+//}
 
 
 /** Defines list phylum Formals
     <p>
     See <a href="ListNode.html">ListNode</a> for full documentation. */
-class Formals extends ListNode {
-	public final static Class elementClass = FormalAbstract.class;
-	/** Returns class of this lists's elements */
-	public Class getElementClass() {
-		return elementClass;
-	}
-	protected Formals(int lineNumber, Vector elements) {
-		super(lineNumber, elements);
-	}
-	/** Creates an empty "Formals" list */
-	public Formals(int lineNumber) {
-		super(lineNumber);
-	}
-	/** Appends "Formal" element to this list */
-	public Formals appendElement(TreeNode elem) {
-		addElement(elem);
-		return this;
-	}
-	public TreeNode copy() {
-		return new Formals(lineNumber, copyElements());
-	}
-}
+//class Formals extends ListNode {
+//	public final static Class elementClass = FormalAbstract.class;
+//	/** Returns class of this lists's elements */
+//	public Class getElementClass() {
+//		return elementClass;
+//	}
+//	protected Formals(int lineNumber, Vector elements) {
+//		super(lineNumber, elements);
+//	}
+//	/** Creates an empty "Formals" list */
+//	public Formals(int lineNumber) {
+//		super(lineNumber);
+//	}
+//	/** Appends "Formal" element to this list */
+//	public Formals appendElement(TreeNode elem) {
+//		addElement(elem);
+//		return this;
+//	}
+//	public TreeNode copy() {
+//		return new Formals(lineNumber, copyElements());
+//	}
+//}
 
 
 /** Defines simple phylum Expression */
-abstract class Expression extends TreeNode {
-	protected Expression(int lineNumber) {
-		super(lineNumber);
-	}
-	private AbstractSymbol type = null;                                 
-	public AbstractSymbol get_type() { return type; }           
-	public Expression set_type(AbstractSymbol s) { type = s; return this; } 
-	public abstract void dump_with_types(PrintStream out, int n);
-	public void dump_type(PrintStream out, int n) {
-		if (type != null)
-		{ out.println(Utilities.pad(n) + ": " + type.getString()); }
-		else
-		{ out.println(Utilities.pad(n) + ": _no_type"); }
-	}
-	public abstract void code(PrintStream s);
-}
+//abstract class Expression extends TreeNode {
+//	protected Expression(int lineNumber) {
+//		super(lineNumber);
+//	}
+//	private AbstractSymbol type = null;                                 
+//	public AbstractSymbol get_type() { return type; }           
+//	public Expression set_type(AbstractSymbol s) { type = s; return this; } 
+//	public abstract void dump_with_types(PrintStream out, int n);
+//	public void dump_type(PrintStream out, int n) {
+//		if (type != null)
+//		{ out.println(Utilities.pad(n) + ": " + type.getString()); }
+//		else
+//		{ out.println(Utilities.pad(n) + ": _no_type"); }
+//	}
+//	public abstract void code(PrintStream s);
+//}
 
 
 /** Defines list phylum Expressions
@@ -314,9 +324,9 @@ class program extends ProgramAbstract {
 			currentClassObjectEnvironment.enterScope();                                                            // Enter a scope. Necessary before doing anything with a SymbolTable.
 			
 			// NEW POOP ALERT
-			methodEnvironment.put(currentClass.getName().toString(), new HashMap<String,ArrayList<AbstractSymbol>>());
-	        HashMap<String, ArrayList<AbstractSymbol>> methodSymTab = methodEnvironment.get(currentClass.getName().toString());
-		    // NEW POOP ALERT
+//			methodEnvironment.put(currentClass.getName().toString(), new HashMap<String,ArrayList<AbstractSymbol>>());
+//	        HashMap<String, ArrayList<AbstractSymbol>> methodSymTab = methodEnvironment.get(currentClass.getName().toString());
+//		    // NEW POOP ALERT
 			
 			 // get the features of the current class
 			Features features = currentClass.getFeatures();
@@ -352,12 +362,12 @@ class program extends ProgramAbstract {
 					AbstractSymbol methodName = ((method) currentFeature).getName(); // AbstractSymbol representing the identifier of the method
 					
 					// Add method to method Symbol Table,if already present, scope error
-				    if (methodSymTab.containsKey(methodName.toString())) {
-				    	classTable.semantError(currentClass.getFilename(), currentFeature).println("Method " + methodName.toString() + " is defined more than once.");
-				    }
-				    
-				    // Traverse the method definition
-				    traverseMethod(currentClass, ((method) currentFeature), currentClassObjectEnvironment);
+//				    if (methodSymTab.containsKey(methodName.toString())) {
+//				    	classTable.semantError(currentClass.getFilename(), currentFeature).println("Method " + methodName.toString() + " is defined more than once.");
+//				    }
+//				    
+//				    // Traverse the method definition
+//				    traverseMethod(currentClass, ((method) currentFeature), currentClassObjectEnvironment);
 				}
 				
 				

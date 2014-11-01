@@ -3,6 +3,8 @@ package edu.icom4029.cool.parser;
 import java_cup.runtime.*;
 import edu.icom4029.cool.core.*;
 import edu.icom4029.cool.lexer.*;
+import edu.icom4029.cool.ast.*;
+import edu.icom4029.cool.ast.base.*;
 
 
 //===INLINE=JAVA=CODE=================================================================================

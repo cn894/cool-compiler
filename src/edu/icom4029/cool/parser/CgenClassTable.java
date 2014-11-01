@@ -27,6 +27,10 @@ import java.io.PrintStream;
 import java.util.Vector;
 import java.util.Enumeration;
 
+import edu.icom4029.cool.ast.ClassAbstract;
+import edu.icom4029.cool.ast.Classes;
+import edu.icom4029.cool.ast.Features;
+import edu.icom4029.cool.ast.Formals;
 import edu.icom4029.cool.core.CgenSupport;
 import edu.icom4029.cool.core.Flags;
 import edu.icom4029.cool.lexer.AbstractSymbol;
@@ -36,7 +40,7 @@ import edu.icom4029.cool.lexer.BoolConst;
 /** This class is used for representing the inheritance tree during code
     generation. You will need to fill in some of its methods and
     potentially extend it in other useful ways. */
-class CgenClassTable extends SymbolTable {
+public class CgenClassTable extends SymbolTable {
 
     /** All classes in the program, represented as CgenNode */
     private Vector nds;
