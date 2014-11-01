@@ -1,4 +1,4 @@
-package edu.icom4029.cool.parser;
+package edu.icom4029.cool.semant;
 
 /*
 Copyright (c) 2000 The Regents of the University of California.
@@ -37,6 +37,7 @@ import edu.icom4029.cool.ast.formal;
 import edu.icom4029.cool.ast.method;
 import edu.icom4029.cool.ast.no_expr;
 import edu.icom4029.cool.ast.base.TreeNode;
+import edu.icom4029.cool.core.TreeConstants;
 import edu.icom4029.cool.lexer.AbstractSymbol;
 import edu.icom4029.cool.lexer.AbstractTable;
 

@@ -1,4 +1,4 @@
-package edu.icom4029.cool.parser;
+package edu.icom4029.cool.core;
 
 import edu.icom4029.cool.lexer.AbstractSymbol;
 import edu.icom4029.cool.lexer.AbstractTable;

@@ -23,7 +23,7 @@ PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 import java.io.PrintStream;
 
-import edu.icom4029.cool.core.CgenSupport;
+import edu.icom4029.cool.cgen.CgenSupport;
 
 /** This class encapsulates all aspects of code generation for boolean
  * constants.  String constants and Int constants are handled by

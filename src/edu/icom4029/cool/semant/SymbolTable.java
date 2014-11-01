@@ -1,4 +1,4 @@
-package edu.icom4029.cool.parser;
+package edu.icom4029.cool.semant;
 
 /*
 Copyright (c) 2000 The Regents of the University of California.

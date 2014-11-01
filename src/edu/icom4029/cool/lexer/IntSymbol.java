@@ -26,7 +26,7 @@ PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 import java.io.PrintStream;
 
-import edu.icom4029.cool.core.CgenSupport;
+import edu.icom4029.cool.cgen.CgenSupport;
 
 /** String table entry for integer constants
  * 

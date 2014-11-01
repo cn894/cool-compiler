@@ -6,12 +6,12 @@ import java.util.Enumeration;
 import java.util.HashMap;
 
 import edu.icom4029.cool.ast.base.TreeNode;
+import edu.icom4029.cool.cgen.CgenClassTable;
+import edu.icom4029.cool.core.TreeConstants;
 import edu.icom4029.cool.core.Utilities;
 import edu.icom4029.cool.lexer.AbstractSymbol;
-import edu.icom4029.cool.parser.CgenClassTable;
-import edu.icom4029.cool.parser.ClassTable;
-import edu.icom4029.cool.parser.SymbolTable;
-import edu.icom4029.cool.parser.TreeConstants;
+import edu.icom4029.cool.semant.ClassTable;
+import edu.icom4029.cool.semant.SymbolTable;
 
 /** Defines AST constructor 'program'.
 <p>

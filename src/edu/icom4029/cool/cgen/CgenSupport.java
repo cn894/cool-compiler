@@ -1,4 +1,4 @@
-package edu.icom4029.cool.core;
+package edu.icom4029.cool.cgen;
 
 /*
 Copyright (c) 2000 The Regents of the University of California.
@@ -25,6 +25,7 @@ PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 import java.io.PrintStream;
 
+import edu.icom4029.cool.core.Flags;
 import edu.icom4029.cool.lexer.AbstractSymbol;
 import edu.icom4029.cool.lexer.BoolConst;
 import edu.icom4029.cool.lexer.IntSymbol;

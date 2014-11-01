@@ -1,4 +1,4 @@
-package edu.icom4029.cool.parser;
+package edu.icom4029.cool.cgen;
 
 /*
 Copyright (c) 2000 The Regents of the University of California.
@@ -36,11 +36,12 @@ import edu.icom4029.cool.ast.class_;
 import edu.icom4029.cool.ast.formal;
 import edu.icom4029.cool.ast.method;
 import edu.icom4029.cool.ast.no_expr;
-import edu.icom4029.cool.core.CgenSupport;
 import edu.icom4029.cool.core.Flags;
+import edu.icom4029.cool.core.TreeConstants;
 import edu.icom4029.cool.lexer.AbstractSymbol;
 import edu.icom4029.cool.lexer.AbstractTable;
 import edu.icom4029.cool.lexer.BoolConst;
+import edu.icom4029.cool.semant.SymbolTable;
 
 /** This class is used for representing the inheritance tree during code
     generation. You will need to fill in some of its methods and

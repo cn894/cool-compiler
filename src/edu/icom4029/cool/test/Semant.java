@@ -1,4 +1,4 @@
-package edu.icom4029.cool.parser;
+package edu.icom4029.cool.test;
 /*
 Copyright (c) 2000 The Regents of the University of California.
 All rights reserved.
@@ -27,6 +27,7 @@ import java.io.IOException;
 import edu.icom4029.cool.ast.ProgramAbstract;
 import edu.icom4029.cool.core.Flags;
 import edu.icom4029.cool.lexer.Lexer;
+import edu.icom4029.cool.parser.Parser;
 
 /** Static semantics driver class */
 class Semant {

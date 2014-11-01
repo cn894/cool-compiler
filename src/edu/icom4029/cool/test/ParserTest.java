@@ -1,4 +1,4 @@
-package edu.icom4029.cool.parser;
+package edu.icom4029.cool.test;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -8,6 +8,7 @@ import java_cup.runtime.Symbol;
 import edu.icom4029.cool.ast.program;
 import edu.icom4029.cool.core.Flags;
 import edu.icom4029.cool.lexer.Lexer;
+import edu.icom4029.cool.parser.Parser;
 
 /* The parser driver class */
 public class ParserTest {

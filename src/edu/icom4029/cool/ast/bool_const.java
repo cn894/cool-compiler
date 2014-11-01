@@ -3,7 +3,7 @@ package edu.icom4029.cool.ast;
 import java.io.PrintStream;
 
 import edu.icom4029.cool.ast.base.TreeNode;
-import edu.icom4029.cool.core.CgenSupport;
+import edu.icom4029.cool.cgen.CgenSupport;
 import edu.icom4029.cool.core.Utilities;
 import edu.icom4029.cool.lexer.BoolConst;
 
