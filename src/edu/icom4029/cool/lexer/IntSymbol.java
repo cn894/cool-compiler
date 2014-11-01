@@ -53,12 +53,11 @@ public class IntSymbol extends AbstractSymbol {
 		s.println(CgenSupport.WORD + "-1");
 		codeRef(s); s.print(CgenSupport.LABEL); // label
 		s.println(CgenSupport.WORD + intclasstag); // tag
-		s.println(CgenSupport.WORD + (CgenSupport.DEFAULT_OBJFIELDS + 
-					      CgenSupport.INT_SLOTS)); // size
+		s.println(CgenSupport.WORD + (CgenSupport.DEFAULT_OBJFIELDS + CgenSupport.INT_SLOTS)); // size
 		s.print(CgenSupport.WORD);
 	
 		/* Add code to reference the dispatch table for class Int here */
-	
+		
 		s.println("");		// dispatch table
 		s.println(CgenSupport.WORD + str); // integer value
     }
@@ -75,4 +74,3 @@ public class IntSymbol extends AbstractSymbol {
     	return new IntSymbol(str, str.length(), index);
     }
 }
-
