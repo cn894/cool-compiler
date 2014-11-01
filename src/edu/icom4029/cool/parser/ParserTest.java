@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 import java_cup.runtime.Symbol;
+import edu.icom4029.cool.ast.program;
 import edu.icom4029.cool.core.Flags;
 import edu.icom4029.cool.lexer.Lexer;
 

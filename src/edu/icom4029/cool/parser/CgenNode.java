@@ -28,6 +28,7 @@ import java.util.Vector;
 import java.util.Enumeration;
 
 import edu.icom4029.cool.ast.ClassAbstract;
+import edu.icom4029.cool.ast.class_;
 import edu.icom4029.cool.core.Utilities;
 import edu.icom4029.cool.lexer.AbstractTable;
 
