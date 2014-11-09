@@ -4,6 +4,8 @@ import java.io.PrintStream;
 
 import edu.icom4029.cool.ast.base.TreeNode;
 import edu.icom4029.cool.core.Utilities;
+import edu.icom4029.cool.semant.ClassTable;
+import edu.icom4029.cool.semant.SymbolTable;
 
 /** Defines AST constructor 'lt'.
 <p>
@@ -27,10 +29,6 @@ public class lt extends Expression {
 	public TreeNode copy() {
 		return new lt(lineNumber, (Expression)e1.copy(), (Expression)e2.copy());
 	}
-	
-	public void semant() {
-		
-	}
 
 	public void dump(PrintStream out, int n) {
 		out.print(Utilities.pad(n) + "lt\n");
@@ -52,5 +50,11 @@ public class lt extends Expression {
 	 * @param s the output stream 
 	 * */
 	public void code(PrintStream s) {
+	}
+
+	@Override
+	public void semant(ClassTable classTable, class_ cl, SymbolTable symbolTable) {
+		// TODO Auto-generated method stub
+		
 	}
 }

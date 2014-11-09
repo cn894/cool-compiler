@@ -5,6 +5,8 @@ import java.io.PrintStream;
 import edu.icom4029.cool.ast.base.TreeNode;
 import edu.icom4029.cool.core.Utilities;
 import edu.icom4029.cool.lexer.AbstractSymbol;
+import edu.icom4029.cool.semant.ClassTable;
+import edu.icom4029.cool.semant.SymbolTable;
 
 /** Defines AST constructor 'assign'.
 <p>
@@ -22,10 +24,6 @@ public class assign extends Expression {
 		super(lineNumber);
 		name = a1;
 		expr = a2;
-	}
-	
-	public void semant() {
-		
 	}
 
 	public TreeNode copy() {
@@ -55,6 +53,12 @@ public class assign extends Expression {
 	 * @param s the output stream 
 	 * */
 	public void code(PrintStream s) {
+	}
+
+	@Override
+	public void semant(ClassTable classTable, class_ cl, SymbolTable symbolTable) {
+		// TODO Auto-generated method stub
+		
 	}
 
 

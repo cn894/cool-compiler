@@ -5,6 +5,8 @@ import java.util.Enumeration;
 
 import edu.icom4029.cool.ast.base.TreeNode;
 import edu.icom4029.cool.core.Utilities;
+import edu.icom4029.cool.semant.ClassTable;
+import edu.icom4029.cool.semant.SymbolTable;
 
 /** Defines AST constructor 'block'.
 <p>
@@ -20,11 +22,7 @@ public class block extends Expression {
 		super(lineNumber);
 		body = a1;
 	}
-	
-	public void semant() {
-		
-	}
-	
+
 	public TreeNode copy() {
 		return new block(lineNumber, (Expressions)body.copy());
 	}
@@ -50,5 +48,11 @@ public class block extends Expression {
 	 * @param s the output stream 
 	 * */
 	public void code(PrintStream s) {
+	}
+
+	@Override
+	public void semant(ClassTable classTable, class_ cl, SymbolTable symbolTable) {
+		// TODO Auto-generated method stub
+		
 	}
 }

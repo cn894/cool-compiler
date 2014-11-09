@@ -8,6 +8,8 @@ import edu.icom4029.cool.core.Utilities;
 import edu.icom4029.cool.lexer.AbstractSymbol;
 import edu.icom4029.cool.lexer.AbstractTable;
 import edu.icom4029.cool.lexer.IntSymbol;
+import edu.icom4029.cool.semant.ClassTable;
+import edu.icom4029.cool.semant.SymbolTable;
 
 /** Defines AST constructor 'int_const'.
 <p>
@@ -23,10 +25,6 @@ public class int_const extends Expression {
 	public int_const(int lineNumber, AbstractSymbol a1) {
 		super(lineNumber);
 		token = a1;
-	}
-	
-	public void semant() {
-		
 	}
 
 	public TreeNode copy() {
@@ -51,5 +49,11 @@ public class int_const extends Expression {
 	 * */
 	public void code(PrintStream s) {
 		CgenSupport.emitLoadInt(CgenSupport.ACC, (IntSymbol) AbstractTable.inttable.lookup(token.getString()), s);
+	}
+
+	@Override
+	public void semant(ClassTable classTable, class_ cl, SymbolTable symbolTable) {
+		// TODO Auto-generated method stub
+		
 	}
 }

@@ -4,6 +4,8 @@ import java.io.PrintStream;
 
 import edu.icom4029.cool.ast.base.TreeNode;
 import edu.icom4029.cool.core.Utilities;
+import edu.icom4029.cool.semant.ClassTable;
+import edu.icom4029.cool.semant.SymbolTable;
 
 /** Defines AST constructor 'divide'.
 <p>
@@ -22,11 +24,7 @@ public class divide extends Expression {
 		e1 = a1;
 		e2 = a2;
 	}
-	
-	public void semant() {
-		
-	}
-	
+
 	public TreeNode copy() {
 		return new divide(lineNumber, (Expression)e1.copy(), (Expression)e2.copy());
 	}
@@ -54,6 +52,12 @@ public class divide extends Expression {
 	 * @param s the output stream 
 	 * */
 	public void code(PrintStream s) {
+	}
+
+	@Override
+	public void semant(ClassTable classTable, class_ cl, SymbolTable symbolTable) {
+		// TODO Auto-generated method stub
+		
 	}
 
 

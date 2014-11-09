@@ -5,6 +5,8 @@ import java.util.Enumeration;
 
 import edu.icom4029.cool.ast.base.TreeNode;
 import edu.icom4029.cool.core.Utilities;
+import edu.icom4029.cool.semant.ClassTable;
+import edu.icom4029.cool.semant.SymbolTable;
 
 /** Defines AST constructor 'typcase'.
 <p>
@@ -24,11 +26,7 @@ public class typcase extends Expression {
 		expr = a1;
 		cases = a2;
 	}
-	
-	public void semant() {
-		
-	}
-	
+
 	public TreeNode copy() {
 		return new typcase(lineNumber, (Expression)expr.copy(), (Cases)cases.copy());
 	}
@@ -55,5 +53,11 @@ public class typcase extends Expression {
 	 * @param s the output stream 
 	 * */
 	public void code(PrintStream s) {
+	}
+
+	@Override
+	public void semant(ClassTable classTable, class_ cl, SymbolTable symbolTable) {
+		// TODO Auto-generated method stub
+		
 	}
 }

@@ -4,6 +4,8 @@ import java.io.PrintStream;
 
 import edu.icom4029.cool.ast.base.TreeNode;
 import edu.icom4029.cool.core.Utilities;
+import edu.icom4029.cool.semant.ClassTable;
+import edu.icom4029.cool.semant.SymbolTable;
 
 /** Defines AST constructor 'isvoid'.
 <p>
@@ -20,11 +22,7 @@ public class isvoid extends Expression {
 		super(lineNumber);
 		e1 = a1;
 	}
-	
-	public void semant() {
-		
-	}
-	
+
 	public Expression getExpression() {
 		return e1;
 	}
@@ -51,5 +49,11 @@ public class isvoid extends Expression {
 	 * @param s the output stream 
 	 * */
 	public void code(PrintStream s) {
+	}
+
+	@Override
+	public void semant(ClassTable classTable, class_ cl, SymbolTable symbolTable) {
+		// TODO Auto-generated method stub
+		
 	}
 }

@@ -6,6 +6,8 @@ import java.util.Enumeration;
 import edu.icom4029.cool.ast.base.TreeNode;
 import edu.icom4029.cool.core.Utilities;
 import edu.icom4029.cool.lexer.AbstractSymbol;
+import edu.icom4029.cool.semant.ClassTable;
+import edu.icom4029.cool.semant.SymbolTable;
 
 /** Defines AST constructor 'method'.
 <p>
@@ -30,10 +32,6 @@ public class method extends Feature {
 		formals     = a2;
 		return_type = a3;
 		expr        = a4;
-	}
-	
-	public void semant() {
-		
 	}
 
 	public TreeNode copy() {
@@ -62,5 +60,23 @@ public class method extends Feature {
 		}
 		dump_AbstractSymbol(out, n + 2, return_type);
 		expr.dump_with_types(out, n + 2);
+	}
+
+	@Override
+	public void semant(ClassTable classTable, class_ c, SymbolTable symbolTable) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String fillMethodTable(SymbolTable methodTable) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String fillAttrTable(SymbolTable attrTable) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

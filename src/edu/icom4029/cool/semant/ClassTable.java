@@ -424,6 +424,10 @@ public class ClassTable {
     	return nameToClass.get(className);
     }
     
+    public boolean hasClass(String className) {
+    	return getClass(className) != null;
+    }
+    
     /** Prints line number and file name of the given class.
      *
      * Also increments semantic error count.

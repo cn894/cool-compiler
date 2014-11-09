@@ -4,6 +4,8 @@ import java.io.PrintStream;
 
 import edu.icom4029.cool.ast.base.TreeNode;
 import edu.icom4029.cool.core.Utilities;
+import edu.icom4029.cool.semant.ClassTable;
+import edu.icom4029.cool.semant.SymbolTable;
 
 /** Defines AST constructor 'leq'.
 <p>
@@ -23,11 +25,7 @@ public class leq extends Expression {
 		e1 = a1;
 		e2 = a2;
 	}
-	
-	public void semant() {
-		
-	}
-	
+
 	public TreeNode copy() {
 		return new leq(lineNumber, (Expression)e1.copy(), (Expression)e2.copy());
 	}
@@ -52,5 +50,11 @@ public class leq extends Expression {
 	 * @param s the output stream 
 	 * */
 	public void code(PrintStream s) {
+	}
+
+	@Override
+	public void semant(ClassTable classTable, class_ cl, SymbolTable symbolTable) {
+		// TODO Auto-generated method stub
+		
 	}
 }
