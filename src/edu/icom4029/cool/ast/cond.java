@@ -4,6 +4,8 @@ import java.io.PrintStream;
 
 import edu.icom4029.cool.ast.base.TreeNode;
 import edu.icom4029.cool.core.Utilities;
+import edu.icom4029.cool.semant.ClassTable;
+import edu.icom4029.cool.semant.SymbolTable;
 
 /** Defines AST constructor 'cond'.
 <p>
@@ -26,7 +28,7 @@ public class cond extends Expression {
 		then_exp = a2;
 		else_exp = a3;
 	}
-	
+
 	public TreeNode copy() {
 		return new cond(lineNumber, (Expression)pred.copy(), (Expression)then_exp.copy(), (Expression)else_exp.copy());
 	}
@@ -53,5 +55,11 @@ public class cond extends Expression {
 	 * @param s the output stream 
 	 * */
 	public void code(PrintStream s) {
+	}
+
+	@Override
+	public void semant(ClassTable classTable, class_ cl, SymbolTable symbolTable) {
+		// TODO Auto-generated method stub
+		
 	}
 }

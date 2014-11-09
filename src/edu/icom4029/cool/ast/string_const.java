@@ -8,6 +8,8 @@ import edu.icom4029.cool.core.Utilities;
 import edu.icom4029.cool.lexer.AbstractSymbol;
 import edu.icom4029.cool.lexer.AbstractTable;
 import edu.icom4029.cool.lexer.StringSymbol;
+import edu.icom4029.cool.semant.ClassTable;
+import edu.icom4029.cool.semant.SymbolTable;
 
 /** Defines AST constructor 'string_const'.
 <p>
@@ -49,5 +51,11 @@ public class string_const extends Expression {
 	 * */
 	public void code(PrintStream s) {
 		CgenSupport.emitLoadString(CgenSupport.ACC, (StringSymbol) AbstractTable.stringtable.lookup(token.getString()), s);
+	}
+
+	@Override
+	public void semant(ClassTable classTable, class_ cl, SymbolTable symbolTable) {
+		// TODO Auto-generated method stub
+		
 	}
 }

@@ -5,6 +5,8 @@ import java.io.PrintStream;
 import edu.icom4029.cool.ast.base.TreeNode;
 import edu.icom4029.cool.core.Utilities;
 import edu.icom4029.cool.lexer.AbstractSymbol;
+import edu.icom4029.cool.semant.ClassTable;
+import edu.icom4029.cool.semant.SymbolTable;
 
 
 /** Defines AST constructor 'attr'.
@@ -50,5 +52,23 @@ public class attr extends Feature {
 		dump_AbstractSymbol(out, n + 2, name);
 		dump_AbstractSymbol(out, n + 2, type_decl);
 		init.dump_with_types(out, n + 2);
+	}
+
+	@Override
+	public void semant(ClassTable classTable, class_ c, SymbolTable symbolTable) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String fillMethodTable(SymbolTable methodTable) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String fillAttrTable(SymbolTable attrTable) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

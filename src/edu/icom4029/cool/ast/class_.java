@@ -4,8 +4,11 @@ import java.io.PrintStream;
 import java.util.Enumeration;
 
 import edu.icom4029.cool.ast.base.TreeNode;
+import edu.icom4029.cool.core.TreeConstants;
 import edu.icom4029.cool.core.Utilities;
 import edu.icom4029.cool.lexer.AbstractSymbol;
+import edu.icom4029.cool.semant.ClassTable;
+import edu.icom4029.cool.semant.SymbolTable;
 
 /** Defines AST constructor 'class_'.
 <p>
@@ -15,6 +18,8 @@ public class class_ extends ClassAbstract {
 	protected AbstractSymbol parent;
 	protected Features       features;
 	protected AbstractSymbol filename;
+	private   SymbolTable    methodTable;
+	private   SymbolTable    attrTable;
 
 	/** Creates "class_" AST node. 
 	 *
@@ -30,6 +35,10 @@ public class class_ extends ClassAbstract {
 		parent   = a2;
 		features = a3;
 		filename = a4;
+	}
+	
+	public void semant(ClassTable classTable, SymbolTable symbolTable) {
+		
 	}
 
 	public TreeNode copy() {
@@ -57,10 +66,11 @@ public class class_ extends ClassAbstract {
 		}
 		out.println(Utilities.pad(n + 2) + ")");
 	}
-
-	public AbstractSymbol getName()     { return name; }
-	public AbstractSymbol getParent()   { return parent; }
-	public AbstractSymbol getFilename() { return filename; }
-	public Features       getFeatures() { return features; }
-
+	
+	public AbstractSymbol getName()        { return name; }
+	public AbstractSymbol getParent()      { return parent; }
+	public AbstractSymbol getFilename()    { return filename; }
+	public Features       getFeatures()    { return features; }
+	public SymbolTable    getMethodTable() { return methodTable; }
+	public SymbolTable    getAttrTable()   { return attrTable; }
 }

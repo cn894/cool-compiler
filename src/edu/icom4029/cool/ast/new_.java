@@ -5,6 +5,8 @@ import java.io.PrintStream;
 import edu.icom4029.cool.ast.base.TreeNode;
 import edu.icom4029.cool.core.Utilities;
 import edu.icom4029.cool.lexer.AbstractSymbol;
+import edu.icom4029.cool.semant.ClassTable;
+import edu.icom4029.cool.semant.SymbolTable;
 
 /** Defines AST constructor 'new_'.
 <p>
@@ -38,11 +40,18 @@ public class new_ extends Expression {
 		dump_AbstractSymbol(out, n + 2, type_name);
 		dump_type(out, n);
 	}
+	
 	/** Generates code for this expression.  This method is to be completed 
 	 * in programming assignment 5.  (You may or add remove parameters as
 	 * you wish.)
 	 * @param s the output stream 
 	 * */
 	public void code(PrintStream s) {
+	}
+
+	@Override
+	public void semant(ClassTable classTable, class_ cl, SymbolTable symbolTable) {
+		// TODO Auto-generated method stub
+		
 	}
 }

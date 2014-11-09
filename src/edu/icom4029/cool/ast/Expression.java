@@ -5,6 +5,8 @@ import java.io.PrintStream;
 import edu.icom4029.cool.ast.base.TreeNode;
 import edu.icom4029.cool.core.Utilities;
 import edu.icom4029.cool.lexer.AbstractSymbol;
+import edu.icom4029.cool.semant.ClassTable;
+import edu.icom4029.cool.semant.SymbolTable;
 
 /** Defines simple phylum Expression */
 public abstract class Expression extends TreeNode {
@@ -26,5 +28,6 @@ public abstract class Expression extends TreeNode {
 			out.println(Utilities.pad(n) + ": _no_type");
 		}
 	}
+	public abstract void semant(ClassTable classTable, class_ cl, SymbolTable symbolTable);
 	public abstract void code(PrintStream s);
 }

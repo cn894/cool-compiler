@@ -24,6 +24,10 @@ public class formal extends FormalAbstract {
 		name      = a1;
 		type_decl = a2;
 	}
+	
+	public void semant() {
+		
+	}
 
 	public TreeNode copy() {
 		return new formal(lineNumber, copy_AbstractSymbol(name), copy_AbstractSymbol(type_decl));

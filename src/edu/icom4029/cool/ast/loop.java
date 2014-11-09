@@ -4,6 +4,8 @@ import java.io.PrintStream;
 
 import edu.icom4029.cool.ast.base.TreeNode;
 import edu.icom4029.cool.core.Utilities;
+import edu.icom4029.cool.semant.ClassTable;
+import edu.icom4029.cool.semant.SymbolTable;
 
 /** Defines AST constructor 'loop'.
 <p>
@@ -22,9 +24,11 @@ public class loop extends Expression {
 		pred = a1;
 		body = a2;
 	}
+	
 	public TreeNode copy() {
 		return new loop(lineNumber, (Expression)pred.copy(), (Expression)body.copy());
 	}
+	
 	public void dump(PrintStream out, int n) {
 		out.print(Utilities.pad(n) + "loop\n");
 		pred.dump(out, n+2);
@@ -39,11 +43,18 @@ public class loop extends Expression {
 		body.dump_with_types(out, n + 2);
 		dump_type(out, n);
 	}
+	
 	/** Generates code for this expression.  This method is to be completed 
 	 * in programming assignment 5.  (You may or add remove parameters as
 	 * you wish.)
 	 * @param s the output stream 
 	 * */
 	public void code(PrintStream s) {
+	}
+
+	@Override
+	public void semant(ClassTable classTable, class_ cl, SymbolTable symbolTable) {
+		// TODO Auto-generated method stub
+		
 	}
 }

@@ -6,6 +6,8 @@ import edu.icom4029.cool.ast.base.TreeNode;
 import edu.icom4029.cool.cgen.CgenSupport;
 import edu.icom4029.cool.core.Utilities;
 import edu.icom4029.cool.lexer.BoolConst;
+import edu.icom4029.cool.semant.ClassTable;
+import edu.icom4029.cool.semant.SymbolTable;
 
 /** Defines AST constructor 'bool_const'.
 <p>
@@ -21,9 +23,11 @@ public class bool_const extends Expression {
 		super(lineNumber);
 		val = a1;
 	}
+
 	public TreeNode copy() {
 		return new bool_const(lineNumber, copy_Boolean(val));
 	}
+	
 	public void dump(PrintStream out, int n) {
 		out.print(Utilities.pad(n) + "bool_const\n");
 		dump_Boolean(out, n+2, val);
@@ -36,11 +40,18 @@ public class bool_const extends Expression {
 		dump_Boolean(out, n + 2, val);
 		dump_type(out, n);
 	}
+
 	/** Generates code for this expression.  This method method is provided
 	 * to you as an example of code generation.
 	 * @param s the output stream 
 	 * */
 	public void code(PrintStream s) {
 		CgenSupport.emitLoadBool(CgenSupport.ACC, new BoolConst(val), s);
+	}
+
+	@Override
+	public void semant(ClassTable classTable, class_ cl, SymbolTable symbolTable) {
+		// TODO Auto-generated method stub
+		
 	}
 }
