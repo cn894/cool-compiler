@@ -3,7 +3,9 @@ package edu.icom4029.cool.ast;
 import java.io.PrintStream;
 
 import edu.icom4029.cool.ast.base.TreeNode;
+import edu.icom4029.cool.core.TreeConstants;
 import edu.icom4029.cool.core.Utilities;
+import edu.icom4029.cool.lexer.AbstractSymbol;
 import edu.icom4029.cool.semant.ClassTable;
 import edu.icom4029.cool.semant.SymbolTable;
 
@@ -59,7 +61,17 @@ public class cond extends Expression {
 
 	@Override
 	public void semant(ClassTable classTable, class_ cl, SymbolTable symbolTable) {
-		// TODO Auto-generated method stub
-		
+		pred.semant(classTable, cl, symbolTable);
+		then_exp.semant(classTable, cl, symbolTable);
+		else_exp.semant(classTable, cl, symbolTable);
+		AbstractSymbol thenType = then_exp.get_type();
+		if (thenType == TreeConstants.SELF_TYPE) {
+			thenType = cl.getName();
+		}
+		AbstractSymbol else_type = else_exp.get_type();
+		if (else_type == TreeConstants.SELF_TYPE) {
+			else_type = cl.getName();
+		}
+		set_type(classTable.leastCommonAncestor(thenType, else_type));
 	}
 }

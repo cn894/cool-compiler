@@ -38,7 +38,51 @@ public class class_ extends ClassAbstract {
 	}
 	
 	public void semant(ClassTable classTable, SymbolTable symbolTable) {
+		if (classTable.hasClass(parent.getString())) {
+			classTable.semantError(this).println("Class " + name.getString() + " inherits from an undefined class");
+			return;
+		}
+		symbolTable.enterScope();
+		symbolTable.addId(TreeConstants.SELF_TYPE, name);
+		symbolTable.addTable(attrTable);
 		
+		for (Enumeration e = features.getElements(); e.hasMoreElements();) {
+			((Feature) e.nextElement()).semant(classTable, this, symbolTable);			
+		}
+		symbolTable.exitScope();
+	}
+	
+	public void fillMethodAttrTable(ClassTable classTable) {
+		if (parent != TreeConstants.No_class) {
+			class_ parentClass = classTable.getClass(parent.getString());
+			if (parentClass == null) {
+				return;
+			}			
+			methodTable = parentClass.getMethodTable();
+			attrTable = parentClass.getAttrTable();
+			if (methodTable == null) {
+				parentClass.fillMethodAttrTable(classTable);
+			}
+		}
+		else {
+			methodTable = new SymbolTable();
+			attrTable = new SymbolTable();
+		}
+		
+		methodTable.enterScope();
+		attrTable.enterScope();
+		
+		for (Enumeration e = features.getElements(); e.hasMoreElements();) {
+			Feature feature = (Feature) e.nextElement();
+			String err = feature.fillMethodTable(methodTable);
+			if (!err.isEmpty()) {
+				classTable.semantError(this).println(err);
+			}
+			err = feature.fillAttrTable(attrTable);
+			if (!err.isEmpty()) {
+				classTable.semantError(this).println(err);
+			}
+		}
 	}
 
 	public TreeNode copy() {

@@ -3,8 +3,11 @@ package edu.icom4029.cool.ast;
 import java.io.PrintStream;
 
 import edu.icom4029.cool.ast.base.TreeNode;
+import edu.icom4029.cool.core.TreeConstants;
 import edu.icom4029.cool.core.Utilities;
 import edu.icom4029.cool.lexer.AbstractSymbol;
+import edu.icom4029.cool.semant.ClassTable;
+import edu.icom4029.cool.semant.SymbolTable;
 
 /** Defines AST constructor 'formal'.
 <p>
@@ -23,10 +26,6 @@ public class formal extends FormalAbstract {
 		super(lineNumber);
 		name      = a1;
 		type_decl = a2;
-	}
-	
-	public void semant() {
-		
 	}
 
 	public TreeNode copy() {
@@ -48,5 +47,18 @@ public class formal extends FormalAbstract {
 		out.println(Utilities.pad(n) + "_formal");
 		dump_AbstractSymbol(out, n + 2, name);
 		dump_AbstractSymbol(out, n + 2, type_decl);
+	}
+	
+	public void semant(ClassTable classTable, class_ c) {
+		if (type_decl == TreeConstants.SELF_TYPE) {
+			classTable.semantError(c).println("Formal parameter " + name.getString() + " cannot have type SELF_TYPE.");
+		} 
+		if (name == TreeConstants.self) {
+			classTable.semantError(c).println("'self' cannot be the name of a formal parameter.");
+		}
+	}
+	
+	public void fillSymbolTable(SymbolTable symbolTable) {
+		symbolTable.addId(name, type_decl);
 	}
 }

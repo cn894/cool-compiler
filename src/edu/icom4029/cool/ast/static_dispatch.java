@@ -3,7 +3,9 @@ package edu.icom4029.cool.ast;
 import java.io.PrintStream;
 import java.util.Enumeration;
 
+import sun.management.MethodInfo;
 import edu.icom4029.cool.ast.base.TreeNode;
+import edu.icom4029.cool.core.TreeConstants;
 import edu.icom4029.cool.core.Utilities;
 import edu.icom4029.cool.lexer.AbstractSymbol;
 import edu.icom4029.cool.semant.ClassTable;
@@ -70,8 +72,25 @@ public class static_dispatch extends Expression {
 
 	@Override
 	public void semant(ClassTable classTable, class_ cl, SymbolTable symbolTable) {
-		// TODO Auto-generated method stub
-		
+		expr.semant(classTable, cl, symbolTable);
+		AbstractSymbol exprType = expr.get_type();
+		if (exprType == TreeConstants.SELF_TYPE) {
+			exprType = (AbstractSymbol)symbolTable.lookup(TreeConstants.SELF_TYPE);
+		}
+
+		if (!classTable.isBase(type_name, exprType)) {
+			classTable.semantError(cl).println("Expression type " + expr.get_type().getString() + 
+					" does not conform to declared static dispatch type " + type_name.getString());
+		}
+
+		for (Enumeration e = actual.getElements(); e.hasMoreElements();) {
+			((Expression)e.nextElement()).semant(classTable, cl, symbolTable);
+		}
+
+		SymbolTable methodsTable = classTable.getMethodTable(type_name);
+		method methodInfo = (method)methodsTable.lookup(name);
+		AbstractSymbol nameType = methodInfo.getReturnType();
+		set_type(nameType);
 	}
 
 

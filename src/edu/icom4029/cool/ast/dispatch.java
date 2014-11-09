@@ -3,7 +3,9 @@ package edu.icom4029.cool.ast;
 import java.io.PrintStream;
 import java.util.Enumeration;
 
+import sun.management.MethodInfo;
 import edu.icom4029.cool.ast.base.TreeNode;
+import edu.icom4029.cool.core.TreeConstants;
 import edu.icom4029.cool.core.Utilities;
 import edu.icom4029.cool.lexer.AbstractSymbol;
 import edu.icom4029.cool.semant.ClassTable;
@@ -65,7 +67,44 @@ public class dispatch extends Expression {
 
 	@Override
 	public void semant(ClassTable classTable, class_ cl, SymbolTable symbolTable) {
-		// TODO Auto-generated method stub
+		expr.semant(classTable, cl, symbolTable);
+		AbstractSymbol exprType = expr.get_type();
+		if (exprType == TreeConstants.SELF_TYPE) {
+			exprType = (AbstractSymbol)symbolTable.lookup(TreeConstants.SELF_TYPE);
+		}
 		
+		SymbolTable methodTable = classTable.getMethodTable(exprType);
+		AbstractSymbol nameType = TreeConstants.Object_;
+		Object lookedUp = methodTable.lookup(name);
+		
+		if (lookedUp == null) {
+			classTable.semantError(cl).println("Dispatch to undefined method " + name + ".");
+		}
+		else {
+			method methodInfo = (method) methodTable.lookup(name);
+			nameType = methodInfo.getReturnType();
+			Formals formals = methodInfo.getFormals();
+
+			for (int i = 0; i < actual.getLength(); ++i) {
+				Expression param = (Expression)actual.getNth(i);
+				param.semant(classTable, cl, symbolTable);
+				formal f = (formal) formals.getNth(i);
+				AbstractSymbol paramType = param.get_type();
+				if (paramType == TreeConstants.SELF_TYPE) {
+					paramType = cl.getName();
+				}
+				if (!classTable.isBase(f.getType(), paramType)) {
+					classTable.semantError(cl).println("In call of method " + name + ", type " + param.get_type().getString() +
+							" of parameter " + f.getName().getString() + " does not conform to declared type " + f.getType().getString());
+				}
+			}
+		}
+		
+		if (nameType == TreeConstants.SELF_TYPE) {
+			set_type(expr.get_type());
+		}
+		else {
+			set_type(nameType);
+		}
 	}
 }

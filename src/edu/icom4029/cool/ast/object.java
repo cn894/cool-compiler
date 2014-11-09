@@ -3,6 +3,7 @@ package edu.icom4029.cool.ast;
 import java.io.PrintStream;
 
 import edu.icom4029.cool.ast.base.TreeNode;
+import edu.icom4029.cool.core.TreeConstants;
 import edu.icom4029.cool.core.Utilities;
 import edu.icom4029.cool.lexer.AbstractSymbol;
 import edu.icom4029.cool.semant.ClassTable;
@@ -52,7 +53,13 @@ public class object extends Expression {
 
 	@Override
 	public void semant(ClassTable classTable, class_ cl, SymbolTable symbolTable) {
-		// TODO Auto-generated method stub
-		
+		Object lookedUp = symbolTable.lookup(name);
+		if (lookedUp == null) {
+			classTable.semantError(cl).println("Undeclared identifier " + name.getString());
+			set_type(TreeConstants.No_type);
+		}
+		else {
+			set_type((AbstractSymbol) lookedUp);
+		}
 	}
 }

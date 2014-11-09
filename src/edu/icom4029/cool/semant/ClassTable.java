@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 
 import edu.icom4029.cool.ast.Classes;
 import edu.icom4029.cool.ast.Features;
@@ -53,6 +54,8 @@ public class ClassTable {
     private HashMap<String, Integer>           depthList;
 
     private Classes basicClassList;
+    
+    private List<class_> classes;
 
     /** Creates data structures representing basic Cool classes (Object,
      * IO, Int, Bool, String).  Please note: as is this method does not
@@ -188,6 +191,7 @@ public class ClassTable {
     public ClassTable(Classes cls) {
     	semantErrors = 0;
     	errorStream  = System.err;
+    	classes      = new ArrayList<class_>();
 		
 		// Build graph first out of class declarations
     	adjacencyList = new HashMap<String, ArrayList<String>>();
@@ -265,6 +269,8 @@ public class ClassTable {
     		
     		// Add the child class to the parent's adjacency list.
     		adjacencyList.get(parent).add(currentClass.getName().toString());
+    		
+    		classes.add(currentClass);
     	}
     	
     	// Check that each parent in a parent-child inheritance is valid.
@@ -336,50 +342,6 @@ public class ClassTable {
     }
     
     /**
-     * Checks if the given AbstractSymbol corresponds to a valid type of class.
-     * @param type an AbstractSymbol object corresponding to a type or class
-     * @return true if the symbol is a valid type or class
-     */
-    public boolean isValidType(AbstractSymbol type) {
-    	return nameToClass.containsKey(type.getString());
-    }
-    
-    /**
-     * Checks if C1 <= C2
-     * @param C1
-     * @param C2
-     * @param currentClass
-     * @return
-     */
-    public boolean checkConformance(AbstractSymbol C1, AbstractSymbol C2, AbstractSymbol currentClass) {
-    	if (C1 == TreeConstants.SELF_TYPE) {
-    		C1 = currentClass;
-    	}
-    	if (C2 == TreeConstants.SELF_TYPE) {
-    		C2 = currentClass;
-    	}
-    	if (C1 == C2) {
-    		return true;
-    	}
-    	return isReachable(C1.getString(), C2.getString());
-    }
-    
-    private boolean isReachable(String C1, String C2) {
-    	if (adjacencyList.get(C2) == null) {
-    		return false;
-    	}
-    	for (String child : adjacencyList.get(C2)) {
-    		if (child.equals(C1)) {
-    			return true;
-    		}
-    		else if (isReachable(C1, child)) {
-    			return true;
-    		}
-    	}
-    	return false;
-    }
-    
-    /**
      * Returns the parent class of a given class.
      * @param child the child class
      * @return the name of the parent class
@@ -428,6 +390,20 @@ public class ClassTable {
     	return getClass(className) != null;
     }
     
+    public class_ getBasicClass(String className) {
+    	for (Enumeration e = basicClassList.getElements(); e.hasMoreElements();) {
+    		class_ c = (class_) e.nextElement();
+    		if (c.getName().getString().equals(className)) {
+    			return c;
+    		}
+    	}
+    	return null;
+    }
+    
+    public boolean hasBasicClass(String className) {
+    	return getBasicClass(className) != null;
+    }
+    
     /** Prints line number and file name of the given class.
      *
      * Also increments semantic error count.
@@ -471,6 +447,62 @@ public class ClassTable {
     /** Returns true if there are any static semantic errors. */
     public boolean errors() {
     	return this.semantErrors != 0;
+    }
+    
+    public void fillMethodAttrTable() {
+    	for (Enumeration e = basicClassList.getElements(); e.hasMoreElements();) {
+    		class_ c = (class_) e.nextElement();
+    		c.fillMethodAttrTable(this);
+    	}
+    	for (class_ c : classes) {
+    		c.fillMethodAttrTable(this);
+    	}
+    }
+    
+    public List<class_> getClassList() {
+    	return classes;
+    }
+    
+    public boolean isBase(AbstractSymbol base, AbstractSymbol derived) {
+    	return leastCommonAncestor(base, derived) == base;
+    }
+    
+    public AbstractSymbol leastCommonAncestor(AbstractSymbol a1, AbstractSymbol a2) {
+    	class_ c1 = (class_) getClass(a1.getString()).copy();
+    	class_ c2 = (class_) getClass(a2.getString()).copy();
+    	
+    	int d1 = getDepth(a1.getString());
+    	int d2 = getDepth(a2.getString());
+    	
+    	while (d1 != d2) {
+    		if (d1 > d2) {
+    			c1 = (class_) getClass(c1.getParent().getString()).copy();
+    			d1--;
+    		}
+    		else {
+    			c2 = (class_) getClass(c2.getParent().getString()).copy();
+    			d2--;
+    		}
+    	}
+    	
+    	while (c1.getName() != c2.getName()) {
+    		c1 = (class_) getClass(c1.getParent().getString()).copy();
+    		c2 = (class_) getClass(c2.getParent().getString()).copy();
+    	}
+    	
+    	return c1.getName();
+    }
+    
+    public AbstractSymbol leastCommonAncestor(List<AbstractSymbol> types) {
+    	AbstractSymbol res = types.get(0);
+    	for (int i = 1; i < types.size(); i++) {
+    		res = leastCommonAncestor(res, types.get(i));
+    	}
+    	return res;
+    }
+    
+    public SymbolTable getMethodTable(AbstractSymbol type) {
+    	return getClass(type.getString()).getMethodTable();
     }
 }
 

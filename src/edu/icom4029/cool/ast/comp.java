@@ -51,7 +51,7 @@ public class comp extends Expression {
 
 	@Override
 	public void semant(ClassTable classTable, class_ cl, SymbolTable symbolTable) {
-		// TODO Auto-generated method stub
-		
+		e1.semant(classTable, cl, symbolTable);
+		set_type(e1.get_type());
 	}
 }

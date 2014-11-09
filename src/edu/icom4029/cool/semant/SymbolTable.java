@@ -96,6 +96,10 @@ public class SymbolTable {
 		}
 		((Hashtable)tbl.peek()).put(id, info);
 	}
+	
+	public void addTable(SymbolTable symbolTable) {
+		// TODO: Implement this!
+	}
 
 	/**
 	 * Looks up an item through all scopes of the symbol table.  If

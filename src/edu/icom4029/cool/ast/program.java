@@ -80,8 +80,23 @@ to test the complete compiler.
 		if (!classTable.hasClass(TreeConstants.Main.getString())) {
 			classTable.semantError().println("Class Main is not defined.");
 		}
+		
+		classTable.fillMethodAttrTable();
+		
+		SymbolTable symbolTable = new SymbolTable();
+		symbolTable.enterScope();
+		symbolTable.addId(TreeConstants.self, TreeConstants.SELF_TYPE);
+		
+		for (class_ c : classTable.getClassList()) {
+			c.semant(classTable, symbolTable);
+		}
+		
+		if (classTable.errors()) {
+			System.err.println("Compilation halted due to static semantic errors.");
+			System.exit(1);
+		}
 
-		Classes basicClasses = classTable.getBasicClassList();
+//		Classes basicClasses = classTable.getBasicClassList();
 
 		// Traversing the AST formed by the basic classes: Int, Bool, String, IO to add them all to the environment when checking all other user defined classes.
 //		traverseAST(basicClasses);
