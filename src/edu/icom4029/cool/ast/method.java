@@ -2,8 +2,11 @@ package edu.icom4029.cool.ast;
 
 import java.io.PrintStream;
 import java.util.Enumeration;
+import java.util.HashSet;
+import java.util.Set;
 
 import edu.icom4029.cool.ast.base.TreeNode;
+import edu.icom4029.cool.core.TreeConstants;
 import edu.icom4029.cool.core.Utilities;
 import edu.icom4029.cool.lexer.AbstractSymbol;
 import edu.icom4029.cool.semant.ClassTable;
@@ -64,19 +67,69 @@ public class method extends Feature {
 
 	@Override
 	public void semant(ClassTable classTable, class_ c, SymbolTable symbolTable) {
-		// TODO Auto-generated method stub
+		if (return_type != TreeConstants.SELF_TYPE && !classTable.hasClass(return_type.getString())) {
+			classTable.semantError(c).println("Undefined return type " + return_type.getString() + " in " + name.getString());
+		}
+		symbolTable.enterScope();
+		Set<AbstractSymbol> seenFormals = new HashSet<AbstractSymbol>();
+		for (Enumeration e = formals.getElements(); e.hasMoreElements();) {
+			formal f = (formal) e.nextElement();
+			f.semant(classTable, c);
+			if (seenFormals.contains(f.getName())) {
+				classTable.semantError(c).println("Formal parameter " + f.getName().getString() + " is multiply defined");
+			}
+			else {
+				seenFormals.add(f.getName());
+				f.fillSymbolTable(symbolTable);
+			}
+		}
 		
+		expr.semant(classTable, c, symbolTable);
+		symbolTable.exitScope();
+		
+		if (expr.get_type() == TreeConstants.No_type) {
+			return;
+		}
+		
+		AbstractSymbol exprType = expr.get_type();
+		if (exprType == TreeConstants.SELF_TYPE) {
+			exprType = c.getName();
+		}
+		
+		if (return_type == TreeConstants.SELF_TYPE && expr.get_type() != TreeConstants.SELF_TYPE) {
+			classTable.semantError(c).println("Inferred return type " + expr.get_type().getString() + " of method " + name.getString() +
+					" does not conform to declared return type " + return_type.getString());
+		}
+		if (return_type != TreeConstants.SELF_TYPE && !classTable.isBase(return_type, exprType)) {
+			classTable.semantError(c).println("Inferred return type " + expr.get_type().getString() + " of method " + name.getString() +
+					" does not conform to declared return type " + return_type.getString());
+		}
 	}
 
 	@Override
 	public String fillMethodTable(SymbolTable methodTable) {
-		// TODO Auto-generated method stub
-		return null;
+		method parentMethod = (method) methodTable.lookup(name);
+		if (parentMethod != null) {
+			if (parentMethod.getFormals().getLength() != formals.getLength()) {
+				return "Incompatible number of formal parameters in redefined method " + name.getString();
+			}
+			else {
+				for (int i = 0; i < formals.getLength(); i++) {
+					formal f = (formal) formals.getNth(i);
+					formal parentFormal = (formal) parentMethod.getFormals().getNth(i);
+					if (f.getType() != parentFormal.getType()) {
+						return "Paremeter type " + f.getType().getString() + " in redefined method " + name.getString() +
+								" is different from original type " + parentFormal.getType().getString();
+					}
+				}
+			}
+		}
+		methodTable.addId(name, this);
+		return "";
 	}
 
 	@Override
 	public String fillAttrTable(SymbolTable attrTable) {
-		// TODO Auto-generated method stub
-		return null;
+		return "";
 	}
 }

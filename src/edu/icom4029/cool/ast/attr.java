@@ -3,6 +3,7 @@ package edu.icom4029.cool.ast;
 import java.io.PrintStream;
 
 import edu.icom4029.cool.ast.base.TreeNode;
+import edu.icom4029.cool.core.TreeConstants;
 import edu.icom4029.cool.core.Utilities;
 import edu.icom4029.cool.lexer.AbstractSymbol;
 import edu.icom4029.cool.semant.ClassTable;
@@ -56,19 +57,25 @@ public class attr extends Feature {
 
 	@Override
 	public void semant(ClassTable classTable, class_ c, SymbolTable symbolTable) {
-		// TODO Auto-generated method stub
-		
+		if (name == TreeConstants.self) {
+			classTable.semantError(c).println("'self' cannot be the name of an attribute");
+		}
+		init.semant(classTable, c, symbolTable);
 	}
 
 	@Override
 	public String fillMethodTable(SymbolTable methodTable) {
-		// TODO Auto-generated method stub
-		return null;
+		return "";
 	}
 
 	@Override
 	public String fillAttrTable(SymbolTable attrTable) {
-		// TODO Auto-generated method stub
-		return null;
+		if (attrTable.lookup(name) != null) {
+			return "Attribute " + name.getString() + " is an attribute from an inherited class";
+		}
+		else {
+			attrTable.addId(name, type_decl);
+			return "";
+		}
 	}
 }

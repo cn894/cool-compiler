@@ -5,6 +5,8 @@ import java.io.PrintStream;
 import edu.icom4029.cool.ast.base.TreeNode;
 import edu.icom4029.cool.core.Utilities;
 import edu.icom4029.cool.lexer.AbstractSymbol;
+import edu.icom4029.cool.semant.ClassTable;
+import edu.icom4029.cool.semant.SymbolTable;
 
 /** Defines AST constructor 'branch'.
 <p>
@@ -27,8 +29,16 @@ public class branch extends Case {
 		expr = a3;
 	}
 	
-	public void semant() {
-		
+	public AbstractSymbol getTypeDecl() {
+		return type_decl;
+	}
+	
+	public void semant(ClassTable classTable, class_ c, SymbolTable symbolTable) {
+		symbolTable.enterScope();
+		symbolTable.addId(name, type_decl);
+		expr.semant(classTable, c, symbolTable);
+		set_type(expr.get_type());
+		symbolTable.exitScope();
 	}
 	
 	public TreeNode copy() {

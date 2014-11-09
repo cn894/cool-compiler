@@ -3,6 +3,7 @@ package edu.icom4029.cool.ast;
 import java.io.PrintStream;
 
 import edu.icom4029.cool.ast.base.TreeNode;
+import edu.icom4029.cool.core.TreeConstants;
 import edu.icom4029.cool.core.Utilities;
 import edu.icom4029.cool.semant.ClassTable;
 import edu.icom4029.cool.semant.SymbolTable;
@@ -54,7 +55,8 @@ public class lt extends Expression {
 
 	@Override
 	public void semant(ClassTable classTable, class_ cl, SymbolTable symbolTable) {
-		// TODO Auto-generated method stub
-		
+		e1.semant(classTable, cl, symbolTable);
+		e2.semant(classTable, cl, symbolTable);
+		set_type(TreeConstants.Bool);
 	}
 }

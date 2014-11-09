@@ -3,6 +3,7 @@ package edu.icom4029.cool.ast;
 import java.io.PrintStream;
 
 import edu.icom4029.cool.ast.base.TreeNode;
+import edu.icom4029.cool.core.TreeConstants;
 import edu.icom4029.cool.core.Utilities;
 import edu.icom4029.cool.lexer.AbstractSymbol;
 import edu.icom4029.cool.semant.ClassTable;
@@ -57,9 +58,18 @@ public class assign extends Expression {
 
 	@Override
 	public void semant(ClassTable classTable, class_ cl, SymbolTable symbolTable) {
-		// TODO Auto-generated method stub
-		
+		if (name == TreeConstants.self) {
+			classTable.semantError(cl).println("Cannot assign to 'self'.");
+			set_type(TreeConstants.No_type);
+			return;
+		}
+		AbstractSymbol nameType = (AbstractSymbol)symbolTable.lookup(name);
+		expr.semant(classTable, cl, symbolTable);
+		AbstractSymbol exprType = expr.get_type();
+		if (!classTable.isBase(nameType, exprType)) {
+			classTable.semantError(cl).println("Type " + exprType.getString() + " of assigned expression does not conform to declared type " + 
+					nameType.getString() + " of identifier " + name.getString());
+        }
+        set_type(nameType);
 	}
-
-
 }

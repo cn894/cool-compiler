@@ -52,7 +52,10 @@ public class block extends Expression {
 
 	@Override
 	public void semant(ClassTable classTable, class_ cl, SymbolTable symbolTable) {
-		// TODO Auto-generated method stub
-		
+		for (Enumeration e = body.getElements(); e.hasMoreElements();) {
+			Expression expr = (Expression) e.nextElement();
+			expr.semant(classTable, cl, symbolTable);
+			set_type(expr.get_type());
+		}
 	}
 }

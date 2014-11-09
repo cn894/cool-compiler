@@ -3,6 +3,7 @@ package edu.icom4029.cool.ast;
 import java.io.PrintStream;
 
 import edu.icom4029.cool.ast.base.TreeNode;
+import edu.icom4029.cool.core.TreeConstants;
 import edu.icom4029.cool.core.Utilities;
 import edu.icom4029.cool.semant.ClassTable;
 import edu.icom4029.cool.semant.SymbolTable;
@@ -57,7 +58,14 @@ public class mul extends Expression {
 
 	@Override
 	public void semant(ClassTable classTable, class_ cl, SymbolTable symbolTable) {
-		// TODO Auto-generated method stub
-		
+		e1.semant(classTable, cl, symbolTable);
+		e2.semant(classTable, cl, symbolTable);
+		if (e1.get_type() != TreeConstants.Int || e2.get_type() != TreeConstants.Int) {
+			classTable.semantError(cl).println("non-Int arguments: " + e1.get_type().getString() + " * " + e2.get_type().getString());
+			set_type(TreeConstants.Object_);
+		}
+		else {
+			set_type(e2.get_type());
+		}
 	}
 }

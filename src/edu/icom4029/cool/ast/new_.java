@@ -3,6 +3,7 @@ package edu.icom4029.cool.ast;
 import java.io.PrintStream;
 
 import edu.icom4029.cool.ast.base.TreeNode;
+import edu.icom4029.cool.core.TreeConstants;
 import edu.icom4029.cool.core.Utilities;
 import edu.icom4029.cool.lexer.AbstractSymbol;
 import edu.icom4029.cool.semant.ClassTable;
@@ -51,7 +52,12 @@ public class new_ extends Expression {
 
 	@Override
 	public void semant(ClassTable classTable, class_ cl, SymbolTable symbolTable) {
-		// TODO Auto-generated method stub
-		
+		if (type_name != TreeConstants.SELF_TYPE && !classTable.hasClass(type_name.getString())) {
+			classTable.semantError(cl).println("'new' used with undefined class " + type_name.getString());
+			set_type(TreeConstants.No_type);
+		}
+		else {
+			set_type(type_name);
+		}
 	}
 }

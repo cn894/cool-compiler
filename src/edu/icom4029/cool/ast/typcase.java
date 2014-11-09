@@ -1,10 +1,15 @@
 package edu.icom4029.cool.ast;
 
 import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import edu.icom4029.cool.ast.base.TreeNode;
 import edu.icom4029.cool.core.Utilities;
+import edu.icom4029.cool.lexer.AbstractSymbol;
 import edu.icom4029.cool.semant.ClassTable;
 import edu.icom4029.cool.semant.SymbolTable;
 
@@ -57,7 +62,19 @@ public class typcase extends Expression {
 
 	@Override
 	public void semant(ClassTable classTable, class_ cl, SymbolTable symbolTable) {
-		// TODO Auto-generated method stub
-		
+		expr.semant(classTable, cl, symbolTable);
+		List<AbstractSymbol> types = new ArrayList<AbstractSymbol>();
+		Set<AbstractSymbol> declTypes = new HashSet<AbstractSymbol>();
+		for (Enumeration e = cases.getElements(); e.hasMoreElements();) {
+			branch br = (branch) e.nextElement();
+			AbstractSymbol typeDecl = br.getTypeDecl();
+			if (declTypes.contains(typeDecl)) {
+				classTable.semantError(cl).println("Duplicate branch " + typeDecl.getString() + " in case statement.");
+			}
+			declTypes.add(typeDecl);
+			br.semant(classTable, cl, symbolTable);
+			types.add(br.get_type());
+		}
+		set_type(classTable.leastCommonAncestor(types));
 	}
 }

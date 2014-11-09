@@ -3,6 +3,7 @@ package edu.icom4029.cool.ast;
 import java.io.PrintStream;
 
 import edu.icom4029.cool.ast.base.TreeNode;
+import edu.icom4029.cool.core.TreeConstants;
 import edu.icom4029.cool.core.Utilities;
 import edu.icom4029.cool.lexer.AbstractSymbol;
 import edu.icom4029.cool.semant.ClassTable;
@@ -65,7 +66,26 @@ public class let extends Expression {
 
 	@Override
 	public void semant(ClassTable classTable, class_ cl, SymbolTable symbolTable) {
-		// TODO Auto-generated method stub
-		
+		if (identifier == TreeConstants.self) {
+			classTable.semantError(cl).println("'self' cannot be bound in a 'let' expression.");
+			set_type(TreeConstants.No_type);
+			return;
+		}
+
+		init.semant(classTable, cl, symbolTable);
+		AbstractSymbol initType = init.get_type();
+		if (initType != TreeConstants.No_type && initType != TreeConstants.SELF_TYPE && !classTable.isBase(type_decl, initType)) {
+			classTable.semantError(cl).println("Inferred type " + initType.getString() + " of initialization of " +  identifier.getString() +
+					" does not conform to identifier's declared type " + type_decl.getString());
+			set_type(TreeConstants.No_type);
+			return;
+		}
+
+		symbolTable.enterScope();
+		symbolTable.addId(identifier, type_decl);
+		body.semant(classTable, cl, symbolTable);
+		symbolTable.exitScope();
+
+		set_type(body.get_type());
 	}
 }
