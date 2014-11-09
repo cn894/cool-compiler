@@ -5,5 +5,9 @@ public class SemanticAnalyzer {
 	public SemanticAnalyzer() {
 		// TODO Auto-generated constructor stub
 	}
+	
+	public void semant() {
+		
+	}
 
 }
