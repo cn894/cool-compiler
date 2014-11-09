@@ -20,6 +20,10 @@ public class new_ extends Expression {
 		super(lineNumber);
 		type_name = a1;
 	}
+	
+	public void semant() {
+		
+	}
 
 	public TreeNode copy() {
 		return new new_(lineNumber, copy_AbstractSymbol(type_name));
@@ -38,6 +42,7 @@ public class new_ extends Expression {
 		dump_AbstractSymbol(out, n + 2, type_name);
 		dump_type(out, n);
 	}
+	
 	/** Generates code for this expression.  This method is to be completed 
 	 * in programming assignment 5.  (You may or add remove parameters as
 	 * you wish.)

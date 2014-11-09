@@ -21,6 +21,10 @@ public class isvoid extends Expression {
 		e1 = a1;
 	}
 	
+	public void semant() {
+		
+	}
+	
 	public Expression getExpression() {
 		return e1;
 	}

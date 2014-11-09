@@ -17,6 +17,10 @@ public class no_expr extends Expression {
 	public no_expr(int lineNumber) {
 		super(lineNumber);
 	}
+	
+	public void semant() {
+		
+	}
 
 	public TreeNode copy() {
 		return new no_expr(lineNumber);

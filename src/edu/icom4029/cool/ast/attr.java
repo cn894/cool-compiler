@@ -28,6 +28,10 @@ public class attr extends Feature {
 		type_decl = a2;
 		init      = a3;
 	}
+	
+	public void semant() {
+		
+	}
 
 	public TreeNode copy() {
 		return new attr(lineNumber, copy_AbstractSymbol(name), copy_AbstractSymbol(type_decl), (Expression)init.copy());

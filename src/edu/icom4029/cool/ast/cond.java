@@ -27,6 +27,10 @@ public class cond extends Expression {
 		else_exp = a3;
 	}
 	
+	public void semant() {
+		
+	}
+	
 	public TreeNode copy() {
 		return new cond(lineNumber, (Expression)pred.copy(), (Expression)then_exp.copy(), (Expression)else_exp.copy());
 	}

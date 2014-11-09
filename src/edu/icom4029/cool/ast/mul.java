@@ -24,6 +24,10 @@ public class mul extends Expression {
 		e2 = a2;
 	}
 	
+	public void semant() {
+		
+	}
+	
 	public TreeNode copy() {
 		return new mul(lineNumber, (Expression)e1.copy(), (Expression)e2.copy());
 	}

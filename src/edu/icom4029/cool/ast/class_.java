@@ -31,6 +31,10 @@ public class class_ extends ClassAbstract {
 		features = a3;
 		filename = a4;
 	}
+	
+	public void semant() {
+		
+	}
 
 	public TreeNode copy() {
 		return new class_(lineNumber, copy_AbstractSymbol(name), copy_AbstractSymbol(parent), (Features)features.copy(), copy_AbstractSymbol(filename));
@@ -57,7 +61,7 @@ public class class_ extends ClassAbstract {
 		}
 		out.println(Utilities.pad(n + 2) + ")");
 	}
-
+	
 	public AbstractSymbol getName()     { return name; }
 	public AbstractSymbol getParent()   { return parent; }
 	public AbstractSymbol getFilename() { return filename; }

@@ -21,6 +21,10 @@ public class neg extends Expression {
 		e1 = a1;
 	}
 	
+	public void semant() {
+		
+	}
+	
 	public TreeNode copy() {
 		return new neg(lineNumber, (Expression)e1.copy());
 	}

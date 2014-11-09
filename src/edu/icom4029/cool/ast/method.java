@@ -31,6 +31,10 @@ public class method extends Feature {
 		return_type = a3;
 		expr        = a4;
 	}
+	
+	public void semant() {
+		
+	}
 
 	public TreeNode copy() {
 		return new method(lineNumber, copy_AbstractSymbol(name), (Formals)formals.copy(), copy_AbstractSymbol(return_type), (Expression)expr.copy());

@@ -21,6 +21,10 @@ public class object extends Expression {
 		super(lineNumber);
 		name = a1;
 	}
+	
+	public void semant() {
+		
+	}
 
 	public TreeNode copy() {
 		return new object(lineNumber, copy_AbstractSymbol(name));

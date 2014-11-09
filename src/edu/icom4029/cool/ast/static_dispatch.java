@@ -30,9 +30,15 @@ public class static_dispatch extends Expression {
 		name = a3;
 		actual = a4;
 	}
+	
+	public void semant() {
+		
+	}
+	
 	public TreeNode copy() {
 		return new static_dispatch(lineNumber, (Expression)expr.copy(), copy_AbstractSymbol(type_name), copy_AbstractSymbol(name), (Expressions)actual.copy());
 	}
+	
 	public void dump(PrintStream out, int n) {
 		out.print(Utilities.pad(n) + "static_dispatch\n");
 		expr.dump(out, n+2);
@@ -55,6 +61,7 @@ public class static_dispatch extends Expression {
 		out.println(Utilities.pad(n + 2) + ")");
 		dump_type(out, n);
 	}
+	
 	/** Generates code for this expression.  This method is to be completed 
 	 * in programming assignment 5.  (You may or add remove parameters as
 	 * you wish.)

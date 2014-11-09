@@ -23,6 +23,10 @@ public class assign extends Expression {
 		name = a1;
 		expr = a2;
 	}
+	
+	public void semant() {
+		
+	}
 
 	public TreeNode copy() {
 		return new assign(lineNumber, copy_AbstractSymbol(name), (Expression)expr.copy());
@@ -44,6 +48,7 @@ public class assign extends Expression {
 		expr.dump_with_types(out, n + 2);
 		dump_type(out, n);
 	}
+	
 	/** Generates code for this expression.  This method is to be completed 
 	 * in programming assignment 5.  (You may or add remove parameters as
 	 * you wish.)

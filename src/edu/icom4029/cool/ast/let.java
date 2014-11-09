@@ -29,9 +29,15 @@ public class let extends Expression {
 		init = a3;
 		body = a4;
 	}
+	
+	public void semant() {
+		
+	}
+	
 	public TreeNode copy() {
 		return new let(lineNumber, copy_AbstractSymbol(identifier), copy_AbstractSymbol(type_decl), (Expression)init.copy(), (Expression)body.copy());
 	}
+	
 	public void dump(PrintStream out, int n) {
 		out.print(Utilities.pad(n) + "let\n");
 		dump_AbstractSymbol(out, n+2, identifier);
@@ -50,6 +56,7 @@ public class let extends Expression {
 		body.dump_with_types(out, n + 2);
 		dump_type(out, n);
 	}
+	
 	/** Generates code for this expression.  This method is to be completed 
 	 * in programming assignment 5.  (You may or add remove parameters as
 	 * you wish.)

@@ -20,7 +20,7 @@ public class program extends ProgramAbstract {
 	HashMap<String, SymbolTable> objectEnvironments = new HashMap<String, SymbolTable>(); // A map that defines the object environment for each class. Each class can have many levels of scope due to methods, lets, etc
 
 	HashMap<String, SymbolTable> methodSymTabMap    = new HashMap<String, SymbolTable>();
-	HashMap< String, HashMap< String, ArrayList<AbstractSymbol>>> methodEnvironment;
+	HashMap<String, HashMap<String, ArrayList<AbstractSymbol>>> methodEnvironment;
 	ClassTable classTable;
 
 	protected Classes classes;

@@ -27,6 +27,10 @@ public class lt extends Expression {
 	public TreeNode copy() {
 		return new lt(lineNumber, (Expression)e1.copy(), (Expression)e2.copy());
 	}
+	
+	public void semant() {
+		
+	}
 
 	public void dump(PrintStream out, int n) {
 		out.print(Utilities.pad(n) + "lt\n");

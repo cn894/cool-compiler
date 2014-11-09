@@ -24,6 +24,10 @@ public class string_const extends Expression {
 		super(lineNumber);
 		token = a1;
 	}
+	
+	public void semant() {
+		
+	}
 
 	public TreeNode copy() {
 		return new string_const(lineNumber, copy_AbstractSymbol(token));

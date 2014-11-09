@@ -22,9 +22,15 @@ public class eq extends Expression {
 		e1 = a1;
 		e2 = a2;
 	}
+	
+	public void semant() {
+		
+	}
+	
 	public TreeNode copy() {
 		return new eq(lineNumber, (Expression)e1.copy(), (Expression)e2.copy());
 	}
+	
 	public void dump(PrintStream out, int n) {
 		out.print(Utilities.pad(n) + "eq\n");
 		e1.dump(out, n+2);
@@ -38,6 +44,7 @@ public class eq extends Expression {
 		e2.dump_with_types(out, n + 2);
 		dump_type(out, n);
 	}
+	
 	/** Generates code for this expression.  This method is to be completed 
 	 * in programming assignment 5.  (You may or add remove parameters as
 	 * you wish.)

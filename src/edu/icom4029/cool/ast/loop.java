@@ -22,9 +22,15 @@ public class loop extends Expression {
 		pred = a1;
 		body = a2;
 	}
+	
+	public void semant() {
+		
+	}
+	
 	public TreeNode copy() {
 		return new loop(lineNumber, (Expression)pred.copy(), (Expression)body.copy());
 	}
+	
 	public void dump(PrintStream out, int n) {
 		out.print(Utilities.pad(n) + "loop\n");
 		pred.dump(out, n+2);
@@ -39,6 +45,7 @@ public class loop extends Expression {
 		body.dump_with_types(out, n + 2);
 		dump_type(out, n);
 	}
+	
 	/** Generates code for this expression.  This method is to be completed 
 	 * in programming assignment 5.  (You may or add remove parameters as
 	 * you wish.)

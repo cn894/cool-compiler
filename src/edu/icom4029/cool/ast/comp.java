@@ -21,6 +21,10 @@ public class comp extends Expression {
 		e1 = a1;
 	}
 	
+	public void semant() {
+		
+	}
+	
 	public TreeNode copy() {
 		return new comp(lineNumber, (Expression)e1.copy());
 	}

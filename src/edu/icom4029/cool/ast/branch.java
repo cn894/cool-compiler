@@ -26,9 +26,15 @@ public class branch extends Case {
 		type_decl = a2;
 		expr = a3;
 	}
+	
+	public void semant() {
+		
+	}
+	
 	public TreeNode copy() {
 		return new branch(lineNumber, copy_AbstractSymbol(name), copy_AbstractSymbol(type_decl), (Expression)expr.copy());
 	}
+	
 	public void dump(PrintStream out, int n) {
 		out.print(Utilities.pad(n) + "branch\n");
 		dump_AbstractSymbol(out, n+2, name);
@@ -44,5 +50,4 @@ public class branch extends Case {
 		dump_AbstractSymbol(out, n + 2, type_decl);
 		expr.dump_with_types(out, n + 2);
 	}
-
 }

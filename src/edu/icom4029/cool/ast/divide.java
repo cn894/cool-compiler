@@ -22,6 +22,11 @@ public class divide extends Expression {
 		e1 = a1;
 		e2 = a2;
 	}
+	
+	public void semant() {
+		
+	}
+	
 	public TreeNode copy() {
 		return new divide(lineNumber, (Expression)e1.copy(), (Expression)e2.copy());
 	}
@@ -42,6 +47,7 @@ public class divide extends Expression {
 		e2.dump_with_types(out, n + 2);
 		dump_type(out, n);
 	}
+	
 	/** Generates code for this expression.  This method is to be completed 
 	 * in programming assignment 5.  (You may or add remove parameters as
 	 * you wish.)

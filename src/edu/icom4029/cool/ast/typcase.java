@@ -25,6 +25,10 @@ public class typcase extends Expression {
 		cases = a2;
 	}
 	
+	public void semant() {
+		
+	}
+	
 	public TreeNode copy() {
 		return new typcase(lineNumber, (Expression)expr.copy(), (Cases)cases.copy());
 	}
