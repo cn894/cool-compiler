@@ -38,7 +38,7 @@ public class class_ extends ClassAbstract {
 	}
 	
 	public void semant(ClassTable classTable, SymbolTable symbolTable) {
-		if (classTable.hasClass(parent.getString())) {
+		if (!classTable.hasClass(parent.getString())) {
 			classTable.semantError(this).println("Class " + name.getString() + " inherits from an undefined class");
 			return;
 		}
