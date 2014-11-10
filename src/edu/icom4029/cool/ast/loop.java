@@ -60,6 +60,6 @@ public class loop extends Expression {
 			classTable.semantError(cl).println("Loop condition does not have type Bool.");
 		}
 		body.semant(classTable, cl, symbolTable);
-		set_type(TreeConstants.No_type);
+		set_type(TreeConstants.Object_);
 	}
 }
