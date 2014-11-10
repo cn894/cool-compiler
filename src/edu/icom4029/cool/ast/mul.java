@@ -63,10 +63,10 @@ public class mul extends Expression {
 		
 		if (e1.get_type() != TreeConstants.Int || e2.get_type() != TreeConstants.Int) {
 			classTable.semantError(cl).println("non-Int arguments: " + e1.get_type().getString() + " * " + e2.get_type().getString());
-			set_type(TreeConstants.Object_);
+			set_type(TreeConstants.No_type);
 		}
 		else {
-			set_type(e2.get_type());
+			set_type(TreeConstants.Int);
 		}
 	}
 }
