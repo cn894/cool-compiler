@@ -58,8 +58,9 @@ public class mul extends Expression {
 
 	@Override
 	public void semant(ClassTable classTable, class_ cl, SymbolTable symbolTable) {
-		e1.semant(classTable, cl, symbolTable);
-		e2.semant(classTable, cl, symbolTable);
+		e1.semant(classTable, cl, symbolTable); // Perform semantic analysis on the LHS expression
+		e2.semant(classTable, cl, symbolTable); // Perform semantic analysis on the RHS expression
+		
 		if (e1.get_type() != TreeConstants.Int || e2.get_type() != TreeConstants.Int) {
 			classTable.semantError(cl).println("non-Int arguments: " + e1.get_type().getString() + " * " + e2.get_type().getString());
 			set_type(TreeConstants.Object_);

@@ -54,7 +54,7 @@ public class isvoid extends Expression {
 
 	@Override
 	public void semant(ClassTable classTable, class_ cl, SymbolTable symbolTable) {
-		e1.semant(classTable, cl, symbolTable);
+		e1.semant(classTable, cl, symbolTable); // Perform semantic analysis on the expression
 		set_type(TreeConstants.Bool);
 	}
 }

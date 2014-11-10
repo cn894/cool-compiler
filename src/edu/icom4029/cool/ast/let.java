@@ -74,6 +74,7 @@ public class let extends Expression {
 
 		init.semant(classTable, cl, symbolTable);
 		AbstractSymbol initType = init.get_type();
+		
 		if (initType != TreeConstants.No_type && initType != TreeConstants.SELF_TYPE && !classTable.isBase(type_decl, initType)) {
 			classTable.semantError(cl).println("Inferred type " + initType.getString() + " of initialization of " +  identifier.getString() +
 					" does not conform to identifier's declared type " + type_decl.getString());

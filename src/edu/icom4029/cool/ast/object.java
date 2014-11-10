@@ -54,6 +54,7 @@ public class object extends Expression {
 	@Override
 	public void semant(ClassTable classTable, class_ cl, SymbolTable symbolTable) {
 		Object lookedUp = symbolTable.lookup(name);
+		
 		if (lookedUp == null) {
 			classTable.semantError(cl).println("Undeclared identifier " + name.getString());
 			set_type(TreeConstants.No_type);

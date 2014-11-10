@@ -77,6 +77,7 @@ to test the complete compiler.
 			System.exit(1);
 		}
 		
+		// Check that the program has a class called Main
 		if (!classTable.hasClass(TreeConstants.Main.getString())) {
 			classTable.semantError().println("Class Main is not defined.");
 		}
@@ -87,6 +88,8 @@ to test the complete compiler.
 		symbolTable.enterScope();
 		symbolTable.addId(TreeConstants.self, TreeConstants.SELF_TYPE);
 		
+		
+		// Call the semant method of each class that makes up the program
 		for (class_ c : classTable.getClassList()) {
 			c.semant(classTable, symbolTable);
 		}

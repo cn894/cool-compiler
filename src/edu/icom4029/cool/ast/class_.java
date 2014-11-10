@@ -38,18 +38,23 @@ public class class_ extends ClassAbstract {
 	}
 	
 	public void semant(ClassTable classTable, SymbolTable symbolTable) {
+		
+		// Check if this class inherits from an undefined class
 		if (!classTable.hasClass(parent.getString())) {
 			classTable.semantError(this).println("Class " + name.getString() + " inherits from an undefined class");
 			return;
 		}
-		symbolTable.enterScope();
-		symbolTable.addId(TreeConstants.SELF_TYPE, name);
+		
+		symbolTable.enterScope(); // Enter the scope defined by this class
+		symbolTable.addId(TreeConstants.SELF_TYPE, name); // Add SELF_TYPE to the current scope. Every class has its SELF_TYPE
 		symbolTable.addTable(attrTable);
 		
+		// For every feature of the class, call its semant method
 		for (Enumeration e = features.getElements(); e.hasMoreElements();) {
 			((Feature) e.nextElement()).semant(classTable, this, symbolTable);			
 		}
-		symbolTable.exitScope();
+		
+		symbolTable.exitScope(); // Leave the scope defined by this class
 	}
 	
 	public void fillMethodAttrTable(ClassTable classTable) {
@@ -59,14 +64,14 @@ public class class_ extends ClassAbstract {
 				return;
 			}			
 			methodTable = parentClass.getMethodTable();
-			attrTable = parentClass.getAttrTable();
+			attrTable   = parentClass.getAttrTable();
 			if (methodTable == null) {
 				parentClass.fillMethodAttrTable(classTable);
 			}
 		}
 		else {
 			methodTable = new SymbolTable();
-			attrTable = new SymbolTable();
+			attrTable   = new SymbolTable();
 		}
 		
 		methodTable.enterScope();
@@ -74,7 +79,8 @@ public class class_ extends ClassAbstract {
 		
 		for (Enumeration e = features.getElements(); e.hasMoreElements();) {
 			Feature feature = (Feature) e.nextElement();
-			String err = feature.fillMethodTable(methodTable);
+			String err      = feature.fillMethodTable(methodTable);
+			
 			if (!err.isEmpty()) {
 				classTable.semantError(this).println(err);
 			}
