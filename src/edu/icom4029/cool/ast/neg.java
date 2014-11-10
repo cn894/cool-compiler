@@ -3,6 +3,7 @@ package edu.icom4029.cool.ast;
 import java.io.PrintStream;
 
 import edu.icom4029.cool.ast.base.TreeNode;
+import edu.icom4029.cool.core.TreeConstants;
 import edu.icom4029.cool.core.Utilities;
 import edu.icom4029.cool.semant.ClassTable;
 import edu.icom4029.cool.semant.SymbolTable;
@@ -49,7 +50,14 @@ public class neg extends Expression {
 
 	@Override
 	public void semant(ClassTable classTable, class_ cl, SymbolTable symbolTable) {
-		e1.semant(classTable, cl, symbolTable);
-		set_type(e1.get_type());
+		e1.semant(classTable, cl, symbolTable); // Perform semantic analysis on the expression
+		
+		if (e1.get_type() != TreeConstants.Int) {
+			classTable.semantError(cl).println("non-Int argument: ~" + e1.get_type().getString());
+			set_type(TreeConstants.No_type);
+		}
+		else {
+			set_type(TreeConstants.Int);
+		}
 	}
 }

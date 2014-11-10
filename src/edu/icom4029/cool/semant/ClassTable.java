@@ -164,9 +164,7 @@ public class ClassTable {
 							TreeConstants.Str,
 							new no_expr(0))),
 			filename);
-
-		/* Do somethind with Object_class, IO_class, Int_class,
-           Bool_class, and Str_class here */
+		
 		
 		nameToClass.put(TreeConstants.Object_.getString(), Object_class);
 		nameToClass.put(TreeConstants.IO.getString(),      IO_class);
