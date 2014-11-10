@@ -44,7 +44,7 @@ public class method extends Feature {
 	public AbstractSymbol getName()       { return name; }
 	public Formals        getFormals()    { return formals; }
 	public AbstractSymbol getReturnType() { return return_type; }
-	public Expression     getExpr()       {return expr; }
+	public Expression     getExpr()       { return expr; }
 
 	public void dump(PrintStream out, int n) {
 		out.print(Utilities.pad(n) + "method\n");

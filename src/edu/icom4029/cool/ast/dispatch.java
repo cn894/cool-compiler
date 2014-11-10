@@ -79,7 +79,7 @@ public class dispatch extends Expression {
 		Object         lookedUp    = methodTable.lookup(name);
 		
 		if (lookedUp == null) {
-			classTable.semantError(cl).println("Dispatch to undefined method " + name + ".");
+			classTable.semantError(cl).println("Dispatch to undefined method " + name.getString() + ".");
 		}
 		else {
 			method methodInfo = (method) methodTable.lookup(name);
