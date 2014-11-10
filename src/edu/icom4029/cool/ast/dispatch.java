@@ -102,7 +102,7 @@ public class dispatch extends Expression {
 		}
 		
 		if (nameType == TreeConstants.SELF_TYPE) {
-			set_type(expr.get_type());
+			set_type(exprType);
 		}
 		else {
 			set_type(nameType);

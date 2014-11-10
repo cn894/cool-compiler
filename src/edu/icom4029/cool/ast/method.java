@@ -96,10 +96,10 @@ public class method extends Feature {
 			exprType = c.getName();
 		}
 		
-		if (return_type == TreeConstants.SELF_TYPE && expr.get_type() != TreeConstants.SELF_TYPE) {
-			classTable.semantError(c).println("Inferred return type " + expr.get_type().getString() + " of method " + name.getString() +
-					" does not conform to declared return type " + return_type.getString());
-		}
+//		if (return_type == TreeConstants.SELF_TYPE && expr.get_type() != TreeConstants.SELF_TYPE) {
+//			classTable.semantError(c).println("Inferred return type " + expr.get_type().getString() + " of method " + name.getString() +
+//					" does not conform to declared return type " + return_type.getString());
+//		}
 		if (return_type != TreeConstants.SELF_TYPE && !classTable.isBase(return_type, exprType)) {
 			classTable.semantError(c).println("Inferred return type " + expr.get_type().getString() + " of method " + name.getString() +
 					" does not conform to declared return type " + return_type.getString());
