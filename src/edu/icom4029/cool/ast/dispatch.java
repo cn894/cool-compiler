@@ -79,7 +79,7 @@ public class dispatch extends Expression {
 		Object         lookedUp    = methodTable.lookup(name);
 		
 		if (lookedUp == null) {
-			classTable.semantError(cl).println("Dispatch to undefined method " + name + ".");
+			classTable.semantError(cl).println("Dispatch to undefined method " + name.getString() + ".");
 		}
 		else {
 			method methodInfo = (method) methodTable.lookup(name);
@@ -102,10 +102,10 @@ public class dispatch extends Expression {
 		}
 		
 		if (nameType == TreeConstants.SELF_TYPE) {
-			set_type(expr.get_type());
+			set_type(exprType);	// Type is the target object.
 		}
 		else {
-			set_type(nameType);
+			set_type(nameType);	// Type is the declared return type.
 		}
 	}
 }

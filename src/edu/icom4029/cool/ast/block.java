@@ -55,7 +55,7 @@ public class block extends Expression {
 		for (Enumeration e = body.getElements(); e.hasMoreElements();) {
 			Expression expr = (Expression) e.nextElement();
 			expr.semant(classTable, cl, symbolTable);
-			set_type(expr.get_type());
+			set_type(expr.get_type());	// Type is the type of the last expression in the block.
 		}
 	}
 }

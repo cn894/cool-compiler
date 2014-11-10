@@ -70,10 +70,10 @@ public class cond extends Expression {
 			thenType = cl.getName();
 		}
 		
-		AbstractSymbol else_type = else_exp.get_type();
-		if (else_type == TreeConstants.SELF_TYPE) {
-			else_type = cl.getName();
+		AbstractSymbol elseType = else_exp.get_type();
+		if (elseType == TreeConstants.SELF_TYPE) {
+			elseType = cl.getName();
 		}
-		set_type(classTable.leastCommonAncestor(thenType, else_type));
+		set_type(classTable.leastCommonAncestor(thenType, elseType));	// Type is the LCA of the 'then' and 'else' expressions
 	}
 }

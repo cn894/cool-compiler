@@ -447,6 +447,9 @@ public class ClassTable {
     	return this.semantErrors != 0;
     }
     
+    /**
+     * Fills the method and attribute tables of all classes.
+     */
     public void fillMethodAttrTable() {
     	for (Enumeration e = basicClassList.getElements(); e.hasMoreElements();) {
     		class_ c = (class_) e.nextElement();
@@ -461,6 +464,12 @@ public class ClassTable {
     	return classes;
     }
     
+    /**
+     * Checks if a class is an ancestor of another class.
+     * @param base the base or ancestor class
+     * @param derived the derived or child class.
+     * @return <code>true</code> if base is indeed an ancestor of derived
+     */
     public boolean isBase(AbstractSymbol base, AbstractSymbol derived) {
     	return leastCommonAncestor(base, derived) == base;
     }

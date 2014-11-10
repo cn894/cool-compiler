@@ -70,6 +70,7 @@ public class attr extends Feature {
 
 	@Override
 	public String fillAttrTable(SymbolTable attrTable) {
+		// Make sure not to overwrite any ancestor's attributes.
 		if (attrTable.lookup(name) != null) {
 			return "Attribute " + name.getString() + " is an attribute from an inherited class";
 		}

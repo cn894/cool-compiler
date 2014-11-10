@@ -37,7 +37,7 @@ public class branch extends Case {
 		symbolTable.enterScope();
 		symbolTable.addId(name, type_decl);
 		expr.semant(classTable, c, symbolTable);
-		set_type(expr.get_type());
+		set_type(expr.get_type());	// Type is the type of the expression in the branch.
 		symbolTable.exitScope();
 	}
 	

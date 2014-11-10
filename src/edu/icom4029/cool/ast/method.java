@@ -44,7 +44,7 @@ public class method extends Feature {
 	public AbstractSymbol getName()       { return name; }
 	public Formals        getFormals()    { return formals; }
 	public AbstractSymbol getReturnType() { return return_type; }
-	public Expression     getExpr()       {return expr; }
+	public Expression     getExpr()       { return expr; }
 
 	public void dump(PrintStream out, int n) {
 		out.print(Utilities.pad(n) + "method\n");
@@ -96,10 +96,10 @@ public class method extends Feature {
 			exprType = c.getName();
 		}
 		
-		if (return_type == TreeConstants.SELF_TYPE && expr.get_type() != TreeConstants.SELF_TYPE) {
-			classTable.semantError(c).println("Inferred return type " + expr.get_type().getString() + " of method " + name.getString() +
-					" does not conform to declared return type " + return_type.getString());
-		}
+//		if (return_type == TreeConstants.SELF_TYPE && expr.get_type() != TreeConstants.SELF_TYPE) {
+//			classTable.semantError(c).println("Inferred return type " + expr.get_type().getString() + " of method " + name.getString() +
+//					" does not conform to declared return type " + return_type.getString());
+//		}
 		if (return_type != TreeConstants.SELF_TYPE && !classTable.isBase(return_type, exprType)) {
 			classTable.semantError(c).println("Inferred return type " + expr.get_type().getString() + " of method " + name.getString() +
 					" does not conform to declared return type " + return_type.getString());

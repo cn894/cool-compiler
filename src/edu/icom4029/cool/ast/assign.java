@@ -70,7 +70,6 @@ public class assign extends Expression {
 		expr.semant(classTable, cl, symbolTable); // Call the semant method of the RHS expression of the assign expression.
 
 		AbstractSymbol exprType = expr.get_type();
-		System.out.println(exprType);
 		
 		if (!classTable.isBase(nameType, exprType)) {
 			classTable.semantError(cl).println("Type " + exprType.getString() + " of assigned expression does not conform to declared type " + nameType.getString() + " of identifier " + name.getString());
