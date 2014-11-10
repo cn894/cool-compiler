@@ -66,7 +66,7 @@ public class assign extends Expression {
 			return;
 		}
 		
-		AbstractSymbol nameType = (AbstractSymbol) symbolTable.lookup(name);
+		AbstractSymbol nameType = (AbstractSymbol) symbolTable.lookup(name);		
 		expr.semant(classTable, cl, symbolTable); // Call the semant method of the right-hand-side expression of the assign expression.
 		AbstractSymbol exprType = expr.get_type();
 		
