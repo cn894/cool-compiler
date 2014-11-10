@@ -102,10 +102,10 @@ public class dispatch extends Expression {
 		}
 		
 		if (nameType == TreeConstants.SELF_TYPE) {
-			set_type(exprType);
+			set_type(exprType);	// Type is the target object.
 		}
 		else {
-			set_type(nameType);
+			set_type(nameType);	// Type is the declared return type.
 		}
 	}
 }

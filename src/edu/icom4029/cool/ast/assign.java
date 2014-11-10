@@ -67,13 +67,10 @@ public class assign extends Expression {
 		}
 		
 		AbstractSymbol nameType = (AbstractSymbol) symbolTable.lookup(name);
-		// System.out.println(nameType);
-		// Y u do dis, Take-san ;_;
 		expr.semant(classTable, cl, symbolTable); // Call the semant method of the RHS expression of the assign expression.
 
 		AbstractSymbol exprType = expr.get_type();
-		// System.out.println(exprType);
-		// WHY?!
+		
 		if (!classTable.isBase(nameType, exprType)) {
 			classTable.semantError(cl).println("Type " + exprType.getString() + " of assigned expression does not conform to declared type " + nameType.getString() + " of identifier " + name.getString());
         }

@@ -74,6 +74,6 @@ public class cond extends Expression {
 		if (elseType == TreeConstants.SELF_TYPE) {
 			elseType = cl.getName();
 		}
-		set_type(classTable.leastCommonAncestor(thenType, elseType));
+		set_type(classTable.leastCommonAncestor(thenType, elseType));	// Type is the LCA of the 'then' and 'else' expressions
 	}
 }

@@ -53,7 +53,6 @@ public class comp extends Expression {
 	@Override
 	public void semant(ClassTable classTable, class_ cl, SymbolTable symbolTable) {
 		e1.semant(classTable, cl, symbolTable);
-		
 		if (e1.get_type() != TreeConstants.Bool) {
 			classTable.semantError(cl).println("non-Bool argument: not " + e1.get_type().getString());
 			set_type(TreeConstants.No_type);
