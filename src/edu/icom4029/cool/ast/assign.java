@@ -59,7 +59,7 @@ public class assign extends Expression {
 	@Override
 	public void semant(ClassTable classTable, class_ cl, SymbolTable symbolTable) {
 		
-		// Check if left-hand-side is self. self can never be assigned a value
+		// Check if LHS is self. self can never be assigned a value
 		if (name == TreeConstants.self) {
 			classTable.semantError(cl).println("Cannot assign to 'self'.");
 			set_type(TreeConstants.No_type);
@@ -67,12 +67,13 @@ public class assign extends Expression {
 		}
 		
 		AbstractSymbol nameType = (AbstractSymbol) symbolTable.lookup(name);
-		expr.semant(classTable, cl, symbolTable); // Call the semant method of the right-hand-side expression of the assign expression.
+		System.out.println(nameType);
+		expr.semant(classTable, cl, symbolTable); // Call the semant method of the RHS expression of the assign expression.
 		AbstractSymbol exprType = expr.get_type();
+		System.out.println(exprType);
 		
 		if (!classTable.isBase(nameType, exprType)) {
-			classTable.semantError(cl).println("Type " + exprType.getString() + " of assigned expression does not conform to declared type " + 
-					nameType.getString() + " of identifier " + name.getString());
+			classTable.semantError(cl).println("Type " + exprType.getString() + " of assigned expression does not conform to declared type " + nameType.getString() + " of identifier " + name.getString());
         }
         set_type(nameType);
 	}

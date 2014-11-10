@@ -74,6 +74,7 @@ public class static_dispatch extends Expression {
 	public void semant(ClassTable classTable, class_ cl, SymbolTable symbolTable) {
 		expr.semant(classTable, cl, symbolTable);
 		AbstractSymbol exprType = expr.get_type();
+		
 		if (exprType == TreeConstants.SELF_TYPE) {
 			exprType = (AbstractSymbol)symbolTable.lookup(TreeConstants.SELF_TYPE);
 		}

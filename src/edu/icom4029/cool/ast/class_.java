@@ -45,11 +45,11 @@ public class class_ extends ClassAbstract {
 			return;
 		}
 		
-		symbolTable.enterScope(); // Enter the scope defined by this class
+		symbolTable.enterScope();                         // Enter the scope defined by this class
 		symbolTable.addId(TreeConstants.SELF_TYPE, name); // Add SELF_TYPE to the current scope. Every class has its SELF_TYPE
 		symbolTable.addTable(attrTable);
 		
-		// For every feature of the class, call its semant method
+		// Type check each of the features that compose the class
 		for (Enumeration e = features.getElements(); e.hasMoreElements();) {
 			((Feature) e.nextElement()).semant(classTable, this, symbolTable);			
 		}
@@ -58,6 +58,7 @@ public class class_ extends ClassAbstract {
 	}
 	
 	public void fillMethodAttrTable(ClassTable classTable) {
+		
 		if (parent != TreeConstants.No_class) {
 			class_ parentClass = classTable.getClass(parent.getString());
 			if (parentClass == null) {
@@ -84,6 +85,7 @@ public class class_ extends ClassAbstract {
 			if (!err.isEmpty()) {
 				classTable.semantError(this).println(err);
 			}
+			
 			err = feature.fillAttrTable(attrTable);
 			if (!err.isEmpty()) {
 				classTable.semantError(this).println(err);
@@ -117,10 +119,10 @@ public class class_ extends ClassAbstract {
 		out.println(Utilities.pad(n + 2) + ")");
 	}
 	
-	public AbstractSymbol getName()        { return name; }
-	public AbstractSymbol getParent()      { return parent; }
-	public AbstractSymbol getFilename()    { return filename; }
-	public Features       getFeatures()    { return features; }
+	public AbstractSymbol getName()        { return name;        }
+	public AbstractSymbol getParent()      { return parent;      }
+	public AbstractSymbol getFilename()    { return filename;    }
+	public Features       getFeatures()    { return features;    }
 	public SymbolTable    getMethodTable() { return methodTable; }
-	public SymbolTable    getAttrTable()   { return attrTable; }
+	public SymbolTable    getAttrTable()   { return attrTable;   }
 }

@@ -68,10 +68,10 @@ You are free to first do (1) and make sure you catch all semantic
 to test the complete compiler.
 	 */
 	public void semant() {
-		/* ClassTable constructor may do some semantic analysis */
+		// Semantic Analysis: First-pass
+		// Build the inheritance graph and check for multiply defined classes and cycles in the inheritance graph
 		classTable = new ClassTable(classes);
-
-		/* some semantic analysis code may go here */
+		
 		if (classTable.errors()) {
 			System.err.println("Compilation halted due to static semantic errors.");
 			System.exit(1);
@@ -82,14 +82,17 @@ to test the complete compiler.
 			classTable.semantError().println("Class Main is not defined.");
 		}
 		
+		// Semantic Analysis: Second-pass
+		// Add all of the methods and attributes to their corresponding classes
 		classTable.fillMethodAttrTable();
 		
+		// Semantic Analysis: Third-pass
+		// Type check everything
 		SymbolTable symbolTable = new SymbolTable();
 		symbolTable.enterScope();
 		symbolTable.addId(TreeConstants.self, TreeConstants.SELF_TYPE);
 		
-		
-		// Call the semant method of each class that makes up the program
+		// Perform type checking on each class that composes the program
 		for (class_ c : classTable.getClassList()) {
 			c.semant(classTable, symbolTable);
 		}

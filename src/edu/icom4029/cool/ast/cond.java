@@ -64,10 +64,12 @@ public class cond extends Expression {
 		pred.semant(classTable, cl, symbolTable);
 		then_exp.semant(classTable, cl, symbolTable);
 		else_exp.semant(classTable, cl, symbolTable);
+		
 		AbstractSymbol thenType = then_exp.get_type();
 		if (thenType == TreeConstants.SELF_TYPE) {
 			thenType = cl.getName();
 		}
+		
 		AbstractSymbol else_type = else_exp.get_type();
 		if (else_type == TreeConstants.SELF_TYPE) {
 			else_type = cl.getName();
