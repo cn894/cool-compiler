@@ -95,7 +95,7 @@ public class dispatch extends Expression {
 					paramType = cl.getName();
 				}
 				if (!classTable.isBase(f.getType(), paramType)) {
-					classTable.semantError(cl).println("In call of method " + name + ", type " + param.get_type().getString() +
+					classTable.semantError(cl).println("In call of method " + name.getString() + ", type " + param.get_type().getString() +
 							" of parameter " + f.getName().getString() + " does not conform to declared type " + f.getType().getString());
 				}
 			}

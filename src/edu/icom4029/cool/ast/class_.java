@@ -69,6 +69,8 @@ public class class_ extends ClassAbstract {
 			if (methodTable == null) {
 				parentClass.fillMethodAttrTable(classTable);
 			}
+			methodTable = new SymbolTable(parentClass.getMethodTable());
+			attrTable   = new SymbolTable(parentClass.getAttrTable());
 		}
 		else {
 			methodTable = new SymbolTable();

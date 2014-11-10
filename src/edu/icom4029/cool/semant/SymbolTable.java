@@ -21,8 +21,8 @@ ON AN "AS IS" BASIS, AND THE UNIVERSITY OF CALIFORNIA HAS NO OBLIGATION TO
 PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
  */
 
-import java.util.Stack;
 import java.util.Hashtable;
+import java.util.Stack;
 
 import edu.icom4029.cool.core.Utilities;
 import edu.icom4029.cool.lexer.AbstractSymbol;
@@ -69,6 +69,10 @@ public class SymbolTable {
 	public SymbolTable() {
 		tbl = new Stack();
 	}
+	
+	public SymbolTable(SymbolTable symbolTable) {
+		tbl = (Stack) symbolTable.tbl.clone();
+	}
 
 	/** Enters a new scope. A scope must be entered before anything
 	 * can be added to the table.
@@ -94,11 +98,14 @@ public class SymbolTable {
 		if (tbl.empty()) {
 			Utilities.fatalError("addId: can't add a symbol without a scope.");
 		}
-		((Hashtable)tbl.peek()).put(id, info);
+		((Hashtable) tbl.peek()).put(id, info);
 	}
 	
 	public void addTable(SymbolTable symbolTable) {
-		// TODO: Implement this!
+		if (tbl.empty()) {
+			Utilities.fatalError("addTable: can't add a table without a scope.");
+		}
+		((Hashtable) tbl.peek()).putAll((Hashtable) symbolTable.tbl.peek());
 	}
 
 	/**

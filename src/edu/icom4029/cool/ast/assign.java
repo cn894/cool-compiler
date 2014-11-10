@@ -69,6 +69,7 @@ public class assign extends Expression {
 		AbstractSymbol nameType = (AbstractSymbol) symbolTable.lookup(name);
 		System.out.println(nameType);
 		expr.semant(classTable, cl, symbolTable); // Call the semant method of the RHS expression of the assign expression.
+
 		AbstractSymbol exprType = expr.get_type();
 		System.out.println(exprType);
 		
