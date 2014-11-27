@@ -90,7 +90,7 @@ to test the complete compiler.
 		// Type check everything
 		SymbolTable symbolTable = new SymbolTable();
 		symbolTable.enterScope();
-		symbolTable.addId(TreeConstants.self, TreeConstants.SELF_TYPE);
+//		symbolTable.addId(TreeConstants.self, TreeConstants.SELF_TYPE);
 		
 		// Perform type checking on each class that composes the program
 		for (class_ c : classTable.getClassList()) {
