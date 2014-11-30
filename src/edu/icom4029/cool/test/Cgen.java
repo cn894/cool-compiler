@@ -49,6 +49,9 @@ class Cgen {
 				Lexer lexer = new Lexer(file, args[i]);
 				Parser parser = new Parser(lexer);
 				Object result = parser.parse().value;
+				
+				((ProgramAbstract) result).semant();
+//				((ProgramAbstract) result).dump_with_types(System.out, 0);
 
 				PrintStream output = System.out;
 				String filename = null;
@@ -71,7 +74,7 @@ class Cgen {
 					}
 				}
 
-				((ProgramAbstract)result).cgen(output);
+				((ProgramAbstract) result).cgen(output);
 			} catch (Exception ex) {
 				ex.printStackTrace(System.err);
 			}

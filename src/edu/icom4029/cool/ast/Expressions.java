@@ -1,9 +1,13 @@
 package edu.icom4029.cool.ast;
 
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
 import java.util.Vector;
 
 import edu.icom4029.cool.ast.base.ListNode;
 import edu.icom4029.cool.ast.base.TreeNode;
+import edu.icom4029.cool.lexer.AbstractSymbol;
 
 /** Defines list phylum Expressions
 <p>
@@ -32,5 +36,13 @@ public class Expressions extends ListNode {
 	
 	public TreeNode copy() {
 		return new Expressions(lineNumber, copyElements());
+	}
+
+	public List<AbstractSymbol> getTypes() {
+		List<AbstractSymbol> types = new ArrayList<AbstractSymbol>();
+        for (Enumeration e = this.getElements(); e.hasMoreElements();) {
+            types.add(((Expression) e.nextElement()).get_type());
+        }
+        return types;
 	}
 }

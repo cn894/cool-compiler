@@ -1,14 +1,19 @@
 package edu.icom4029.cool.ast;
 
 import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import edu.icom4029.cool.ast.base.TreeNode;
+import edu.icom4029.cool.cgen.CgenSupport;
+import edu.icom4029.cool.cgen.FormalVariable;
 import edu.icom4029.cool.core.TreeConstants;
 import edu.icom4029.cool.core.Utilities;
 import edu.icom4029.cool.lexer.AbstractSymbol;
+import edu.icom4029.cool.lexer.AbstractTable;
 import edu.icom4029.cool.semant.ClassTable;
 import edu.icom4029.cool.semant.SymbolTable;
 
@@ -45,6 +50,15 @@ public class method extends Feature {
 	public Formals        getFormals()    { return formals; }
 	public AbstractSymbol getReturnType() { return return_type; }
 	public Expression     getExpr()       { return expr; }
+
+	public List<AbstractSymbol> getParamTypes() {
+		List<AbstractSymbol> paramTypes = new ArrayList<AbstractSymbol>();
+		for (Enumeration e = formals.getElements(); e.hasMoreElements();) {
+			formal f = (formal) e.nextElement();
+			paramTypes.add(f.getType());
+		}
+		return paramTypes;
+	}
 
 	public void dump(PrintStream out, int n) {
 		out.print(Utilities.pad(n) + "method\n");
@@ -83,23 +97,23 @@ public class method extends Feature {
 				f.fillSymbolTable(symbolTable);
 			}
 		}
-		
+
 		expr.semant(classTable, c, symbolTable);
 		symbolTable.exitScope();
-		
+
 		if (expr.get_type() == TreeConstants.No_type) {
 			return;
 		}
-		
+
 		AbstractSymbol exprType = expr.get_type();
 		if (exprType == TreeConstants.SELF_TYPE) {
 			exprType = c.getName();
 		}
-		
-//		if (return_type == TreeConstants.SELF_TYPE && expr.get_type() != TreeConstants.SELF_TYPE) {
-//			classTable.semantError(c).println("Inferred return type " + expr.get_type().getString() + " of method " + name.getString() +
-//					" does not conform to declared return type " + return_type.getString());
-//		}
+
+		//		if (return_type == TreeConstants.SELF_TYPE && expr.get_type() != TreeConstants.SELF_TYPE) {
+		//			classTable.semantError(c).println("Inferred return type " + expr.get_type().getString() + " of method " + name.getString() +
+		//					" does not conform to declared return type " + return_type.getString());
+		//		}
 		if (return_type != TreeConstants.SELF_TYPE && !classTable.isBase(return_type, exprType)) {
 			classTable.semantError(c).println("Inferred return type " + expr.get_type().getString() + " of method " + name.getString() +
 					" does not conform to declared return type " + return_type.getString());
@@ -131,5 +145,20 @@ public class method extends Feature {
 	@Override
 	public String fillAttrTable(SymbolTable attrTable) {
 		return "";
+	}
+
+	public void code(PrintStream str) {
+		AbstractTable.offset = 1;
+		AbstractTable.varTable.enterScope();
+		for (int i = 0; i < formals.getLength(); ++i) {
+			formal formal = (formal)formals.getNth(i);
+			int offset = 2 + formals.getLength() - i;
+			AbstractTable.varTable.addId(formal.getName(), new FormalVariable(-offset));
+		}
+		CgenSupport.emitStartMethod(str);
+		CgenSupport.emitMove(CgenSupport.SELF, CgenSupport.ACC, str);
+		expr.code(str);
+		CgenSupport.emitEndMethod(formals.getLength(), str);
+		AbstractTable.varTable.exitScope();
 	}
 }

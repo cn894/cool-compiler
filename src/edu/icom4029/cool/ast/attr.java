@@ -3,9 +3,13 @@ package edu.icom4029.cool.ast;
 import java.io.PrintStream;
 
 import edu.icom4029.cool.ast.base.TreeNode;
+import edu.icom4029.cool.cgen.CgenNode;
+import edu.icom4029.cool.cgen.CgenSupport;
+import edu.icom4029.cool.cgen.Variable;
 import edu.icom4029.cool.core.TreeConstants;
 import edu.icom4029.cool.core.Utilities;
 import edu.icom4029.cool.lexer.AbstractSymbol;
+import edu.icom4029.cool.lexer.AbstractTable;
 import edu.icom4029.cool.semant.ClassTable;
 import edu.icom4029.cool.semant.SymbolTable;
 
@@ -77,6 +81,20 @@ public class attr extends Feature {
 		else {
 			attrTable.addId(name, type_decl);
 			return "";
+		}
+	}
+
+	public void codeProtoObject(PrintStream str) {
+		CgenNode typeNode = (CgenNode) AbstractTable.classTable.lookup(type_decl);
+		str.print(CgenSupport.WORD);
+		typeNode.emitProtoObjRef(str);
+	}
+
+	public void codeInit(PrintStream str) {
+		if (init.get_type() != null) {
+			init.code(str);
+			Variable var = (Variable) AbstractTable.varTable.lookup(name);
+			var.emitAssign(str);
 		}
 	}
 }

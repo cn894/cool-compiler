@@ -27,6 +27,7 @@ PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 import java.io.PrintStream;
 
 import edu.icom4029.cool.cgen.CgenSupport;
+import edu.icom4029.cool.core.TreeConstants;
 
 /** String table entry for string constants. */
 public class StringSymbol extends AbstractSymbol {
@@ -58,6 +59,7 @@ public class StringSymbol extends AbstractSymbol {
 		s.print(CgenSupport.WORD);
 
 		/* Add code to reference the dispatch table for class String here */
+		CgenSupport.emitDispTableRef(TreeConstants.Str, s);
 
 		s.println("");		// dispatch table
 		s.print(CgenSupport.WORD); lensym.codeRef(s); s.println(""); // length
