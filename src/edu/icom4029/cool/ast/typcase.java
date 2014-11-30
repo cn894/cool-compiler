@@ -2,14 +2,18 @@ package edu.icom4029.cool.ast;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import edu.icom4029.cool.ast.base.TreeNode;
+import edu.icom4029.cool.cgen.CgenSupport;
 import edu.icom4029.cool.core.Utilities;
 import edu.icom4029.cool.lexer.AbstractSymbol;
+import edu.icom4029.cool.lexer.AbstractTable;
 import edu.icom4029.cool.semant.ClassTable;
 import edu.icom4029.cool.semant.SymbolTable;
 
@@ -58,6 +62,23 @@ public class typcase extends Expression {
 	 * @param s the output stream 
 	 * */
 	public void code(PrintStream s) {
+		expr.code(s);
+        CgenSupport.emitCheckVoidCallCaseAbort2(lineNumber, s);
+        int labelEnd = CgenSupport.genLabelNum();
+        List<branch> branches = getBranches();
+        
+        Collections.sort(branches, new Comparator<branch>() {
+            public int compare(branch first, branch second) {
+                return AbstractTable.classTable.depth(second.getTypeDecl()) - AbstractTable.classTable.depth(first.getTypeDecl());
+            }
+        });
+        
+        for (branch br: branches) {
+            br.code(labelEnd, s);
+        }
+        
+        CgenSupport.emitCaseAbort(s);
+        CgenSupport.emitLabelDef(labelEnd, s);
 	}
 
 	@Override
@@ -76,5 +97,14 @@ public class typcase extends Expression {
 			types.add(br.get_type());
 		}
 		set_type(classTable.leastCommonAncestor(types));
+	}
+	
+	private List<branch> getBranches() {
+		List<branch> branches = new ArrayList<branch>();
+        for (Enumeration e = cases.getElements(); e.hasMoreElements();) {
+            branch br = (branch) e.nextElement();
+            branches.add(br);
+        }
+        return branches;
 	}
 }

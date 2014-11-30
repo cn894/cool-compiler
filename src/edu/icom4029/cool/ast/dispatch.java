@@ -3,11 +3,12 @@ package edu.icom4029.cool.ast;
 import java.io.PrintStream;
 import java.util.Enumeration;
 
-import sun.management.MethodInfo;
 import edu.icom4029.cool.ast.base.TreeNode;
+import edu.icom4029.cool.cgen.CgenSupport;
 import edu.icom4029.cool.core.TreeConstants;
 import edu.icom4029.cool.core.Utilities;
 import edu.icom4029.cool.lexer.AbstractSymbol;
+import edu.icom4029.cool.lexer.AbstractTable;
 import edu.icom4029.cool.semant.ClassTable;
 import edu.icom4029.cool.semant.SymbolTable;
 
@@ -35,7 +36,7 @@ public class dispatch extends Expression {
 	public TreeNode copy() {
 		return new dispatch(lineNumber, (Expression)expr.copy(), copy_AbstractSymbol(name), (Expressions)actual.copy());
 	}
-	
+
 	public void dump(PrintStream out, int n) {
 		out.print(Utilities.pad(n) + "dispatch\n");
 		expr.dump(out, n+2);
@@ -56,28 +57,36 @@ public class dispatch extends Expression {
 		out.println(Utilities.pad(n + 2) + ")");
 		dump_type(out, n);
 	}
-	
+
 	/** Generates code for this expression.  This method is to be completed 
 	 * in programming assignment 5.  (You may or add remove parameters as
 	 * you wish.)
 	 * @param s the output stream 
 	 * */
 	public void code(PrintStream s) {
+		CgenSupport.codeActuals(actual, s);
+		expr.code(s);
+		CgenSupport.emitCheckVoidCallDispAbort(lineNumber, s);
+		CgenSupport.emitLoad(CgenSupport.T1, CgenSupport.DISPTABLE_OFFSET, CgenSupport.ACC, s);
+		AbstractSymbol exprType = expr.get_type();
+		System.err.println("dispatch: " + exprType + "::" + name);
+		CgenSupport.emitLoad(CgenSupport.T1, AbstractTable.classTable.getMethodOffset(exprType, name, actual), CgenSupport.T1, s);
+		CgenSupport.emitJalr(CgenSupport.T1, s);
 	}
 
 	@Override
 	public void semant(ClassTable classTable, class_ cl, SymbolTable symbolTable) {
 		expr.semant(classTable, cl, symbolTable);
 		AbstractSymbol exprType = expr.get_type();
-		
+
 		if (exprType == TreeConstants.SELF_TYPE) {
 			exprType = (AbstractSymbol) symbolTable.lookup(TreeConstants.SELF_TYPE);
 		}
-		
+
 		SymbolTable    methodTable = classTable.getMethodTable(exprType);
 		AbstractSymbol nameType    = TreeConstants.Object_;
 		Object         lookedUp    = methodTable.lookup(name);
-		
+
 		if (lookedUp == null) {
 			classTable.semantError(cl).println("Dispatch to undefined method " + name.getString() + ".");
 		}
@@ -100,7 +109,7 @@ public class dispatch extends Expression {
 				}
 			}
 		}
-		
+
 		if (nameType == TreeConstants.SELF_TYPE) {
 			set_type(exprType);	// Type is the target object.
 		}
