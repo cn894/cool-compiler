@@ -66,10 +66,11 @@ public class dispatch extends Expression {
 	public void code(PrintStream s) {
 		CgenSupport.codeActuals(actual, s);
 		expr.code(s);
+		
 		CgenSupport.emitCheckVoidCallDispAbort(lineNumber, s);
 		CgenSupport.emitLoad(CgenSupport.T1, CgenSupport.DISPTABLE_OFFSET, CgenSupport.ACC, s);
+		
 		AbstractSymbol exprType = expr.get_type();
-		System.err.println("dispatch: " + exprType + "::" + name);
 		CgenSupport.emitLoad(CgenSupport.T1, AbstractTable.classTable.getMethodOffset(exprType, name, actual), CgenSupport.T1, s);
 		CgenSupport.emitJalr(CgenSupport.T1, s);
 	}

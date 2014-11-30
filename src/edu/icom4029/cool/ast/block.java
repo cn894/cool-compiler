@@ -48,6 +48,10 @@ public class block extends Expression {
 	 * @param s the output stream 
 	 * */
 	public void code(PrintStream s) {
+		for (Enumeration e = body.getElements(); e.hasMoreElements();) {
+			Expression expr = (Expression) e.nextElement();
+			expr.code(s);
+		}
 	}
 
 	@Override

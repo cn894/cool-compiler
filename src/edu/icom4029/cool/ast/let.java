@@ -3,9 +3,13 @@ package edu.icom4029.cool.ast;
 import java.io.PrintStream;
 
 import edu.icom4029.cool.ast.base.TreeNode;
+import edu.icom4029.cool.cgen.CgenSupport;
+import edu.icom4029.cool.cgen.LetVariable;
 import edu.icom4029.cool.core.TreeConstants;
 import edu.icom4029.cool.core.Utilities;
 import edu.icom4029.cool.lexer.AbstractSymbol;
+import edu.icom4029.cool.lexer.AbstractTable;
+import edu.icom4029.cool.lexer.BoolConst;
 import edu.icom4029.cool.semant.ClassTable;
 import edu.icom4029.cool.semant.SymbolTable;
 
@@ -17,7 +21,7 @@ public class let extends Expression {
 	protected AbstractSymbol type_decl;
 	protected Expression init;
 	protected Expression body;
-	
+
 	/** Creates "let" AST node. 
 	 *
 	 * @param lineNumber the line in the source file from which this node came.
@@ -37,7 +41,7 @@ public class let extends Expression {
 	public TreeNode copy() {
 		return new let(lineNumber, copy_AbstractSymbol(identifier), copy_AbstractSymbol(type_decl), (Expression) init.copy(), (Expression) body.copy());
 	}
-	
+
 	public void dump(PrintStream out, int n) {
 		out.print(Utilities.pad(n) + "let\n");
 		dump_AbstractSymbol(out, n+2, identifier);
@@ -56,27 +60,57 @@ public class let extends Expression {
 		body.dump_with_types(out, n+2);
 		dump_type(out, n);
 	}
-	
+
 	/** Generates code for this expression.  This method is to be completed 
 	 * in programming assignment 5.  (You may or add remove parameters as
 	 * you wish.)
 	 * @param s the output stream 
 	 * */
 	public void code(PrintStream s) {
+		if (init.get_type() == null) {
+			if (type_decl == TreeConstants.Bool) {
+				s.print(CgenSupport.LA + CgenSupport.ACC + " ");
+				BoolConst.falsebool.codeRef(s);
+				s.println("");
+			}
+			else if (type_decl == TreeConstants.Int) {
+				s.println(CgenSupport.LA + CgenSupport.ACC + " " +  CgenSupport.getIntRef(0));
+			}
+			else if (type_decl == TreeConstants.Str) {
+				s.println(CgenSupport.LA + CgenSupport.ACC + " " +  CgenSupport.getStringRef(""));
+			}
+			else {
+				CgenSupport.emitMove(CgenSupport.ACC, CgenSupport.ZERO, s);
+			}
+		}
+		else {
+			init.code(s);
+		}
+
+		int offset = AbstractTable.offset++;
+		CgenSupport.emitPush(CgenSupport.ACC, s);
+
+		AbstractTable.varTable.enterScope();
+		AbstractTable.varTable.addId(identifier, new LetVariable(offset));
+		body.code(s);
+		AbstractTable.varTable.exitScope();
+
+		CgenSupport.emitPop(s);
+		AbstractTable.offset--;
 	}
-	
+
 	@Override
 	public void semant(ClassTable classTable, class_ cl, SymbolTable symbolTable) {
-		
+
 		if (identifier == TreeConstants.self) {
 			classTable.semantError(cl).println("'self' cannot be bound in a 'let' expression.");
 			set_type(TreeConstants.No_type);
 			return;
 		}
-		
+
 		init.semant(classTable, cl, symbolTable);
 		AbstractSymbol initType = init.get_type();
-		
+
 		if (initType != TreeConstants.No_type && initType != TreeConstants.SELF_TYPE && !classTable.isBase(type_decl, initType)) {
 			classTable.semantError(cl).println("Inferred type " + initType.getString() + " of initialization of " +  identifier.getString() + " does not conform to identifier's declared type " + type_decl.getString());
 			set_type(TreeConstants.No_type);
