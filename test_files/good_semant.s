@@ -232,7 +232,7 @@ class_nameTab:
 	.word	str_const9
 	.word	str_const10
 	.word	str_const11
-class_nameTab:
+class_objTab:
 	.word	Object_protObj
 	.word	Object_init
 	.word	IO_protObj

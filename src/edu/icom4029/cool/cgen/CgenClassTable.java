@@ -459,7 +459,7 @@ public class CgenClassTable extends SymbolTable {
 	}
 
 	private void codeObjTable() {
-		str.print(CgenSupport.CLASSNAMETAB + CgenSupport.LABEL);
+		str.print(CgenSupport.CLASSOBJTAB + CgenSupport.LABEL);
 		for (Enumeration e = nds.elements(); e.hasMoreElements();) {
 			CgenNode node = (CgenNode) e.nextElement();
 			str.println(CgenSupport.WORD + node.getName().getString() + CgenSupport.PROTOBJ_SUFFIX);
