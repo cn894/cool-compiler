@@ -36,7 +36,7 @@ import edu.icom4029.cool.parser.Parser;
 /** Static semantics driver class */
 class Cgen {
 
-	/** Reads AST from from consosle, and outputs the assembly code */
+	/** Outputs the assembly code */
 	public static void main(String[] args) {
 		args = Flags.handleFlags(args);
 
