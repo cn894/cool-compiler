@@ -24,9 +24,13 @@ PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 // This is a project skeleton file
 
 import java.io.PrintStream;
+import java.util.Enumeration;
 
+import edu.icom4029.cool.ast.Expression;
+import edu.icom4029.cool.ast.Expressions;
 import edu.icom4029.cool.core.Flags;
 import edu.icom4029.cool.lexer.AbstractSymbol;
+import edu.icom4029.cool.lexer.AbstractTable;
 import edu.icom4029.cool.lexer.BoolConst;
 import edu.icom4029.cool.lexer.IntSymbol;
 import edu.icom4029.cool.lexer.StringSymbol;
@@ -56,10 +60,14 @@ public class CgenSupport {
 	public final static String BOOLTAG      = "_bool_tag";
 	public final static String STRINGTAG    = "_string_tag";
 	public final static String HEAP_START   = "heap_start";
+	public final static String DISP_ABORT   = "_dispatch_abort";
+	public final static String CASE_ABORT   = "_case_abort";
+	public final static String CASE_ABORT2  = "_case_abort2";
 
 	// Naming conventions
 	public final static String DISPTAB_SUFFIX      = "_dispTab";
 	public final static String METHOD_SEP          = ".";
+	public final static String PARAM_SEP           = ".";
 	public final static String CLASSINIT_SUFFIX    = "_init";
 	public final static String PROTOBJ_SUFFIX      = "_protObj";
 	public final static String OBJECTPROTOBJ       = "Object" + PROTOBJ_SUFFIX;
@@ -124,6 +132,10 @@ public class CgenSupport {
 	public final static String BLEQ    = "\tble\t";
 	public final static String BLT     = "\tblt\t";
 	public final static String BGT     = "\tbgt\t";
+
+	public static AbstractSymbol currentFilename;
+	public static CgenNode currentClass;
+	private static int labelNum = 0;
 
 	/** Emits an LW instruction.
 	 * @param dest_reg the destination register
@@ -490,6 +502,15 @@ public class CgenSupport {
 		emitAddiu(SP, SP, -4, s);
 	}
 
+	public static void emitPop(String reg, PrintStream s) {
+		emitPop(s);
+		emitLoad(reg, 0, SP, s);
+	}
+
+	public static void emitPop(PrintStream s) {
+		emitAddiu(SP, SP, 4, s);
+	}
+
 	/** Emits code to fetch the integer value of the Integer object.
 	 * @param source a pointer to the Integer object
 	 * @param dest the destination register for the value
@@ -589,6 +610,123 @@ public class CgenSupport {
 		}
 		byteMode(s);
 		s.println("\t.byte\t0\t");
+	}
+
+	public static void emitStartMethod(PrintStream s) {
+		emitPush(FP, s);
+		emitPush(SELF, s);
+		emitMove(FP, SP, s);
+		emitPush(RA, s);
+	}
+
+	public static void emitEndMethod(int args, PrintStream s) {
+		emitPop(RA, s);
+		emitPop(SELF, s);
+		emitPop(FP, s);
+		for (int i = 0; i < args; ++i) {
+			emitPop(s);
+		}
+		emitReturn(s);
+	}
+
+	public static void emitDispatchAbort(PrintStream s) {
+		emitJal(DISP_ABORT, s);
+	}
+
+	public static void emitCaseAbort(PrintStream s) {
+		emitJal(CASE_ABORT, s);
+	}
+
+	public static void emitCaseAbort2(PrintStream s) {
+		emitJal(CASE_ABORT2, s);
+	}
+
+	public static String getStringRef(String s) {
+		StringSymbol sym = (StringSymbol) AbstractTable.stringtable.lookup(s);
+		return STRCONST_PREFIX + sym.getIndex();
+	}
+
+	public static String getStringRef(AbstractSymbol s) {
+		return getStringRef(s.getString());
+	}
+
+	public static String getIntRef(Integer n) {
+		IntSymbol sym = (IntSymbol) AbstractTable.inttable.lookup(n.toString());
+		return INTCONST_PREFIX + sym.getIndex();
+	}
+
+	public static int genLabelNum() {
+		return labelNum++;
+	}
+
+	public static void emitArith(Expression e1, Expression e2, String action, PrintStream s) {
+		e1.code(s);
+		CgenSupport.emitFetchInt(CgenSupport.T1, CgenSupport.ACC, s);
+		CgenSupport.emitPush(CgenSupport.T1, s);
+		e2.code(s);
+		CgenSupport.emitJal("Object.copy", s);
+		CgenSupport.emitFetchInt(CgenSupport.T2, CgenSupport.ACC, s);
+		CgenSupport.emitPop(CgenSupport.T1, s);
+		s.println(action + T1 + " " + T1 + " " + T2);
+		CgenSupport.emitStoreInt(CgenSupport.T1, CgenSupport.ACC, s);
+	}
+
+	public static void emitLoadFalse(String dest, PrintStream s) {
+		emitPartialLoadAddress(dest, s);
+		BoolConst.falsebool.codeRef(s);
+		s.println("");
+	}
+
+	public static void emitLoadTrue(String dest, PrintStream s) {
+		emitPartialLoadAddress(dest, s);
+		BoolConst.truebool.codeRef(s);
+		s.println("");
+	}
+
+	public static void emitComparison(Expression e1, Expression e2, String op, PrintStream s) {
+		e1.code(s);
+		emitPush(ACC, s);
+		e2.code(s);
+		emitPop(T1, s);
+
+		emitMove(T2, ACC, s);
+		emitLoadTrue(ACC, s);
+		int labelEnd = genLabelNum();
+		emitFetchInt(T1, T1, s);
+		emitFetchInt(T2, T2, s);
+
+		s.print(op + T1 + " " + T2 + " ");
+		emitLabelRef(labelEnd, s);
+		s.println("");
+
+		emitLoadFalse(ACC, s);
+		emitLabelDef(labelEnd, s);
+	}
+
+	public static void emitCheckVoidCallDispAbort(int lineNumber, PrintStream s) {
+		int label = genLabelNum();
+		emitBne(ACC, ZERO, label, s);
+		emitLoadAddress(ACC, getStringRef(currentFilename), s);
+		emitLoadImm(T1, lineNumber, s);
+		emitDispatchAbort(s);
+		emitLabelDef(label, s);
+	}
+
+	public static void emitCheckVoidCallCaseAbort2(int lineNumber, PrintStream s) {
+		int label = genLabelNum();
+		emitBne(ACC, ZERO, label, s);
+		emitLoadAddress(ACC, getStringRef(currentFilename), s);
+		emitLoadImm(T1, lineNumber, s);
+		emitCaseAbort2(s);
+		emitLabelDef(label, s);
+	}
+
+	public static void codeActuals(Expressions actuals, PrintStream s) {
+		for (Enumeration e = actuals.getElements(); e.hasMoreElements();) {
+			Expression actual = (Expression)e.nextElement();
+			actual.code(s);
+			CgenSupport.emitPush(CgenSupport.ACC, s);
+		}
 	}
 }
 

@@ -3,6 +3,7 @@ package edu.icom4029.cool.ast;
 import java.io.PrintStream;
 
 import edu.icom4029.cool.ast.base.TreeNode;
+import edu.icom4029.cool.cgen.CgenSupport;
 import edu.icom4029.cool.core.TreeConstants;
 import edu.icom4029.cool.core.Utilities;
 import edu.icom4029.cool.semant.ClassTable;
@@ -13,7 +14,7 @@ import edu.icom4029.cool.semant.SymbolTable;
 See <a href="TreeNode.html">TreeNode</a> for full documentation. */
 public class comp extends Expression {
 	protected Expression e1;
-	
+
 	/** Creates "comp" AST node. 
 	 *
 	 * @param lineNumber the line in the source file from which this node came.
@@ -27,7 +28,7 @@ public class comp extends Expression {
 	public TreeNode copy() {
 		return new comp(lineNumber, (Expression)e1.copy());
 	}
-	
+
 	public void dump(PrintStream out, int n) {
 		out.print(Utilities.pad(n) + "comp\n");
 		e1.dump(out, n+2);
@@ -41,13 +42,23 @@ public class comp extends Expression {
 		e1.dump_with_types(out, n + 2);
 		dump_type(out, n);
 	}
-	
+
 	/** Generates code for this expression.  This method is to be completed 
 	 * in programming assignment 5.  (You may or add remove parameters as
 	 * you wish.)
 	 * @param s the output stream 
 	 * */
 	public void code(PrintStream s) {
+		e1.code(s);
+
+		CgenSupport.emitFetchInt(CgenSupport.T1, CgenSupport.ACC, s);
+		CgenSupport.emitLoadTrue(CgenSupport.ACC, s);
+
+		int labelEnd = CgenSupport.genLabelNum();
+
+		CgenSupport.emitBeqz(CgenSupport.T1, labelEnd, s);
+		CgenSupport.emitLoadFalse(CgenSupport.ACC, s);
+		CgenSupport.emitLabelDef(labelEnd, s);
 	}
 
 	@Override

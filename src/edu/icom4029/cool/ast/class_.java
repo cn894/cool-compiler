@@ -1,7 +1,9 @@
 package edu.icom4029.cool.ast;
 
 import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
 
 import edu.icom4029.cool.ast.base.TreeNode;
 import edu.icom4029.cool.core.TreeConstants;
@@ -127,4 +129,15 @@ public class class_ extends ClassAbstract {
 	public Features       getFeatures()    { return features;    }
 	public SymbolTable    getMethodTable() { return methodTable; }
 	public SymbolTable    getAttrTable()   { return attrTable;   }
+	
+	public List<method> getMethods() {
+		List<method> methods = new ArrayList<method>();
+		for (Enumeration e = features.getElements(); e.hasMoreElements();) {
+			Feature feature = (Feature) e.nextElement();
+			if (feature instanceof method) {
+				methods.add((method) feature);
+			}
+		}
+		return methods;
+	}
 }

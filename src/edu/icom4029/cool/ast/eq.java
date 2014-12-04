@@ -3,6 +3,7 @@ package edu.icom4029.cool.ast;
 import java.io.PrintStream;
 
 import edu.icom4029.cool.ast.base.TreeNode;
+import edu.icom4029.cool.cgen.CgenSupport;
 import edu.icom4029.cool.core.TreeConstants;
 import edu.icom4029.cool.core.Utilities;
 import edu.icom4029.cool.semant.ClassTable;
@@ -29,7 +30,7 @@ public class eq extends Expression {
 	public TreeNode copy() {
 		return new eq(lineNumber, (Expression)e1.copy(), (Expression)e2.copy());
 	}
-	
+
 	public void dump(PrintStream out, int n) {
 		out.print(Utilities.pad(n) + "eq\n");
 		e1.dump(out, n+2);
@@ -43,20 +44,35 @@ public class eq extends Expression {
 		e2.dump_with_types(out, n + 2);
 		dump_type(out, n);
 	}
-	
+
 	/** Generates code for this expression.  This method is to be completed 
 	 * in programming assignment 5.  (You may or add remove parameters as
 	 * you wish.)
 	 * @param s the output stream 
 	 * */
 	public void code(PrintStream s) {
+		e1.code(s);
+		CgenSupport.emitPush(CgenSupport.ACC, s);
+
+		e2.code(s);
+		CgenSupport.emitPop(CgenSupport.T1, s);
+
+		CgenSupport.emitMove(CgenSupport.T2, CgenSupport.ACC, s);
+		CgenSupport.emitLoadTrue(CgenSupport.ACC, s);
+
+		int labelEnd = CgenSupport.genLabelNum();
+
+		CgenSupport.emitBeq(CgenSupport.T1, CgenSupport.T2, labelEnd, s);
+		CgenSupport.emitLoadFalse(CgenSupport.A1, s);
+		CgenSupport.emitJal("equality_test", s);
+		CgenSupport.emitLabelDef(labelEnd, s);
 	}
 
 	@Override
 	public void semant(ClassTable classTable, class_ cl, SymbolTable symbolTable) {
 		e1.semant(classTable, cl, symbolTable); // Perform semantic analysis on the LHS expression
 		e2.semant(classTable, cl, symbolTable); // Perform semantic analysis on the RHS expression
-		
+
 		if (e1.get_type() != e2.get_type() && classTable.hasBasicClass(e2.get_type().getString())) {
 			classTable.semantError(cl).println("Illegal comparison with a basic type.");
 		}

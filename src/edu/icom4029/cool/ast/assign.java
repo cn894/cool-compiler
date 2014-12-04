@@ -3,9 +3,11 @@ package edu.icom4029.cool.ast;
 import java.io.PrintStream;
 
 import edu.icom4029.cool.ast.base.TreeNode;
+import edu.icom4029.cool.cgen.Variable;
 import edu.icom4029.cool.core.TreeConstants;
 import edu.icom4029.cool.core.Utilities;
 import edu.icom4029.cool.lexer.AbstractSymbol;
+import edu.icom4029.cool.lexer.AbstractTable;
 import edu.icom4029.cool.semant.ClassTable;
 import edu.icom4029.cool.semant.SymbolTable;
 
@@ -47,33 +49,36 @@ public class assign extends Expression {
 		expr.dump_with_types(out, n + 2);
 		dump_type(out, n);
 	}
-	
+
 	/** Generates code for this expression.  This method is to be completed 
 	 * in programming assignment 5.  (You may or add remove parameters as
 	 * you wish.)
 	 * @param s the output stream 
 	 * */
 	public void code(PrintStream s) {
+		expr.code(s);
+		Variable var = (Variable) AbstractTable.varTable.lookup(name);
+		var.emitAssign(s);
 	}
 
 	@Override
 	public void semant(ClassTable classTable, class_ cl, SymbolTable symbolTable) {
-		
+
 		// Check if LHS is self. self can never be assigned a value
 		if (name == TreeConstants.self) {
 			classTable.semantError(cl).println("Cannot assign to 'self'.");
 			set_type(TreeConstants.No_type);
 			return;
 		}
-		
+
 		AbstractSymbol nameType = (AbstractSymbol) symbolTable.lookup(name);
 		expr.semant(classTable, cl, symbolTable); // Call the semant method of the RHS expression of the assign expression.
 
 		AbstractSymbol exprType = expr.get_type();
-		
+
 		if (!classTable.isBase(nameType, exprType)) {
 			classTable.semantError(cl).println("Type " + exprType.getString() + " of assigned expression does not conform to declared type " + nameType.getString() + " of identifier " + name.getString());
-        }
-        set_type(nameType);
+		}
+		set_type(nameType);
 	}
 }

@@ -3,6 +3,7 @@ package edu.icom4029.cool.ast;
 import java.io.PrintStream;
 
 import edu.icom4029.cool.ast.base.TreeNode;
+import edu.icom4029.cool.cgen.CgenSupport;
 import edu.icom4029.cool.core.TreeConstants;
 import edu.icom4029.cool.core.Utilities;
 import edu.icom4029.cool.lexer.AbstractSymbol;
@@ -57,6 +58,21 @@ public class cond extends Expression {
 	 * @param s the output stream 
 	 * */
 	public void code(PrintStream s) {
+		pred.code(s);
+        CgenSupport.emitFetchInt(CgenSupport.T1, CgenSupport.ACC, s);
+        int labelFalse = CgenSupport.genLabelNum();
+        int labelEnd = CgenSupport.genLabelNum();
+        CgenSupport.emitBeqz(CgenSupport.T1, labelFalse, s);
+        
+        // 'then' branch (expression is true)
+        then_exp.code(s);
+        CgenSupport.emitBranch(labelEnd, s);
+        
+        // 'else' branch (expression is false)
+        CgenSupport.emitLabelDef(labelFalse, s);
+        else_exp.code(s);
+        
+        CgenSupport.emitLabelDef(labelEnd, s);
 	}
 
 	@Override

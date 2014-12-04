@@ -21,10 +21,12 @@ ON AN "AS IS" BASIS, AND THE UNIVERSITY OF CALIFORNIA HAS NO OBLIGATION TO
 PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 */
 
-import java.util.Vector;
 import java.util.Enumeration;
+import java.util.Vector;
 
+import edu.icom4029.cool.cgen.CgenClassTable;
 import edu.icom4029.cool.core.Utilities;
+import edu.icom4029.cool.semant.SymbolTable;
 
 /** Abstract string table implementation.
     
@@ -88,6 +90,11 @@ public abstract class AbstractTable {
     public static StringTable stringtable = new StringTable(); // Global string table of string constants
     public static IdTable     idtable     = new IdTable();     // Global string table of identifiers
     public static IntTable    inttable    = new IntTable();    // Global string table of integer constants
+    
+    public static CgenClassTable classTable;
+    public static SymbolTable varTable;
+    
+    public static int offset;
 
     private static int MAXSIZE = 1000000; // Max string size that can be stored in the string table
     

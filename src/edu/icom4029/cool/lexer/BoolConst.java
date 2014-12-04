@@ -24,6 +24,7 @@ PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 import java.io.PrintStream;
 
 import edu.icom4029.cool.cgen.CgenSupport;
+import edu.icom4029.cool.core.TreeConstants;
 
 /** This class encapsulates all aspects of code generation for boolean
  * constants.  String constants and Int constants are handled by
@@ -73,6 +74,7 @@ public class BoolConst {
 		s.print(CgenSupport.WORD);
 	
 		/* Add code to reference the dispatch table for class Bool here */
+		CgenSupport.emitDispTableRef(TreeConstants.Bool, s);
 		
 		s.println("");		// dispatch table
 		s.println(CgenSupport.WORD + (val ? "1" : "0")); // value (0 or 1)

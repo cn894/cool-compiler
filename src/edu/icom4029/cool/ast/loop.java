@@ -3,6 +3,7 @@ package edu.icom4029.cool.ast;
 import java.io.PrintStream;
 
 import edu.icom4029.cool.ast.base.TreeNode;
+import edu.icom4029.cool.cgen.CgenSupport;
 import edu.icom4029.cool.core.TreeConstants;
 import edu.icom4029.cool.core.Utilities;
 import edu.icom4029.cool.semant.ClassTable;
@@ -25,11 +26,11 @@ public class loop extends Expression {
 		pred = a1;
 		body = a2;
 	}
-	
+
 	public TreeNode copy() {
 		return new loop(lineNumber, (Expression)pred.copy(), (Expression)body.copy());
 	}
-	
+
 	public void dump(PrintStream out, int n) {
 		out.print(Utilities.pad(n) + "loop\n");
 		pred.dump(out, n+2);
@@ -44,13 +45,24 @@ public class loop extends Expression {
 		body.dump_with_types(out, n + 2);
 		dump_type(out, n);
 	}
-	
+
 	/** Generates code for this expression.  This method is to be completed 
 	 * in programming assignment 5.  (You may or add remove parameters as
 	 * you wish.)
 	 * @param s the output stream 
 	 * */
 	public void code(PrintStream s) {
+		int labelLoop = CgenSupport.genLabelNum();
+		int labelEnd = CgenSupport.genLabelNum();
+		
+		CgenSupport.emitLabelDef(labelLoop, s);
+		pred.code(s);
+		CgenSupport.emitFetchInt(CgenSupport.T1, CgenSupport.ACC, s);
+		CgenSupport.emitBeqz(CgenSupport.T1, labelEnd, s);
+		body.code(s);
+		CgenSupport.emitBranch(labelLoop, s);
+		CgenSupport.emitLabelDef(labelEnd, s);
+		CgenSupport.emitMove(CgenSupport.ACC, CgenSupport.ZERO, s);
 	}
 
 	@Override

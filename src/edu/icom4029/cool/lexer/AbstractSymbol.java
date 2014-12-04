@@ -68,6 +68,10 @@ public abstract class AbstractSymbol {
     	String other = str.length() == len ? str : str.substring(0, len);
     	return this.str.equals(other);
     }
+    
+    public int getIndex() {
+    	return index;
+    }
 
     /** Tests if the index argument is equal to the index of this symbol.
      *

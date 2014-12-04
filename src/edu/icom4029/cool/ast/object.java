@@ -3,9 +3,12 @@ package edu.icom4029.cool.ast;
 import java.io.PrintStream;
 
 import edu.icom4029.cool.ast.base.TreeNode;
+import edu.icom4029.cool.cgen.CgenSupport;
+import edu.icom4029.cool.cgen.Variable;
 import edu.icom4029.cool.core.TreeConstants;
 import edu.icom4029.cool.core.Utilities;
 import edu.icom4029.cool.lexer.AbstractSymbol;
+import edu.icom4029.cool.lexer.AbstractTable;
 import edu.icom4029.cool.semant.ClassTable;
 import edu.icom4029.cool.semant.SymbolTable;
 
@@ -49,18 +52,30 @@ public class object extends Expression {
 	 * @param s the output stream 
 	 * */
 	public void code(PrintStream s) {
+		if (name == TreeConstants.self) {
+			CgenSupport.emitMove(CgenSupport.ACC, CgenSupport.SELF, s);
+		}
+		else {
+			Variable var = (Variable) AbstractTable.varTable.lookup(name);
+			var.emitRef(s);
+		}
 	}
 
 	@Override
 	public void semant(ClassTable classTable, class_ cl, SymbolTable symbolTable) {
-		Object lookedUp = symbolTable.lookup(name);
-		
-		if (lookedUp == null) {
-			classTable.semantError(cl).println("Undeclared identifier " + name.getString());
-			set_type(TreeConstants.No_type);
+		if (name == TreeConstants.self) {
+			set_type(cl.getName());
 		}
 		else {
-			set_type((AbstractSymbol) lookedUp);
+			Object lookedUp = symbolTable.lookup(name);
+
+			if (lookedUp == null) {
+				classTable.semantError(cl).println("Undeclared identifier " + name.getString());
+				set_type(TreeConstants.No_type);
+			}
+			else {
+				set_type((AbstractSymbol) lookedUp);
+			}
 		}
 	}
 }

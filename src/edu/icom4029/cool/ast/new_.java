@@ -3,6 +3,7 @@ package edu.icom4029.cool.ast;
 import java.io.PrintStream;
 
 import edu.icom4029.cool.ast.base.TreeNode;
+import edu.icom4029.cool.cgen.CgenSupport;
 import edu.icom4029.cool.core.TreeConstants;
 import edu.icom4029.cool.core.Utilities;
 import edu.icom4029.cool.lexer.AbstractSymbol;
@@ -48,6 +49,23 @@ public class new_ extends Expression {
 	 * @param s the output stream 
 	 * */
 	public void code(PrintStream s) {
+		if (type_name == TreeConstants.SELF_TYPE) {
+            CgenSupport.emitLoadAddress(CgenSupport.T1, CgenSupport.CLASSOBJTAB, s);
+            CgenSupport.emitLoad(CgenSupport.T2, 0, CgenSupport.SELF, s);
+            CgenSupport.emitSll(CgenSupport.T2, CgenSupport.T2, 3, s);
+            CgenSupport.emitAddu(CgenSupport.T1, CgenSupport.T1, CgenSupport.T2, s);
+            CgenSupport.emitLoad(CgenSupport.ACC, 0, CgenSupport.T1, s);
+            CgenSupport.emitPush(CgenSupport.T1, s);
+            CgenSupport.emitJal("Object.copy", s);
+            CgenSupport.emitPop(CgenSupport.T1, s);
+            CgenSupport.emitLoad(CgenSupport.T1, 1, CgenSupport.T1, s);
+            CgenSupport.emitJalr(CgenSupport.T1, s);
+        }
+		else {
+            CgenSupport.emitLoadAddress(CgenSupport.ACC, type_name.toString() + CgenSupport.PROTOBJ_SUFFIX, s);
+            CgenSupport.emitJal("Object.copy", s);
+            CgenSupport.emitJal(type_name.toString() + CgenSupport.CLASSINIT_SUFFIX, s);
+        }
 	}
 
 	@Override
