@@ -3,6 +3,7 @@ package edu.icom4029.cool.ast;
 import java.io.PrintStream;
 
 import edu.icom4029.cool.ast.base.TreeNode;
+import edu.icom4029.cool.cgen.CgenSupport;
 import edu.icom4029.cool.core.TreeConstants;
 import edu.icom4029.cool.core.Utilities;
 import edu.icom4029.cool.semant.ClassTable;
@@ -54,6 +55,7 @@ public class sub extends Expression {
 	 * @param s the output stream 
 	 * */
 	public void code(PrintStream s) {
+		CgenSupport.emitArith(e1, e2, CgenSupport.SUB, s);
 	}
 
 	@Override
