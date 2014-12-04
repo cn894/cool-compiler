@@ -723,7 +723,7 @@ public class CgenSupport {
 
 	public static void codeActuals(Expressions actuals, PrintStream s) {
 		for (Enumeration e = actuals.getElements(); e.hasMoreElements();) {
-			Expression actual = (Expression)e.nextElement();
+			Expression actual = (Expression) e.nextElement();
 			actual.code(s);
 			CgenSupport.emitPush(CgenSupport.ACC, s);
 		}
