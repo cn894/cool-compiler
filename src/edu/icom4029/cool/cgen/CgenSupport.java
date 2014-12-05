@@ -663,10 +663,12 @@ public class CgenSupport {
 		e1.code(s);
 		CgenSupport.emitFetchInt(CgenSupport.T1, CgenSupport.ACC, s);
 		CgenSupport.emitPush(CgenSupport.T1, s);
+		
 		e2.code(s);
 		CgenSupport.emitJal("Object.copy", s);
 		CgenSupport.emitFetchInt(CgenSupport.T2, CgenSupport.ACC, s);
 		CgenSupport.emitPop(CgenSupport.T1, s);
+		
 		s.println(action + T1 + " " + T1 + " " + T2);
 		CgenSupport.emitStoreInt(CgenSupport.T1, CgenSupport.ACC, s);
 	}
