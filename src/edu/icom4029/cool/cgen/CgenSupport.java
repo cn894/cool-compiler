@@ -63,6 +63,7 @@ public class CgenSupport {
 	public final static String DISP_ABORT   = "_dispatch_abort";
 	public final static String CASE_ABORT   = "_case_abort";
 	public final static String CASE_ABORT2  = "_case_abort2";
+	public final static String DIV_ABORT    = "_div_abort";
 
 	// Naming conventions
 	public final static String DISPTAB_SUFFIX      = "_dispTab";
@@ -640,6 +641,10 @@ public class CgenSupport {
 	public static void emitCaseAbort2(PrintStream s) {
 		emitJal(CASE_ABORT2, s);
 	}
+	
+	public static void emitDivAbort(PrintStream s) {
+		 emitJal(DIV_ABORT, s);
+	}
 
 	public static String getStringRef(String s) {
 		StringSymbol sym = (StringSymbol) AbstractTable.stringtable.lookup(s);
@@ -659,13 +664,16 @@ public class CgenSupport {
 		return labelNum++;
 	}
 
-	public static void emitArith(Expression e1, Expression e2, String action, PrintStream s) {
+	public static void emitArith(Expression e1, Expression e2, String action, int lineNumber, PrintStream s) {
 		e1.code(s);
 		CgenSupport.emitFetchInt(CgenSupport.T1, CgenSupport.ACC, s);
 		CgenSupport.emitPush(CgenSupport.T1, s);
 		e2.code(s);
 		CgenSupport.emitJal("Object.copy", s);
 		CgenSupport.emitFetchInt(CgenSupport.T2, CgenSupport.ACC, s);
+		if (action.equals(DIV)) {
+			emitCheckDivByZero(lineNumber, s);
+		}
 		CgenSupport.emitPop(CgenSupport.T1, s);
 		s.println(action + T1 + " " + T1 + " " + T2);
 		CgenSupport.emitStoreInt(CgenSupport.T1, CgenSupport.ACC, s);
@@ -718,6 +726,15 @@ public class CgenSupport {
 		emitLoadAddress(ACC, getStringRef(currentFilename), s);
 		emitLoadImm(T1, lineNumber, s);
 		emitCaseAbort2(s);
+		emitLabelDef(label, s);
+	}
+	
+	public static void emitCheckDivByZero(int lineNumber, PrintStream s) {
+		int label = genLabelNum();
+		emitBne(T2, ZERO, label, s);
+		emitLoadAddress(ACC, getStringRef(currentFilename), s);
+		emitLoadImm(T1, lineNumber, s);
+		emitDivAbort(s);
 		emitLabelDef(label, s);
 	}
 

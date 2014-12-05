@@ -54,7 +54,7 @@ public class divide extends Expression {
 	 * @param s the output stream 
 	 * */
 	public void code(PrintStream s) {
-		CgenSupport.emitArith(e1, e2, CgenSupport.DIV, s);
+		CgenSupport.emitArith(e1, e2, CgenSupport.DIV, lineNumber, s);
 	}
 
 	@Override

@@ -54,7 +54,7 @@ public class plus extends Expression {
 	 * @param s the output stream 
 	 * */
 	public void code(PrintStream s) {
-		CgenSupport.emitArith(e1, e2, CgenSupport.ADD, s);
+		CgenSupport.emitArith(e1, e2, CgenSupport.ADD, lineNumber, s);
 	}
 	
 	@Override

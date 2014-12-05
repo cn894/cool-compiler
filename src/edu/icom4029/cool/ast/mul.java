@@ -55,7 +55,7 @@ public class mul extends Expression {
 	 * @param s the output stream 
 	 * */
 	public void code(PrintStream s) {
-		CgenSupport.emitArith(e1, e2, CgenSupport.MUL, s);
+		CgenSupport.emitArith(e1, e2, CgenSupport.MUL, lineNumber, s);
 	}
 
 	@Override
