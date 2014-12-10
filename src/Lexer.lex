@@ -106,6 +106,11 @@ TypeIdentifier      = {UppercaseCharacter}{IdentifierCharacter}*
 	"t"[Rr][Uu][Ee]						{ return sym(TokenConstants.BOOL_CONST, true); }
 	"f"[Aa][Ll][Ss][Ee]					{ return sym(TokenConstants.BOOL_CONST, false); }
 	
+	/*------- Added for final exam -------*/
+	[Aa][Nn][Dd]                        { return sym(TokenConstants.AND); }
+	[Oo][Rr]                            { return sym(TokenConstants.OR); }
+	/*------------------------------------*/
+	
 	//---Operators-----------------------------------------------------------------------------------------------------
 	
 	"<-" 	{ return sym(TokenConstants.ASSIGN); }

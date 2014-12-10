@@ -132,6 +132,12 @@ public class Utilities {
 		case TokenConstants.LBRACE:     return("'{'");
 		case TokenConstants.RBRACE:     return("'}'");
 		case TokenConstants.EOF:        return("EOF");
+		
+		/*------- Added for final exam -------*/
+		case TokenConstants.AND:        return("AND");
+		case TokenConstants.OR:         return("OR");
+		/*------------------------------------*/
+		
 		default:                        return("<Invalid Token: " + s.sym + ">");
 		}
 	}

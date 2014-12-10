@@ -132,6 +132,11 @@ public class CgenSupport {
 	public final static String BLEQ    = "\tble\t";
 	public final static String BLT     = "\tblt\t";
 	public final static String BGT     = "\tbgt\t";
+	
+	/*------- Added for final exam -------*/
+	public final static String AND     = "\tand\t";
+	public final static String OR      = "\tor\t";
+	/*---------------------------- -------*/
 
 	public static AbstractSymbol currentFilename;
 	public static CgenNode currentClass;
@@ -730,6 +735,53 @@ public class CgenSupport {
 			CgenSupport.emitPush(CgenSupport.ACC, s);
 		}
 	}
+	
+	/*------- Added for final exam -------*/
+	public static void emitAnd(Expression e1, Expression e2, PrintStream s) {
+		e1.code(s);
+		emitFetchInt(T1, ACC, s);
+		
+		e2.code(s);
+		emitFetchInt(T2, ACC, s);
+		
+		int labelFalse = genLabelNum();
+        int labelEnd = genLabelNum();
+		
+		s.print(AND + T1 + " " + T1 + " " + T2);
+		
+		emitBeqz(CgenSupport.T1, labelFalse, s);
+		emitLoadTrue(ACC, s);
+		
+		emitLabelDef(labelFalse, s);
+		emitLoadFalse(ACC, s);
+		emitBranch(labelEnd, s);
+		
+		emitLabelDef(labelEnd, s);
+	}
+	
+	public static void emitOr(Expression e1, Expression e2, PrintStream s) {
+		e1.code(s);
+		emitFetchInt(T1, ACC, s);
+		
+		e2.code(s);
+		emitFetchInt(T2, ACC, s);
+		
+		int labelFalse = genLabelNum();
+        int labelEnd = genLabelNum();
+		
+		s.print(OR + T1 + " " + T1 + " " + T2);
+		
+		emitBeqz(CgenSupport.T1, labelFalse, s);
+		emitLoadTrue(ACC, s);
+		emitBranch(labelEnd, s);
+		
+		emitLabelDef(labelFalse, s);
+		emitLoadFalse(ACC, s);
+		
+		emitLabelDef(labelEnd, s);
+	}
+	
+	/*------------------------------------*/
 }
 
 

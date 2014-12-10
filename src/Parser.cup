@@ -60,6 +60,10 @@ terminal AbstractSymbol		INT_CONST, STR_CONST;
 /* Boolean Constants */
 terminal Boolean			BOOL_CONST;
 
+/*------- Added for final exam -------*/
+terminal        AND, OR;
+/*------------------------------------*/
+
 
 /* Error Token */
 // Never used since it is replaced by the default 'error' token constant.
@@ -89,6 +93,8 @@ nonterminal	Expression	let_args;
 //===PRECEDENCES======================================================================================
 
 precedence right	ASSIGN;
+precedence left     OR;
+precedence left     AND;
 precedence left		NOT;
 precedence nonassoc	LE, LT, EQ; 
 precedence left		PLUS, MINUS;
@@ -346,7 +352,17 @@ expr
 			/* Let */
 			|	LET let_expr:le
 				{: RESULT = le; :}
+			
+			/*------- Added for final exam -------*/
+			/* And */
+			|	expr:e1 AND expr:e2
+				{: RESULT = new and(getLineNumber(), e1, e2); :}
+			
+			/* Or */
+			|	expr:e1 OR expr:e2
+				{: RESULT = new or(getLineNumber(), e1, e2); :}
 			;
+			/*------------------------------------*/
 
 let_expr
 			::=	OBJECTID:name COLON TYPEID:type let_args:args IN expr:e
