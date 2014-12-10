@@ -106,6 +106,10 @@ TypeIdentifier      = {UppercaseCharacter}{IdentifierCharacter}*
 	"t"[Rr][Uu][Ee]						{ return sym(TokenConstants.BOOL_CONST, true); }
 	"f"[Aa][Ll][Ss][Ee]					{ return sym(TokenConstants.BOOL_CONST, false); }
 	
+	
+	"and"	{ return sym(TokenConstants.AND); }
+	"or"	{ return sym(TokenConstants.OR); }
+	
 	//---Operators-----------------------------------------------------------------------------------------------------
 	
 	"<-" 	{ return sym(TokenConstants.ASSIGN); }
@@ -127,6 +131,7 @@ TypeIdentifier      = {UppercaseCharacter}{IdentifierCharacter}*
 	"."		{ return sym(TokenConstants.DOT); }
 	"@"		{ return sym(TokenConstants.AT); }
 	"~"		{ return sym(TokenConstants.NEG); }
+	
 	
 	/* Identifiers */
 	{ObjectIdentifier}	{ AbstractSymbol lexValue = AbstractTable.idtable.addString(yytext());
