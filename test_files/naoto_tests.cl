@@ -70,6 +70,19 @@ class Main inherits IO {
 		out_string("False and (not False or False) and True: ");
 		out_bool(false and (not false or false) and true);
 		out_string("\n\n");
+		
+		out_string("True or True and False: ");
+		out_bool(true or true and false);
+		out_string("\n\n");
+		
+		out_string("(True or True) and False: ");
+		out_bool((true or true) and false);
+		out_string("\n\n");
+		
+		out_string("True or (True and False): ");
+		out_bool(true or (true and false));
+		out_string("\n\n");
+		
    }};
    
 	out_bool(b: Bool): Bool {{
